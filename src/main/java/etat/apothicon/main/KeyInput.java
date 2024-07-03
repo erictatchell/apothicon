@@ -1,4 +1,4 @@
-package etat.apothicon;
+package etat.apothicon.main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

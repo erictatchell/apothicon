@@ -1,4 +1,4 @@
-package etat.apothicon;
+package etat.apothicon.main;
 
 import javax.swing.*;
 

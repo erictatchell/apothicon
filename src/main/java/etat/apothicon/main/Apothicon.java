@@ -1,4 +1,6 @@
-package etat.apothicon;
+package etat.apothicon.main;
+
+import etat.apothicon.entity.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,16 +8,17 @@ import java.awt.*;
 public class Apothicon extends JPanel implements Runnable {
     final int originalTileSize = 16;
     final int scale = 3;
-    final int tileSize = originalTileSize * scale;
     final int maxScreenCol = 16;
     final int maxScreenRow = 12;
+    public final int tileSize = originalTileSize * scale;
     final int screenWidth = tileSize * maxScreenCol;
     final int screenHeight = tileSize * maxScreenRow;
 
-    int fps = 60;
+    int FPS = 60;
+    String drawFPS = "FPS: " + FPS;
 
     KeyInput keyIn = new KeyInput();
-    Player player;
+    Player player = new Player(this, keyIn);
     Thread thread;
 
     Apothicon() {
@@ -28,14 +31,13 @@ public class Apothicon extends JPanel implements Runnable {
 
     public void start() {
         thread = new Thread(this);
-        player = new Player(100, 100, 5);
         thread.start();
     }
 
     @Override
     public void run() {
 
-        double drawInterval = (double) 1000000000 / fps;
+        double drawInterval = (double) 1000000000 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -58,7 +60,6 @@ public class Apothicon extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                System.out.printf("FPS: %d", drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -66,23 +67,13 @@ public class Apothicon extends JPanel implements Runnable {
     }
 
     public void update() {
-        if (keyIn.upPressed) {
-            player.setY(player.getY() - player.getSpeed());
-        } else if (keyIn.downPressed) {
-            player.setY(player.getY() + player.getSpeed());
-        } else if (keyIn.leftPressed) {
-            player.setX(player.getX() - player.getSpeed());
-        } else if (keyIn.rightPressed) {
-            player.setX(player.getX() + player.getSpeed());
-        }
+        player.update();
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.white);
-        g2.fillRect(player.getX(), player.getY(), tileSize, tileSize);
-
+        player.draw(g2);
         g2.dispose();
     }
 }

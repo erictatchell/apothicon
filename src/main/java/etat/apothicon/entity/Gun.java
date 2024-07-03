@@ -1,4 +1,4 @@
-package etat.apothicon;
+package etat.apothicon.entity;
 
 public class Gun {
     int damage;
