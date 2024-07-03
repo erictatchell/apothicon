@@ -15,6 +15,9 @@ public class Apothicon extends JPanel implements Runnable {
     KeyInput keyIn = new KeyInput();
     Thread thread;
 
+    int playerX = 100;
+    int playerY = 100;
+
     Apothicon() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
