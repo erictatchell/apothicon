@@ -26,4 +26,52 @@ public class Player {
             this.currentWeapon++;
         } else this.currentWeapon = 0;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getCurrentWeapon() {
+        return currentWeapon;
+    }
+
+    public void setCurrentWeapon(int currentWeapon) {
+        this.currentWeapon = currentWeapon;
+    }
+
+    public ArrayList<Perk> getPerks() {
+        return perks;
+    }
+
+    public void setPerks(ArrayList<Perk> perks) {
+        this.perks = perks;
+    }
+
+    public ArrayList<Gun> getGuns() {
+        return guns;
+    }
+
+    public void setGuns(ArrayList<Gun> guns) {
+        this.guns = guns;
+    }
 }
