@@ -3,7 +3,7 @@ package etat.apothicon;
 import javax.swing.*;
 import java.awt.*;
 
-public class Apothicon extends JPanel {
+public class Apothicon extends JPanel implements Runnable {
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
@@ -12,17 +12,40 @@ public class Apothicon extends JPanel {
     final int screenWidth = tileSize * maxScreenCol;
     final int screenHeight = tileSize * maxScreenRow;
 
+    KeyInput keyIn = new KeyInput();
+    Thread thread;
+
     Apothicon() {
-        setPreferredSize(new Dimension(screenWidth, screenHeight));
-        setBackground(Color.black);
-        setDoubleBuffered(true);
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setBackground(Color.black);
+        this.setDoubleBuffered(true);
+        this.addKeyListener(keyIn);
+        this.setFocusable(true);
+    }
+
+    public void start() {
+        thread = new Thread(this);
+        thread.start();
+    }
+
+    @Override
+    public void run() {
+        while (thread != null) {
+            update();
+            repaint();
+        }
+    }
+
+    public void update() {
+
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        draw(g);
-    }
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.white);
+        g2.fillRect(100, 100, tileSize, tileSize);
 
-    public void draw(Graphics g) {
+        g2.dispose();
     }
 }
