@@ -1,5 +1,8 @@
 package etat.apothicon.main;
 
+import etat.apothicon.perk.Juggernog;
+import etat.apothicon.perk.JuggernogMachine;
+import etat.apothicon.perk.PerkMachine;
 import etat.apothicon.entity.Player;
 
 import javax.swing.*;
@@ -19,11 +22,13 @@ public class Apothicon extends JPanel implements Runnable {
 
     KeyInput keyIn = new KeyInput();
     Player player = new Player(this, keyIn);
+    JuggernogMachine jug = new JuggernogMachine(this);
+    JLabel info = new JLabel("Text");
     Thread thread;
 
     Apothicon() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
+        this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyIn);
         this.setFocusable(true);
@@ -36,7 +41,6 @@ public class Apothicon extends JPanel implements Runnable {
 
     @Override
     public void run() {
-
         double drawInterval = (double) 1000000000 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
@@ -73,7 +77,9 @@ public class Apothicon extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        jug.draw(g2);
         player.draw(g2);
+
         g2.dispose();
     }
 }

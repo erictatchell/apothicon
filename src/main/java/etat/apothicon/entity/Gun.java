@@ -1,6 +1,6 @@
 package etat.apothicon.entity;
 
-public class Gun {
+public class Gun extends Entity {
     int damage;
     int defaultAmmoPerMagazine;
     int magazine;
