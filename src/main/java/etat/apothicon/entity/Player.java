@@ -17,6 +17,20 @@ public class Player extends Entity {
     Apothicon ap;
     KeyInput keyIn;
 
+    public int perkOffset = 16;
+    public int slotX = 16;
+
+    int points = 10000;
+
+    public int getRevives() {
+        return revives;
+    }
+
+    public void setRevives(int revives) {
+        this.revives = revives;
+    }
+
+    int revives = 0;
     int defaultHealth;
     int health;
     int currentWeapon;
@@ -61,7 +75,16 @@ public class Player extends Entity {
         this.currentWeapon = 0;
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     public void update() {
+        this.slotX = perkOffset;
         if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {
             if (keyIn.upPressed) {
                 direction = "up";
@@ -87,8 +110,13 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
-        if (keyIn.fPressed && isPlayerInPerkMachineArea(this, ap.getJug())) {
-            ap.getJug().purchase(this);
+        if (keyIn.fPressed) {
+            if (isPlayerInPerkMachineArea(this, ap.getJug()) && this.points >= ap.getJug().getPrice()) {
+                ap.getJug().purchase(this);
+            }
+            if (isPlayerInPerkMachineArea(this, ap.getQuickRevive()) && this.points >= ap.getQuickRevive().getPrice()) {
+                ap.getQuickRevive().purchase(this);
+            }
         }
     }
 
@@ -166,6 +194,12 @@ public class Player extends Entity {
 
     public int getHealth() {
         return health;
+    }
+
+    public int getPerkOffset() {
+        int temp = perkOffset;
+        perkOffset += 50;
+        return temp;
     }
 
     public void setHealth(int health) {

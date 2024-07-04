@@ -4,6 +4,7 @@ import etat.apothicon.perk.Juggernog;
 import etat.apothicon.perk.JuggernogMachine;
 import etat.apothicon.perk.PerkMachine;
 import etat.apothicon.entity.Player;
+import etat.apothicon.perk.QuickReviveMachine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +12,7 @@ import java.awt.*;
 public class Apothicon extends JPanel implements Runnable {
     final int originalTileSize = 16;
     final int scale = 3;
-    final int maxScreenCol = 16;
+    final int maxScreenCol = 18;
     final int maxScreenRow = 12;
     public final int tileSize = originalTileSize * scale;
     final int screenWidth = tileSize * maxScreenCol;
@@ -23,6 +24,7 @@ public class Apothicon extends JPanel implements Runnable {
     KeyInput keyIn = new KeyInput();
     Player player = new Player(this, keyIn);
     JuggernogMachine jug = new JuggernogMachine(this);
+    QuickReviveMachine qr = new QuickReviveMachine(this);
     JLabel info = new JLabel("Text");
     Thread thread;
 
@@ -37,6 +39,12 @@ public class Apothicon extends JPanel implements Runnable {
         this.addKeyListener(keyIn);
         this.setFocusable(true);
     }
+
+    public void drawText(Graphics2D g2) {
+        g2.setColor(Color.BLACK);
+        g2.drawString("" + player.getPoints(), 10, 20);
+    }
+
 
     public void start() {
         thread = new Thread(this);
@@ -74,6 +82,10 @@ public class Apothicon extends JPanel implements Runnable {
         }
     }
 
+    public QuickReviveMachine getQuickRevive() {
+        return qr;
+    }
+
     public void update() {
         player.update();
     }
@@ -82,8 +94,9 @@ public class Apothicon extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         jug.draw(g2);
+        qr.draw(g2);
         player.draw(g2);
-
+        drawText(g2);
         g2.dispose();
     }
 }

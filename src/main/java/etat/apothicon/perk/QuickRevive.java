@@ -8,15 +8,15 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
-public class Juggernog extends Perk implements Drinkable {
-    public Juggernog(Player player, Apothicon ap) {
+public class QuickRevive extends Perk implements Drinkable {
+    public QuickRevive(Player player, Apothicon ap) {
         super(player, ap);
         render();
     }
 
     public void render() {
         try {
-            this.icon = ImageIO.read(new File("src/main/resources/perks/juggernog-icon.png"));
+            this.icon = ImageIO.read(new File("src/main/resources/perks/quickrevive-icon.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,9 +24,8 @@ public class Juggernog extends Perk implements Drinkable {
 
     @Override
     public void activate(Player customer) {
-        customer.setHealth(250);
-        customer.setDefaultHealth(250);
+        customer.setRevives(1);
         customer.addPerk(this);
-        customer.setPoints(customer.getPoints() - 2500);
+        customer.setPoints(customer.getPoints() - 500);
     }
 }

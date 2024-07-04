@@ -14,21 +14,20 @@ public class Perk {
     protected Apothicon ap;
     protected BufferedImage icon;
     protected int uses;
+    protected int slotX;
 
     public Perk(Player player, Apothicon ap) {
-//      juggernogIcon = ImageIO.read(new File("src/main/resources/perks/juggernog-icon.png"));
-//      doubleTapIcon = ImageIO.read(new File("src/main/resources/perks/doubletap-icon.png"));
-//      speedColaIcon = ImageIO.read(new File("src/main/resources/perks/speedcola-icon.png"));
-//      quickReviveIcon = ImageIO.read(new File("src/main/resources/perks/quickrevive-icon.png"));
-
+        this.slotX = player.slotX;
         this.player = player;
         this.ap = ap;
+
+        this.player.perkOffset += 50;
     }
 
     public void draw(Graphics2D g2) {
-        g2.drawImage(this.icon, 16, ap.getHeight() - 64, ap.tileSize, ap.tileSize, null);
+        g2.drawImage(this.icon, this.slotX, ap.getHeight() - 64, ap.tileSize, ap.tileSize, null);
     }
-    
+
 
     public BufferedImage getIcon() {
         return icon;

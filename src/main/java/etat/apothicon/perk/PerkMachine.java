@@ -26,4 +26,8 @@ public class PerkMachine extends Entity {
     public void draw(Graphics2D g2) {
         g2.drawImage(this.machine, this.x, this.y, ap.tileSize, ap.tileSize, null);
     }
+
+    public int getPrice() {
+        return price;
+    }
 }
