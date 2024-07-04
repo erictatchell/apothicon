@@ -19,18 +19,9 @@ public class Player extends Entity {
 
     public int perkOffset = 16;
     public int slotX = 16;
-
-    int points = 10000;
-
-    public int getRevives() {
-        return revives;
-    }
-
-    public void setRevives(int revives) {
-        this.revives = revives;
-    }
-
     int revives = 0;
+    int points = 10000;
+    float reloadRate = 1.0f;
     int defaultHealth;
     int health;
     int currentWeapon;
@@ -46,6 +37,24 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
     }
+
+    public int getRevives() {
+        return revives;
+    }
+
+    public void setRevives(int revives) {
+        this.revives = revives;
+    }
+
+
+    public float getReloadRate() {
+        return reloadRate;
+    }
+
+    public void setReloadRate(float reloadRate) {
+        this.reloadRate = reloadRate;
+    }
+
 
     public void getPlayerImage() {
         try {
@@ -116,6 +125,9 @@ public class Player extends Entity {
             }
             if (isPlayerInPerkMachineArea(this, ap.getQuickRevive()) && this.points >= ap.getQuickRevive().getPrice()) {
                 ap.getQuickRevive().purchase(this);
+            }
+            if (isPlayerInPerkMachineArea(this, ap.getSpeedCola()) && this.points >= ap.getSpeedCola().getPrice()) {
+                ap.getSpeedCola().purchase(this);
             }
         }
     }
