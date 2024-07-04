@@ -3,6 +3,7 @@ package etat.apothicon.entity;
 import etat.apothicon.perk.Perk;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
+import etat.apothicon.perk.PerkMachine;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -26,6 +27,7 @@ public class Player extends Entity {
         this.ap = ap;
         this.keyIn = keyIn;
         this.guns = new ArrayList<>();
+        this.perks = new ArrayList<>();
 
         setDefaultValues();
         getPlayerImage();
@@ -85,9 +87,35 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
+        if (keyIn.fPressed && isPlayerInPerkMachineArea(this, ap.getJug())) {
+            ap.getJug().purchase(this);
+        }
+    }
+
+    public boolean isPlayerInPerkMachineArea(Player player, PerkMachine perkMachine) {
+        int playerLeft = player.x;
+        int playerRight = player.x + ap.tileSize;
+        int playerTop = player.y;
+        int playerBottom = player.y + ap.tileSize;
+
+        int perkLeft = perkMachine.x;
+        int perkRight = perkMachine.x + ap.tileSize;
+        int perkTop = perkMachine.y;
+        int perkBottom = perkMachine.y + ap.tileSize;
+
+        boolean isInArea = playerRight >= perkLeft &&
+                playerLeft <= perkRight &&
+                playerBottom >= perkTop &&
+                playerTop <= perkBottom;
+
+        return isInArea;
     }
 
     public void draw(Graphics2D g2) {
+        for (Perk perk : this.perks) {
+            perk.draw(g2);
+        }
+
         BufferedImage image = null;
         switch (this.direction) {
             case "up":

@@ -14,7 +14,6 @@ public class PerkMachine extends Entity {
 
     protected BufferedImage machine;
     protected Apothicon ap;
-    protected Perk perk;
     protected String name;
     protected int price;
 
@@ -22,11 +21,6 @@ public class PerkMachine extends Entity {
         this.ap = ap;
         this.name = name;
         this.price = price;
-    }
-
-    public void purchase(Player player) {
-        Juggernog jug = new Juggernog(player, ap);
-        player.addPerk(jug);
     }
 
     public void draw(Graphics2D g2) {

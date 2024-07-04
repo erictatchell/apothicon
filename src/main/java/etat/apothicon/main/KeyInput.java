@@ -10,6 +10,7 @@ public class KeyInput implements KeyListener {
     public boolean leftPressed;
     public boolean rightPressed;
     public boolean downPressed;
+    public boolean fPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -18,6 +19,9 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+        if (code == KeyEvent.VK_F) {
+            fPressed = true;
+        }
         if (code == KeyEvent.VK_W) {
             upPressed = true;
         }
@@ -35,6 +39,9 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
+        if (code == KeyEvent.VK_F) {
+            fPressed = false;
+        }
         if (code == KeyEvent.VK_W) {
             upPressed = false;
         }

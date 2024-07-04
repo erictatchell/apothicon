@@ -1,5 +1,5 @@
 package etat.apothicon.entity;
 
 public interface Drinkable {
-    void drink();
+    void activate(Player customer);
 }

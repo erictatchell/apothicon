@@ -28,22 +28,7 @@ public class Perk {
     public void draw(Graphics2D g2) {
         g2.drawImage(this.icon, 16, ap.getHeight() - 64, ap.tileSize, ap.tileSize, null);
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
+    
 
     public BufferedImage getIcon() {
         return icon;

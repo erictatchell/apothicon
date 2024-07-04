@@ -26,6 +26,10 @@ public class Apothicon extends JPanel implements Runnable {
     JLabel info = new JLabel("Text");
     Thread thread;
 
+    public JuggernogMachine getJug() {
+        return jug;
+    }
+
     Apothicon() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.white);
