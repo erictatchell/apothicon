@@ -39,10 +39,9 @@ public class Apothicon extends JPanel implements Runnable {
     }
 
     public void drawText(Graphics2D g2) {
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.RED);
         g2.drawString("" + player.getPoints(), 10, 20);
         g2.drawString("+ " + player.getHealth(), 10, 30);
-        g2.drawString("QR " + player.getRevives(), 10, 40);
     }
 
 

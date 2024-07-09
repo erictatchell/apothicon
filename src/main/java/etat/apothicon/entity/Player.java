@@ -98,13 +98,16 @@ public class Player extends Entity {
             if (keyIn.upPressed) {
                 direction = "up";
                 this.y -= this.speed;
-            } else if (keyIn.downPressed) {
+            }
+            if (keyIn.downPressed) {
                 direction = "down";
                 this.y += this.speed;
-            } else if (keyIn.leftPressed) {
+            }
+            if (keyIn.leftPressed) {
                 direction = "left";
                 this.x -= this.speed;
-            } else if (keyIn.rightPressed) {
+            }
+            if (keyIn.rightPressed) {
                 direction = "right";
                 this.x += this.speed;
             }
