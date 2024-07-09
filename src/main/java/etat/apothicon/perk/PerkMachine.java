@@ -10,6 +10,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+
+/**
+ * not a fan of this extending Entity, it should extend
+ * a tile class or something. will revisit
+ */
 public class PerkMachine extends Entity {
 
     protected BufferedImage machine;

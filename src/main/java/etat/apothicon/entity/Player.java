@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 public class Player extends Entity {
 
+    // TODO: oop-ify this!
+
     Apothicon ap;
     KeyInput keyIn;
 
