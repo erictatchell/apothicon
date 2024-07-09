@@ -3,10 +3,6 @@ package etat.apothicon.perk;
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
-
 public class QuickReviveMachine extends PerkMachine {
     // this boolean is very coop unfriendly, change!
     boolean purchasable = true;
@@ -16,23 +12,17 @@ public class QuickReviveMachine extends PerkMachine {
 
         this.x = 200;
         this.y = 100;
-        render();
+        render("quickrevive-machine.png");
     }
 
     public void purchase(Player player) {
         if (purchasable) {
             QuickRevive qr = new QuickRevive(player, ap);
-            qr.activate(player);
+            qr.activateFor(player);
             purchasable = false;
         }
 
     }
 
-    public void render() {
-        try {
-            this.machine = ImageIO.read(new File("src/main/resources/perks/quickrevive-machine.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

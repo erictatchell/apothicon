@@ -3,6 +3,7 @@ package etat.apothicon.entity;
 import java.awt.image.BufferedImage;
 
 public class Entity {
+    // TODO: oop-ify this!
     public int x;
     public int y;
     public int speed;
@@ -12,5 +13,5 @@ public class Entity {
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
-    
+
 }

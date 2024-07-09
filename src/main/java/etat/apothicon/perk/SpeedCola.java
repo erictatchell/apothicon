@@ -23,7 +23,7 @@ public class SpeedCola extends Perk implements Drinkable {
     }
 
     @Override
-    public void activate(Player customer) {
+    public void activateFor(Player customer) {
         customer.setReloadRate(1.5f);
         customer.addPerk(this);
         customer.setPoints(customer.getPoints() - 3000);

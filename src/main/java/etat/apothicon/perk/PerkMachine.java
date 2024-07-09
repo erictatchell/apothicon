@@ -1,7 +1,6 @@
 package etat.apothicon.perk;
 
 import etat.apothicon.entity.Entity;
-import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
 
 import javax.imageio.ImageIO;
@@ -12,6 +11,7 @@ import java.io.IOException;
 
 
 /**
+ * TODO:
  * not a fan of this extending Entity, it should extend
  * a tile class or something. will revisit
  */
@@ -34,5 +34,13 @@ public class PerkMachine extends Entity {
 
     public int getPrice() {
         return price;
+    }
+
+    public void render(String url) {
+        try {
+            this.machine = ImageIO.read(new File("src/main/resources/perks/" + url));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

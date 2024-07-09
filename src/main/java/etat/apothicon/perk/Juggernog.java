@@ -23,7 +23,7 @@ public class Juggernog extends Perk implements Drinkable {
     }
 
     @Override
-    public void activate(Player customer) {
+    public void activateFor(Player customer) {
         customer.setHealth(250);
         customer.setDefaultHealth(250);
         customer.addPerk(this);

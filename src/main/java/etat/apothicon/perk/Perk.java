@@ -17,11 +17,11 @@ public class Perk {
     protected int slotX;
 
     public Perk(Player player, Apothicon ap) {
-        this.slotX = player.slotX;
+        this.slotX = player.getSlotX();
         this.player = player;
         this.ap = ap;
 
-        this.player.perkOffset += 50;
+        this.player.incrementPerkOffset();
     }
 
     public void draw(Graphics2D g2) {

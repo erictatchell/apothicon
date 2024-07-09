@@ -15,20 +15,21 @@ public class Apothicon extends JPanel implements Runnable {
     final int screenWidth = tileSize * maxScreenCol;
     final int screenHeight = tileSize * maxScreenRow;
 
+
+    // TODO: oop-ify these variables
     int FPS = 60;
     String drawFPS = "FPS: " + FPS;
+
 
     KeyInput keyIn = new KeyInput();
     Player player = new Player(this, keyIn);
     JuggernogMachine jug = new JuggernogMachine(this);
     QuickReviveMachine qr = new QuickReviveMachine(this);
     SpeedColaMachine sc = new SpeedColaMachine(this);
+    DoubleTapMachine dt = new DoubleTapMachine(this);
     JLabel info = new JLabel("Text");
     Thread thread;
 
-    public JuggernogMachine getJug() {
-        return jug;
-    }
 
     Apothicon() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -89,6 +90,14 @@ public class Apothicon extends JPanel implements Runnable {
         return sc;
     }
 
+    public DoubleTapMachine getDoubleTap() {
+        return dt;
+    }
+
+    public JuggernogMachine getJug() {
+        return jug;
+    }
+
     public void update() {
         player.update();
     }
@@ -99,6 +108,7 @@ public class Apothicon extends JPanel implements Runnable {
         jug.draw(g2);
         qr.draw(g2);
         sc.draw(g2);
+        dt.draw(g2);
         player.draw(g2);
         drawText(g2);
         g2.dispose();

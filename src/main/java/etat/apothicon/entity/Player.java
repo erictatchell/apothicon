@@ -19,16 +19,18 @@ public class Player extends Entity {
     Apothicon ap;
     KeyInput keyIn;
 
-    public int perkOffset = 16;
-    public int slotX = 16;
-    int revives = 0;
-    int points = 10000;
-    float reloadRate = 1.0f;
-    int defaultHealth;
-    int health;
-    int currentWeapon;
-    ArrayList<Perk> perks;
-    ArrayList<Gun> guns;
+    // TODO 1: man this is ugly. find a better solution
+    private int perkOffset = 16;
+    private int slotX = 16;
+
+    private int revives;
+    private int points;
+    private float reloadRate;
+    private int defaultHealth;
+    private int health;
+    private int currentWeapon;
+    private ArrayList<Perk> perks;
+    private ArrayList<Gun> guns;
 
     public Player(Apothicon ap, KeyInput keyIn) {
         this.ap = ap;
@@ -77,10 +79,15 @@ public class Player extends Entity {
     public void setDefaultValues() {
         this.x = 100;
         this.y = 100;
+        this.points = 10000;
+        this.revives = 0;
+        this.slotX = 16;
+        this.perkOffset = 16;
         this.health = 150;
         this.defaultHealth = 150;
         this.speed = 4;
         this.direction = "down";
+        this.reloadRate = 1.0f;
         Gun m1911 = new Gun(10, 8, 32, 1, 100);
         guns.add(m1911);
         this.currentWeapon = 0;
@@ -115,7 +122,7 @@ public class Player extends Entity {
             }
 
             spriteCounter++;
-            if (spriteCounter > 12) { // 10 frames
+            if (spriteCounter > 12) { // 12 frames
                 if (spriteNum == 1) {
                     spriteNum = 2;
                 } else {
@@ -133,6 +140,9 @@ public class Player extends Entity {
             }
             if (isPlayerInPerkMachineArea(this, ap.getSpeedCola()) && this.points >= ap.getSpeedCola().getPrice()) {
                 ap.getSpeedCola().purchase(this);
+            }
+            if (isPlayerInPerkMachineArea(this, ap.getDoubleTap()) && this.points >= ap.getDoubleTap().getPrice()) {
+                ap.getDoubleTap().purchase(this);
             }
         }
     }
@@ -196,6 +206,21 @@ public class Player extends Entity {
 
     }
 
+    public void resetPerkOffset() {
+        this.perkOffset = 0;
+    }
+
+    public void incrementPerkOffset() {
+        this.perkOffset += 50;
+    }
+
+    public int getSlotX() {
+        return slotX;
+    }
+
+    public void setSlotX(int slotX) {
+        this.slotX = slotX;
+    }
 
     public void addPerk(Perk perk) {
         this.perks.add(perk);
@@ -211,12 +236,6 @@ public class Player extends Entity {
 
     public int getHealth() {
         return health;
-    }
-
-    public int getPerkOffset() {
-        int temp = perkOffset;
-        perkOffset += 50;
-        return temp;
     }
 
     public void setHealth(int health) {

@@ -1,5 +1,7 @@
 package etat.apothicon.entity;
 
+
+// TODO:
 public class Gun extends Entity {
     int damage;
     int defaultAmmoPerMagazine;
@@ -8,7 +10,7 @@ public class Gun extends Entity {
     int fireRate;
     float range;
 
-    Gun(int damage, int defaultAmmoPerMagazine, int reserve, int fireRate, int range) {
+    public Gun(int damage, int defaultAmmoPerMagazine, int reserve, int fireRate, int range) {
         this.damage = damage;
         this.defaultAmmoPerMagazine = defaultAmmoPerMagazine;
         this.magazine = defaultAmmoPerMagazine;
