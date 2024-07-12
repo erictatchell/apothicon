@@ -19,7 +19,7 @@ public class DoubleTapMachine extends PerkMachine {
 
     public void purchase(Player player) {
         // TODO: create a purchasable boolean on each player object so we can individualize purchases
-        if (purchasable) {
+        if (player.isPurchasable(this)) {
             DoubleTap dt = new DoubleTap(player, ap);
             dt.activateFor(player);
             purchasable = false;

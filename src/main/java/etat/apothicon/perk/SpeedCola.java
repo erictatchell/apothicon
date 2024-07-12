@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class SpeedCola extends Perk implements Drinkable {
     public SpeedCola(Player player, Apothicon ap) {
-        super(player, ap);
+        super("Speed Cola", player, ap);
         render();
     }
 

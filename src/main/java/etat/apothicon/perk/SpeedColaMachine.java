@@ -17,7 +17,7 @@ public class SpeedColaMachine extends PerkMachine {
     }
 
     public void purchase(Player player) {
-        if (purchasable) {
+        if (player.isPurchasable(this)) {
             SpeedCola sc = new SpeedCola(player, ap);
             sc.activateFor(player);
             purchasable = false;

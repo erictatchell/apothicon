@@ -16,7 +16,7 @@ public class QuickReviveMachine extends PerkMachine {
     }
 
     public void purchase(Player player) {
-        if (purchasable) {
+        if (player.isPurchasable(this)) {
             QuickRevive qr = new QuickRevive(player, ap);
             qr.activateFor(player);
             purchasable = false;

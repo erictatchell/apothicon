@@ -43,4 +43,9 @@ public class PerkMachine extends Entity {
             e.printStackTrace();
         }
     }
+
+    public String getName() {
+    
+        return this.name;
+    }
 }

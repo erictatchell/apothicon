@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class QuickRevive extends Perk implements Drinkable {
     public QuickRevive(Player player, Apothicon ap) {
-        super(player, ap);
+        super("Quick Revive", player, ap);
         render();
     }
 

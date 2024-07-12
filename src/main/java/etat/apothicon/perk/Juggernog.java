@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class Juggernog extends Perk implements Drinkable {
     public Juggernog(Player player, Apothicon ap) {
-        super(player, ap);
+        super("Juggernog", player, ap);
         render();
     }
 

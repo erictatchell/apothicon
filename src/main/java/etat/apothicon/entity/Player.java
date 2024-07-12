@@ -101,6 +101,21 @@ public class Player extends Entity {
         this.points = points;
     }
 
+    public boolean isPurchasable(PerkMachine perk) {
+        int n = this.perks.size();
+        if (n >= 4) {
+            return false;
+        }// max perks
+
+        String purchasingName = perk.getName();
+        for (int i = 0; i < n; i++) {
+            if (purchasingName == this.perks.get(i).getName()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void update() {
         this.slotX = perkOffset;
         if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {

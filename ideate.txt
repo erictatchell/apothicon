@@ -1,3 +1,0 @@
-- 2d cod zombies like DOA
-- progression must be fun!
-- a-star
