@@ -9,6 +9,7 @@ import etat.apothicon.perk.QuickRevive;
 import etat.apothicon.perk.SpeedCola;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
+import etat.apothicon.main.MouseInput;
 import etat.apothicon.object.SuperObject;
 
 import javax.imageio.ImageIO;
@@ -24,6 +25,7 @@ public class Player extends Entity {
 
     Apothicon ap;
     KeyInput keyIn;
+    MouseInput mouseIn;
 
     private String purchaseString = null;
     public final int screenX;
@@ -42,9 +44,10 @@ public class Player extends Entity {
     private int maxGunNum;
     private ArrayList<Gun> guns;
 
-    public Player(Apothicon ap, KeyInput keyIn) {
+    public Player(Apothicon ap, KeyInput keyIn, MouseInput mouseIn) {
         this.ap = ap;
         this.keyIn = keyIn;
+        this.mouseIn = mouseIn;
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
         solidArea = new Rectangle(8, 16, 32, 32);
@@ -101,7 +104,7 @@ public class Player extends Entity {
         this.maxGunNum = 2;
         this.direction = "down";
         this.reloadRate = 1.0f;
-        Gun m1911 = new Gun(10, 8, 32, 1, 100);
+        Gun m1911 = new Gun("M1911", 10, 8, 32, 1, SelectFire.SEMI_AUTO, 100);
         guns.add(m1911);
         this.currentWeapon = 0;
     }
@@ -116,6 +119,10 @@ public class Player extends Entity {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public int getGunNum() {
+        return this.maxGunNum;
     }
 
     public boolean isPerkPurchasable(SuperObject perk) {
@@ -133,8 +140,19 @@ public class Player extends Entity {
         return true;
     }
 
+
     public void update() {
         this.slotX = perkOffset;
+        int objIndex = ap.cc.checkObject(this, true);
+        if (mouseIn.leftMousePressed) {
+            this.guns.get(currentWeapon).fire(); 
+        } else {
+            this.guns.get(currentWeapon).rechamberNeeded = false;
+        }
+        if (keyIn.fPressed) {
+            pickUpObject(objIndex);
+
+        }
         if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {
             if (keyIn.upPressed) {
                 direction = "up";
@@ -149,10 +167,8 @@ public class Player extends Entity {
                 direction = "right";
             }
 
-            // tile collision
             collisionOn = false;
             ap.cc.checkTile(this);
-            int objIndex = ap.cc.checkObject(this, true);
             pickUpObject(objIndex);
 
             if (!collisionOn) {
@@ -185,25 +201,6 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
-
-        // if (keyIn.fPressed) {
-        // if (isPlayerInPerkMachineArea(this, ap.getJug()) && this.points >=
-        // ap.getJug().getPrice()) {
-        // ap.getJug().purchase(this);
-        // }
-        // if (isPlayerInPerkMachineArea(this, ap.getQuickRevive()) && this.points >=
-        // ap.getQuickRevive().getPrice()) {
-        // ap.getQuickRevive().purchase(this);
-        // }
-        // if (isPlayerInPerkMachineArea(this, ap.getSpeedCola()) && this.points >=
-        // ap.getSpeedCola().getPrice()) {
-        // ap.getSpeedCola().purchase(this);
-        // }
-        // if (isPlayerInPerkMachineArea(this, ap.getDoubleTap()) && this.points >=
-        // ap.getDoubleTap().getPrice()) {
-        // ap.getDoubleTap().purchase(this);
-        // }
-        // }
     }
 
     public void purchasePerk(SuperObject object) {
@@ -246,41 +243,24 @@ public class Player extends Entity {
 
     public void pickUpObject(int index) {
         if (index != 999) {
-
-            switch (ap.obj[index].type) {
+            SuperObject obj = ap.obj[index];
+            switch (obj.type) {
                 case "perk":
-                    if (keyIn.fPressed && isPerkPurchasable(ap.obj[index])) {
-                        purchasePerk(ap.obj[index]);
+                    boolean isPerkPurchasable = isPerkPurchasable(obj);
+                    if (keyIn.fPressed && isPerkPurchasable) {
+                        purchasePerk(obj);
+                        break;
                     }
-
-                    drawPurchaseText(ap.obj[index].name, ap.obj[index].price);
+                    if (isPerkPurchasable) {
+                        drawPurchaseText(obj.name, obj.price);
+                        break;
+                    }
+                    this.purchaseString = null;
             }
-
-            // ap.obj[index] = null;
         } else {
-
-            drawPurchaseText(null);
+            this.purchaseString = null;
         }
 
-    }
-
-    public boolean isPlayerInPerkMachineArea(Player player, PerkMachine perkMachine) {
-        int playerLeft = player.worldX;
-        int playerRight = player.worldX + ap.tileSize;
-        int playerTop = player.worldY;
-        int playerBottom = player.worldY + ap.tileSize;
-
-        int perkLeft = perkMachine.worldX;
-        int perkRight = perkMachine.worldX + ap.tileSize;
-        int perkTop = perkMachine.worldY;
-        int perkBottom = perkMachine.worldY + ap.tileSize;
-
-        boolean isInArea = playerRight >= perkLeft &&
-                playerLeft <= perkRight &&
-                playerBottom >= perkTop &&
-                playerTop <= perkBottom;
-
-        return isInArea;
     }
 
     public void draw(Graphics2D g2) {
@@ -322,7 +302,7 @@ public class Player extends Entity {
         g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
         if (this.purchaseString != null) {
             g2.setColor(Color.white);
-            Font font = new Font("Arial", Font.BOLD, 24);
+            Font font = new Font("Arial", Font.BOLD, 16);
             g2.setFont(font);
 
             g2.drawString(purchaseString, ap.screenWidth / 2, ap.screenHeight / 2);
@@ -366,8 +346,9 @@ public class Player extends Entity {
         this.health = health;
     }
 
-    public int getCurrentWeapon() {
-        return currentWeapon;
+
+    public Gun getCurrentWeapon() {
+        return this.guns.get(currentWeapon);
     }
 
     public void setCurrentWeapon(int currentWeapon) {

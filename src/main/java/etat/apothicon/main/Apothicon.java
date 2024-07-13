@@ -2,6 +2,7 @@ package etat.apothicon.main;
 
 import etat.apothicon.perk.*;
 import etat.apothicon.tile.TileManager;
+import etat.apothicon.entity.Gun;
 import etat.apothicon.entity.Player;
 import etat.apothicon.object.DoubleTapMachine;
 import etat.apothicon.object.JuggernogMachine;
@@ -38,8 +39,9 @@ public class Apothicon extends JPanel implements Runnable {
     public AssetSetter aSetter = new AssetSetter(this);
 
     KeyInput keyIn = new KeyInput();
-    public Player player = new Player(this, keyIn);
-    // JuggernogMachine jug = new JuggernogMachine(this);
+    MouseInput mouseIn = new MouseInput();
+    public Player player = new Player(this, keyIn, mouseIn);
+    // JuggernogMachine jug = new JuggernogMachinje(this);
     // QuickReviveMachine qr = new QuickReviveMachine(this);
     // SpeedColaMachine sc = new SpeedColaMachine(this);
     // DoubleTapMachine dt = new DoubleTapMachine(this);
@@ -51,6 +53,7 @@ public class Apothicon extends JPanel implements Runnable {
         this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyIn);
+        this.addMouseListener(mouseIn);
         this.setFocusable(true);
     }
 
@@ -61,19 +64,30 @@ public class Apothicon extends JPanel implements Runnable {
 
     public void drawText(Graphics2D g2) {
         g2.setColor(Color.white);
-        Font font = new Font("Arial", Font.BOLD, 24);
+        Font font = new Font("Arial", Font.BOLD, 18);
         g2.setFont(font);
-        g2.drawString("" + player.getPoints(), 10, screenHeight-12);
-        g2.drawString("+ " + player.getHealth(), 10, 40);
+        g2.drawString("" + player.getPoints(), 10, screenHeight - 12);
+        g2.drawString("health: " + player.getHealth(), 10, 40);
+        g2.drawString("reloadRate: " + player.getReloadRate(), 10, 60);
+        g2.drawString("maxGunNum: " + player.getGunNum(), 10, 80);
+        g2.drawString("revives: " + player.getRevives(), 10, 100);
+
+        Gun currentWeapon = player.getCurrentWeapon();
+        String currentWeaponName = currentWeapon.getName();
+        g2.drawString("" + currentWeaponName, screenWidth / 2, screenHeight - 28);
+        g2.drawString("" + currentWeapon.getMagazine() + " / " + currentWeapon.getReserve(), screenWidth / 2,
+                screenHeight - 12);
+
     }
 
     public void drawText(Graphics2D g2, String text, String price) {
         g2.setColor(Color.white);
         Font font = new Font("Arial", Font.BOLD, 24);
         g2.setFont(font);
-        
+
         g2.drawString("Press F to buy " + text + " (" + price + ")", screenWidth / 2, screenHeight / 2);
     }
+
     public void start() {
         thread = new Thread(this);
         thread.start();
