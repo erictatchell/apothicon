@@ -9,7 +9,7 @@ import etat.apothicon.main.Apothicon;
 public class SuperObject {
     public BufferedImage image;
     public String name;
-    public String type;
+    public String type = "gun";
     public boolean collision = false;
     public int worldX;
     public int worldY;

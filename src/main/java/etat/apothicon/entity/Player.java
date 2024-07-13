@@ -90,7 +90,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         this.worldX = ap.tileSize * 29;
         this.worldY = ap.tileSize * 43;
-        this.points = 10000;
+        this.points = 20000;
         this.revives = 0;
         this.slotX = 16;
         this.perkOffset = 16;
