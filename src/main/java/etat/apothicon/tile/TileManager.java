@@ -21,8 +21,8 @@ public class TileManager {
     public TileManager(Apothicon ap) {
         this.ap = ap;
 
-        this.tile = new Tile[10];
-        this.mapTileNum = new int[ap.maxScreenCol][ap.maxScreenRow];
+        this.tile = new Tile[32];
+        this.mapTileNum = new int[ap.maxWorldCol][ap.maxWorldRow];
 
         getTileImage();
         loadMap();
@@ -30,14 +30,14 @@ public class TileManager {
 
     public void loadMap() {
         try {
-            String map01 = "src/main/resources/maps/map1.txt";
+            String map01 = "src/main/resources/maps/worldmap.txt";
             FileReader is = new FileReader(map01);
             BufferedReader br = new BufferedReader(is);
             int col = 0;
             int row = 0;
-            while (col < ap.maxScreenCol && row < ap.maxScreenRow) {
+            while (col < ap.maxWorldCol && row < ap.maxWorldRow) {
                 String line = br.readLine();
-                while (col < ap.maxScreenCol) {
+                while (col < ap.maxWorldCol) {
                     String numbers[] = line.split(" ");
 
                     int num = Integer.parseInt(numbers[col]);
@@ -45,7 +45,8 @@ public class TileManager {
                     mapTileNum[col][row] = num;
                     col++;
                 }
-                if (col == ap.maxScreenCol) {
+
+                if (col == ap.maxWorldCol) {
                     col = 0;
                     row++;
                 }
@@ -70,27 +71,90 @@ public class TileManager {
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(new File("src/main/resources/tiles/snowstone.png"));
 
+            tile[3] = new Tile();
+            tile[3].image = ImageIO.read(new File("src/main/resources/tiles/grass-snowy.png"));
+
+            tile[4] = new Tile();
+            tile[4].image = ImageIO.read(new File("src/main/resources/tiles/grass-barrier.png"));
+
+            tile[5] = new Tile();
+            tile[5].image = ImageIO.read(new File("src/main/resources/tiles/tree-1.png"));
+
+            tile[6] = new Tile();
+            tile[6].image = ImageIO.read(new File("src/main/resources/tiles/tree-2.png"));
+
+            tile[7] = new Tile();
+            tile[7].image = ImageIO.read(new File("src/main/resources/tiles/frozen-tree-1.png"));
+
+            tile[8] = new Tile();
+            tile[8].image = ImageIO.read(new File("src/main/resources/tiles/frozen-tree-2.png"));
+
+            tile[9] = new Tile();
+            tile[9].image = ImageIO.read(new File("src/main/resources/tiles/grass-zombie.png"));
+
+            tile[10] = new Tile();
+            tile[10].image = ImageIO.read(new File("src/main/resources/tiles/water.png"));
+
+            tile[11] = new Tile();
+            tile[11].image = ImageIO.read(new File("src/main/resources/tiles/frozen-door.png"));
+
+            tile[12] = new Tile();
+            tile[12].image = ImageIO.read(new File("src/main/resources/tiles/door-barrier.png"));
+
+            tile[13] = new Tile();
+            tile[13].image = ImageIO.read(new File("src/main/resources/tiles/stone-barrier.png"));
+
+            tile[14] = new Tile();
+            tile[14].image = ImageIO.read(new File("src/main/resources/tiles/mossy-stone.png"));
+
+            tile[15] = new Tile();
+            tile[15].image = ImageIO.read(new File("src/main/resources/tiles/moss.png"));
+
+            tile[16] = new Tile();
+            tile[16].image = ImageIO.read(new File("src/main/resources/tiles/door-barrier.png"));
+
+            tile[17] = new Tile();
+            tile[17].image = ImageIO.read(new File("src/main/resources/tiles/snowstone-wall.png"));
+
+            tile[18] = new Tile();
+            tile[18].image = ImageIO.read(new File("src/main/resources/tiles/moss.png"));
+
+            tile[19] = new Tile();
+            tile[19].image = ImageIO.read(new File("src/main/resources/tiles/mossy-stone.png"));
+
+            tile[20] = new Tile();
+            tile[20].image = ImageIO.read(new File("src/main/resources/tiles/dirt.png"));
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void draw(Graphics2D g2) {
-        int col = 0;
-        int row = 0;
-        int x = 0;
-        int y = 0;
-        while (col < ap.maxScreenCol && row < ap.maxScreenRow) {
-            int tileNum = mapTileNum[col][row];
-            g2.drawImage(tile[tileNum].image, x, y, ap.tileSize, ap.tileSize, null);
-            col++;
-            x += ap.tileSize;
-            if (col == ap.maxScreenCol) {
-                col = 0;
-                x = 0;
-                row++;
-                y += ap.tileSize;
+        int worldCol = 0;
+        int worldRow = 0;
+        while (worldCol < ap.maxWorldCol && worldRow < ap.maxWorldRow) {
+            int tileNum = mapTileNum[worldCol][worldRow];
+
+            int worldX = worldCol * ap.tileSize;
+            int worldY = worldRow * ap.tileSize;
+            int screenX = worldX - ap.player.worldX + ap.player.screenX;
+            int screenY = worldY - ap.player.worldY + ap.player.screenY;
+
+            if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX &&
+                    worldX - ap.tileSize < ap.player.worldX + ap.player.screenX &&
+                    worldY + ap.tileSize > ap.player.worldY - ap.player.screenY &&
+                    worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
+                g2.drawImage(tile[tileNum].image, screenX, screenY, ap.tileSize, ap.tileSize, null);
+
             }
+            worldCol++;
+            if (worldCol == ap.maxWorldCol) {
+                worldCol = 0;
+                worldRow++;
+            }
+
         }
     }
 }

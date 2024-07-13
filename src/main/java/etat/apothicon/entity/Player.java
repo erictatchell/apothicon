@@ -19,6 +19,8 @@ public class Player extends Entity {
     Apothicon ap;
     KeyInput keyIn;
 
+    public final int screenX;
+    public final int screenY;
     // TODO 1: man this is ugly. find a better solution
     private int perkOffset = 16;
     private int slotX = 16;
@@ -38,6 +40,8 @@ public class Player extends Entity {
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
 
+        screenX = ap.screenWidth / 2 - (ap.tileSize / 2);
+        screenY = ap.screenHeight / 2 - (ap.tileSize / 2);
         setDefaultValues();
         getPlayerImage();
     }
@@ -77,8 +81,8 @@ public class Player extends Entity {
 
 
     public void setDefaultValues() {
-        this.x = 100;
-        this.y = 100;
+        this.worldX = ap.tileSize * 23;
+        this.worldY = ap.tileSize * 21;
         this.points = 10000;
         this.revives = 0;
         this.slotX = 16;
@@ -121,19 +125,19 @@ public class Player extends Entity {
         if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {
             if (keyIn.upPressed) {
                 direction = "up";
-                this.y -= this.speed;
+                this.worldY -= this.speed;
             }
             if (keyIn.downPressed) {
                 direction = "down";
-                this.y += this.speed;
+                this.worldY += this.speed;
             }
             if (keyIn.leftPressed) {
                 direction = "left";
-                this.x -= this.speed;
+                this.worldX -= this.speed;
             }
             if (keyIn.rightPressed) {
                 direction = "right";
-                this.x += this.speed;
+                this.worldX += this.speed;
             }
 
             spriteCounter++;
@@ -146,32 +150,32 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
-        if (keyIn.fPressed) {
-            if (isPlayerInPerkMachineArea(this, ap.getJug()) && this.points >= ap.getJug().getPrice()) {
-                ap.getJug().purchase(this);
-            }
-            if (isPlayerInPerkMachineArea(this, ap.getQuickRevive()) && this.points >= ap.getQuickRevive().getPrice()) {
-                ap.getQuickRevive().purchase(this);
-            }
-            if (isPlayerInPerkMachineArea(this, ap.getSpeedCola()) && this.points >= ap.getSpeedCola().getPrice()) {
-                ap.getSpeedCola().purchase(this);
-            }
-            if (isPlayerInPerkMachineArea(this, ap.getDoubleTap()) && this.points >= ap.getDoubleTap().getPrice()) {
-                ap.getDoubleTap().purchase(this);
-            }
-        }
+        // if (keyIn.fPressed) {
+        //     if (isPlayerInPerkMachineArea(this, ap.getJug()) && this.points >= ap.getJug().getPrice()) {
+        //         ap.getJug().purchase(this);
+        //     }
+        //     if (isPlayerInPerkMachineArea(this, ap.getQuickRevive()) && this.points >= ap.getQuickRevive().getPrice()) {
+        //         ap.getQuickRevive().purchase(this);
+        //     }
+        //     if (isPlayerInPerkMachineArea(this, ap.getSpeedCola()) && this.points >= ap.getSpeedCola().getPrice()) {
+        //         ap.getSpeedCola().purchase(this);
+        //     }
+        //     if (isPlayerInPerkMachineArea(this, ap.getDoubleTap()) && this.points >= ap.getDoubleTap().getPrice()) {
+        //         ap.getDoubleTap().purchase(this);
+        //     }
+        // }
     }
 
     public boolean isPlayerInPerkMachineArea(Player player, PerkMachine perkMachine) {
-        int playerLeft = player.x;
-        int playerRight = player.x + ap.tileSize;
-        int playerTop = player.y;
-        int playerBottom = player.y + ap.tileSize;
+        int playerLeft = player.worldX;
+        int playerRight = player.worldX + ap.tileSize;
+        int playerTop = player.worldY;
+        int playerBottom = player.worldY + ap.tileSize;
 
-        int perkLeft = perkMachine.x;
-        int perkRight = perkMachine.x + ap.tileSize;
-        int perkTop = perkMachine.y;
-        int perkBottom = perkMachine.y + ap.tileSize;
+        int perkLeft = perkMachine.worldX;
+        int perkRight = perkMachine.worldX + ap.tileSize;
+        int perkTop = perkMachine.worldY;
+        int perkBottom = perkMachine.worldY + ap.tileSize;
 
         boolean isInArea = playerRight >= perkLeft &&
                 playerLeft <= perkRight &&
@@ -217,7 +221,7 @@ public class Player extends Entity {
                 image = right2;
                 break;
         }
-        g2.drawImage(image, this.x, this.y, ap.tileSize, ap.tileSize, null);
+        g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
 
     }
 

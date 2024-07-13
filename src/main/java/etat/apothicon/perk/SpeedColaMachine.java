@@ -11,8 +11,8 @@ public class SpeedColaMachine extends PerkMachine {
     public SpeedColaMachine(Apothicon ap) {
         super(ap, "Speed Cola", 3000);
 
-        this.x = 300;
-        this.y = 100;
+        this.worldX = 300;
+        this.worldY = 100;
         render("speedcola-machine.png");
     }
 

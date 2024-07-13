@@ -16,6 +16,11 @@ public class Apothicon extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
+    // world settings
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 50;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
 
     // TODO: oop-ify these variables
     int FPS = 60;
@@ -25,7 +30,7 @@ public class Apothicon extends JPanel implements Runnable {
 
 
     KeyInput keyIn = new KeyInput();
-    Player player = new Player(this, keyIn);
+    public Player player = new Player(this, keyIn);
     JuggernogMachine jug = new JuggernogMachine(this);
     QuickReviveMachine qr = new QuickReviveMachine(this);
     SpeedColaMachine sc = new SpeedColaMachine(this);

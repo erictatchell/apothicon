@@ -10,8 +10,8 @@ public class QuickReviveMachine extends PerkMachine {
     public QuickReviveMachine(Apothicon ap) {
         super(ap, "Quick Revive", 500);
 
-        this.x = 200;
-        this.y = 100;
+        this.worldX = 200;
+        this.worldY = 100;
         render("quickrevive-machine.png");
     }
 

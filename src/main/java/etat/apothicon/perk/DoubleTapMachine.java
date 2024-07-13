@@ -12,8 +12,8 @@ public class DoubleTapMachine extends PerkMachine {
         super(ap, "Double Tap 2.0", 200);
 
         // TODO: are x and y not common amongst all perkmachines? should be set in super()
-        this.x = 400;
-        this.y = 100;
+        this.worldX = 400;
+        this.worldY = 100;
         render("doubletap-machine.png");
     }
 

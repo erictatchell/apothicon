@@ -15,8 +15,8 @@ public class JuggernogMachine extends PerkMachine {
 
         // TODO: are x and y not common amongst all perkmachines? should be set in
         // super()
-        this.x = 100;
-        this.y = 100;
+        this.worldX = 100;
+        this.worldY = 100;
         render("juggernog-machine.png");
     }
 
