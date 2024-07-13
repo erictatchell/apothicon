@@ -1,9 +1,9 @@
-package etat.apothicon.object;
+package etat.apothicon.object.perk.machine;
 
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
-import etat.apothicon.perk.Juggernog;
-import etat.apothicon.perk.PerkMachine;
+import etat.apothicon.object.SuperObject;
+import etat.apothicon.object.perk.bottle.Juggernog;
 
 import javax.imageio.ImageIO;
 import java.io.File;

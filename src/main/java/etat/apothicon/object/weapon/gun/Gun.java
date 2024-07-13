@@ -1,4 +1,14 @@
-package etat.apothicon.entity;
+package etat.apothicon.object.weapon.gun;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import etat.apothicon.entity.Entity;
+import etat.apothicon.main.Apothicon;
+import etat.apothicon.object.SuperObject;
 
 enum SelectFire {
     AUTO,
@@ -7,19 +17,34 @@ enum SelectFire {
 }
 
 // TODO:
-public class Gun extends Entity {
+public class Gun extends SuperObject {
     String name;
+    public BufferedImage image;
     int damage;
     int defaultAmmoPerMagazine;
     int magazine;
     int reserve;
-    int fireRate;
+    float fireRate;
+    float reloadRate;
     SelectFire fireType;
     float range;
-    boolean rechamberNeeded = false;
+    public boolean rechamberNeeded = false;
+    public int shotCount;
 
-    public Gun(String name, int damage, int defaultAmmoPerMagazine, int reserve, int fireRate, SelectFire fireType,
-            int range) {
+    /** gun structure
+     * 
+     * @param name name
+     * @param damage
+     * @param defaultAmmoPerMagazine
+     * @param reserve
+     * @param fireRate
+     * @param fireType
+     * @param range
+     * @param reloadRate
+     * @param imagePath
+     */
+    public Gun(String name, int damage, int defaultAmmoPerMagazine, int reserve, float fireRate, SelectFire fireType,
+            int range, float reloadRate, String imagePath) {
         this.name = name;
         this.damage = damage;
         this.defaultAmmoPerMagazine = defaultAmmoPerMagazine;
@@ -27,7 +52,15 @@ public class Gun extends Entity {
         this.reserve = reserve;
         this.fireType = fireType;
         this.fireRate = fireRate;
+        this.shotCount = (int) ((int) 10 * fireRate);
+        this.reloadRate = reloadRate;
         this.range = range;
+
+        try {
+            this.image = ImageIO.read(new File(imagePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getMagazine() {
@@ -48,6 +81,9 @@ public class Gun extends Entity {
             if (this.magazine != defaultAmmoPerMagazine && reserve > ammoToBeReloaded) {
                 reserve -= ammoToBeReloaded;
                 this.magazine = defaultAmmoPerMagazine;
+            } else {
+                this.magazine += reserve;
+                reserve = 0;
             }
         }
     }
@@ -59,10 +95,13 @@ public class Gun extends Entity {
     public void fire() {
 
         if (!rechamberNeeded) {
-            if (magazine > 0) {
+            if (magazine >= 1) {
                 magazine -= 1;
-            } else
+            }
+            if (magazine == 0) {
+
                 reload();
+            }
 
         }
         switch (this.fireType) {
@@ -70,6 +109,7 @@ public class Gun extends Entity {
                 break;
             case SEMI_AUTO:
                 rechamberNeeded = true;
+                break;
         }
     }
 }

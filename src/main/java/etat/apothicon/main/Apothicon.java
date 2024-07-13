@@ -1,13 +1,8 @@
 package etat.apothicon.main;
 
-import etat.apothicon.perk.*;
 import etat.apothicon.tile.TileManager;
-import etat.apothicon.entity.Gun;
+import etat.apothicon.object.weapon.gun.*;
 import etat.apothicon.entity.Player;
-import etat.apothicon.object.DoubleTapMachine;
-import etat.apothicon.object.JuggernogMachine;
-import etat.apothicon.object.QuickReviveMachine;
-import etat.apothicon.object.SpeedColaMachine;
 import etat.apothicon.object.SuperObject;
 
 import javax.swing.*;

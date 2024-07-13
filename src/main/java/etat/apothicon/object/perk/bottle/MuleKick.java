@@ -1,4 +1,4 @@
-package etat.apothicon.perk;
+package etat.apothicon.object.perk.bottle;
 
 import etat.apothicon.entity.Drinkable;
 import etat.apothicon.entity.Player;

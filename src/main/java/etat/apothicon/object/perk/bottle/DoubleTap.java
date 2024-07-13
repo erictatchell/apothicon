@@ -1,4 +1,4 @@
-package etat.apothicon.perk;
+package etat.apothicon.object.perk.bottle;
 
 import etat.apothicon.entity.Drinkable;
 import etat.apothicon.entity.Player;
@@ -8,15 +8,16 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
-public class SpeedCola extends Perk implements Drinkable {
-    public SpeedCola(Player player, Apothicon ap) {
-        super("Speed Cola", player, ap);
+public class DoubleTap extends Perk implements Drinkable {
+    public DoubleTap(Player player, Apothicon ap) {
+
+        super("Double Tap 2.0", player, ap);
         render();
     }
 
     public void render() {
         try {
-            this.icon = ImageIO.read(new File("src/main/resources/perks/speedcola-icon.png"));
+            this.icon = ImageIO.read(new File("src/main/resources/perks/doubletap-icon.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,8 +25,8 @@ public class SpeedCola extends Perk implements Drinkable {
 
     @Override
     public void activateFor(Player customer) {
-        customer.setReloadRate(1.5f);
+
         customer.addPerk(this);
-        customer.setPoints(customer.getPoints() - 3000);
+        customer.setPoints(customer.getPoints() - 2000);
     }
 }

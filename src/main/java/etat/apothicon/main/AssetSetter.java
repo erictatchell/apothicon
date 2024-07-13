@@ -1,14 +1,14 @@
 package etat.apothicon.main;
 
-import etat.apothicon.object.DoubleTapMachine;
-import etat.apothicon.object.JuggernogMachine;
-import etat.apothicon.object.M14_WallBuy;
-import etat.apothicon.object.MP40_WallBuy;
-import etat.apothicon.object.MuleKickMachine;
-import etat.apothicon.object.Olympia_WallBuy;
-import etat.apothicon.object.QuickReviveMachine;
-import etat.apothicon.object.SpeedColaMachine;
-import etat.apothicon.object.Stakeout_WallBuy;
+import etat.apothicon.object.perk.machine.DoubleTapMachine;
+import etat.apothicon.object.perk.machine.JuggernogMachine;
+import etat.apothicon.object.weapon.wallbuy.M14_WallBuy;
+import etat.apothicon.object.weapon.wallbuy.MP40_WallBuy;
+import etat.apothicon.object.perk.machine.MuleKickMachine;
+import etat.apothicon.object.weapon.wallbuy.Olympia_WallBuy;
+import etat.apothicon.object.perk.machine.QuickReviveMachine;
+import etat.apothicon.object.perk.machine.SpeedColaMachine;
+import etat.apothicon.object.weapon.wallbuy.Stakeout_WallBuy;
 
 public class AssetSetter {
     Apothicon ap;

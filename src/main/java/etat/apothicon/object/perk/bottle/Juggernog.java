@@ -1,4 +1,4 @@
-package etat.apothicon.perk;
+package etat.apothicon.object.perk.bottle;
 
 import etat.apothicon.entity.Drinkable;
 import etat.apothicon.entity.Player;
@@ -8,15 +8,15 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
-public class QuickRevive extends Perk implements Drinkable {
-    public QuickRevive(Player player, Apothicon ap) {
-        super("Quick Revive", player, ap);
+public class Juggernog extends Perk implements Drinkable {
+    public Juggernog(Player player, Apothicon ap) {
+        super("Juggernog", player, ap);
         render();
     }
 
     public void render() {
         try {
-            this.icon = ImageIO.read(new File("src/main/resources/perks/quickrevive-icon.png"));
+            this.icon = ImageIO.read(new File("src/main/resources/perks/juggernog-icon.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,8 +24,9 @@ public class QuickRevive extends Perk implements Drinkable {
 
     @Override
     public void activateFor(Player customer) {
-        customer.setRevives(1);
+        customer.setHealth(250);
+        customer.setDefaultHealth(250);
         customer.addPerk(this);
-        customer.setPoints(customer.getPoints() - 500);
+        customer.setPoints(customer.getPoints() - 2500);
     }
 }

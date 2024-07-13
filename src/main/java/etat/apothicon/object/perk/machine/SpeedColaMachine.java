@@ -1,4 +1,4 @@
-package etat.apothicon.object;
+package etat.apothicon.object.perk.machine;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,8 +7,8 @@ import javax.imageio.ImageIO;
 
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
-import etat.apothicon.perk.PerkMachine;
-import etat.apothicon.perk.SpeedCola;
+import etat.apothicon.object.SuperObject;
+import etat.apothicon.object.perk.bottle.SpeedCola;
 
 public class SpeedColaMachine extends SuperObject {
     public SpeedColaMachine() {

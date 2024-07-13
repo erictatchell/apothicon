@@ -1,16 +1,21 @@
 package etat.apothicon.entity;
 
-import etat.apothicon.perk.DoubleTap;
-import etat.apothicon.perk.Juggernog;
-import etat.apothicon.perk.MuleKick;
-import etat.apothicon.perk.Perk;
-import etat.apothicon.perk.PerkMachine;
-import etat.apothicon.perk.QuickRevive;
-import etat.apothicon.perk.SpeedCola;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
 import etat.apothicon.main.MouseInput;
 import etat.apothicon.object.SuperObject;
+import etat.apothicon.object.perk.bottle.DoubleTap;
+import etat.apothicon.object.perk.bottle.Juggernog;
+import etat.apothicon.object.perk.bottle.MuleKick;
+import etat.apothicon.object.perk.bottle.Perk;
+import etat.apothicon.object.perk.bottle.QuickRevive;
+import etat.apothicon.object.perk.bottle.SpeedCola;
+import etat.apothicon.object.weapon.gun.Gun;
+import etat.apothicon.object.weapon.gun.M14_Gun;
+import etat.apothicon.object.weapon.gun.M1911_Gun;
+import etat.apothicon.object.weapon.gun.MP40_Gun;
+import etat.apothicon.object.weapon.gun.Olympia_Gun;
+import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -36,7 +41,8 @@ public class Player extends Entity {
 
     private int revives;
     private int points;
-    private float reloadRate;
+    private float reloadRateMultiplier;
+    private float fireRateMultiplier;
     private int defaultHealth;
     private int health;
     private int currentWeapon;
@@ -69,11 +75,11 @@ public class Player extends Entity {
     }
 
     public float getReloadRate() {
-        return reloadRate;
+        return reloadRateMultiplier;
     }
 
     public void setReloadRate(float reloadRate) {
-        this.reloadRate = reloadRate;
+        this.reloadRateMultiplier = reloadRate;
     }
 
     public void getPlayerImage() {
@@ -103,9 +109,10 @@ public class Player extends Entity {
         this.speed = 4;
         this.maxGunNum = 2;
         this.direction = "down";
-        this.reloadRate = 1.0f;
-        Gun m1911 = new Gun("M1911", 10, 8, 32, 1, SelectFire.SEMI_AUTO, 100);
-        guns.add(m1911);
+        this.reloadRateMultiplier = 1.0f;
+        this.fireRateMultiplier = 1.0f;
+        M1911_Gun m1911 = new M1911_Gun();
+        this.guns.add(m1911);
         this.currentWeapon = 0;
     }
 
@@ -140,12 +147,21 @@ public class Player extends Entity {
         return true;
     }
 
+    int shotCount = 0;
 
     public void update() {
         this.slotX = perkOffset;
         int objIndex = ap.cc.checkObject(this, true);
+
         if (mouseIn.leftMousePressed) {
-            this.guns.get(currentWeapon).fire(); 
+
+            // simulate time/fire rate
+            shotCount++;
+            if (shotCount > this.guns.get(currentWeapon).shotCount) {
+                this.guns.get(currentWeapon).fire();
+                shotCount = 0;
+
+            }
         } else {
             this.guns.get(currentWeapon).rechamberNeeded = false;
         }
@@ -203,8 +219,38 @@ public class Player extends Entity {
         }
     }
 
+    public void purchaseGun(SuperObject object) {
+        switch (object.name) {
+            case "MP40_WallBuy":
+                MP40_Gun mp40 = new MP40_Gun();
+                this.guns.add(mp40);
+                this.points -= object.price;
+                this.currentWeapon = this.guns.size() - 1;
+                break;
+            case "M14_WallBuy":
+                M14_Gun m14 = new M14_Gun();
+                this.guns.add(m14);
+
+                this.points -= object.price;
+
+                this.currentWeapon = this.guns.size() - 1;
+                break;
+            case "Olympia_WallBuy":
+                Olympia_Gun o = new Olympia_Gun();
+                this.guns.add(o);
+                this.points -= object.price;
+                this.currentWeapon = this.guns.size() - 1;
+                break;
+            case "Stakeout_WallBuy":
+                Stakeout_Gun st = new Stakeout_Gun();
+                this.guns.add(st);
+                this.points -= object.price;
+                this.currentWeapon = this.guns.size() - 1;
+                break;
+        }
+    }
+
     public void purchasePerk(SuperObject object) {
-        Graphics2D g2;
         switch (object.name) {
             case "Juggernog":
                 Juggernog jug = new Juggernog(this, ap);
@@ -256,11 +302,34 @@ public class Player extends Entity {
                         break;
                     }
                     this.purchaseString = null;
+                    break;
+                case "gun":
+                    // if the gun is purchased, we're buying ammo for it
+                    boolean buyingAmmo = isGunPurchased(obj);
+                    if (keyIn.fPressed && !buyingAmmo) {
+                        purchaseGun(obj);
+                        break;
+                    }
+
+                    if (!buyingAmmo) {
+                        drawPurchaseText(obj.name, obj.price);
+                    } else {
+                        drawPurchaseText("ammo", obj.price / 2);
+                    }
             }
         } else {
             this.purchaseString = null;
         }
 
+    }
+
+    private boolean isGunPurchased(SuperObject obj) {
+        for (Gun gun : this.guns) {
+            if (obj.name == gun.getName()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void draw(Graphics2D g2) {
@@ -300,6 +369,7 @@ public class Player extends Entity {
                 break;
         }
         g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
+        g2.drawImage(this.guns.get(currentWeapon).image, screenX, screenY, ap.tileSize / 2, ap.tileSize / 2, null);
         if (this.purchaseString != null) {
             g2.setColor(Color.white);
             Font font = new Font("Arial", Font.BOLD, 16);
@@ -345,7 +415,6 @@ public class Player extends Entity {
     public void setHealth(int health) {
         this.health = health;
     }
-
 
     public Gun getCurrentWeapon() {
         return this.guns.get(currentWeapon);
