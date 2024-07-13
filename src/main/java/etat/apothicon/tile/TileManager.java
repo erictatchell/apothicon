@@ -15,8 +15,8 @@ import etat.apothicon.main.Apothicon;
 public class TileManager {
 
     Apothicon ap;
-    Tile[] tile;
-    int mapTileNum[][];
+    public Tile[] tile;
+    public int mapTileNum[][];
 
     public TileManager(Apothicon ap) {
         this.ap = ap;
@@ -67,6 +67,7 @@ public class TileManager {
 
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(new File("src/main/resources/tiles/stone.png"));
+            tile[1].collision = true;
 
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(new File("src/main/resources/tiles/snowstone.png"));
@@ -79,6 +80,7 @@ public class TileManager {
 
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(new File("src/main/resources/tiles/tree-1.png"));
+            tile[5].collision = true;
 
             tile[6] = new Tile();
             tile[6].image = ImageIO.read(new File("src/main/resources/tiles/tree-2.png"));
@@ -97,34 +99,80 @@ public class TileManager {
 
             tile[11] = new Tile();
             tile[11].image = ImageIO.read(new File("src/main/resources/tiles/frozen-door.png"));
+            //tile[11].collision = true;
 
             tile[12] = new Tile();
             tile[12].image = ImageIO.read(new File("src/main/resources/tiles/door-barrier.png"));
-
+            tile[12].collision = true;
+            
             tile[13] = new Tile();
             tile[13].image = ImageIO.read(new File("src/main/resources/tiles/stone-barrier.png"));
+            tile[13].collision = true;
 
             tile[14] = new Tile();
             tile[14].image = ImageIO.read(new File("src/main/resources/tiles/mossy-stone.png"));
+            tile[14].collision = true;
 
             tile[15] = new Tile();
             tile[15].image = ImageIO.read(new File("src/main/resources/tiles/moss.png"));
 
             tile[16] = new Tile();
             tile[16].image = ImageIO.read(new File("src/main/resources/tiles/door-barrier.png"));
+            tile[16].collision = true;
 
             tile[17] = new Tile();
             tile[17].image = ImageIO.read(new File("src/main/resources/tiles/snowstone-wall.png"));
+            tile[17].collision = true;
 
             tile[18] = new Tile();
             tile[18].image = ImageIO.read(new File("src/main/resources/tiles/moss.png"));
 
             tile[19] = new Tile();
             tile[19].image = ImageIO.read(new File("src/main/resources/tiles/mossy-stone.png"));
+            tile[19].collision = true;
 
             tile[20] = new Tile();
             tile[20].image = ImageIO.read(new File("src/main/resources/tiles/dirt.png"));
 
+            tile[21] = new Tile("Juggernog");
+            tile[21].image = ImageIO.read(new File("src/main/resources/tiles/jug-snowstonewall.png"));
+            tile[21].collision = true;
+
+            tile[22] = new Tile();
+            tile[22].image = ImageIO.read(new File("src/main/resources/tiles/m14-stonewall.png"));
+            tile[22].collision = true;
+
+            tile[23] = new Tile();
+            tile[23].image = ImageIO.read(new File("src/main/resources/tiles/mp40-stonewall.png"));
+            tile[23].collision = true;
+            
+
+            tile[24] = new Tile("Mule Kick");
+            tile[24].image = ImageIO.read(new File("src/main/resources/tiles/mulekick-snowstonewall.png"));
+            tile[24].collision = true;
+
+            tile[25] = new Tile();
+            tile[25].image = ImageIO.read(new File("src/main/resources/tiles/olympia-stonewall.png"));
+            tile[25].collision = true;
+
+            tile[26] = new Tile("Quick Revive");
+            tile[26].image = ImageIO.read(new File("src/main/resources/tiles/qr-stonewall.png"));
+            tile[26].collision = true;
+
+            tile[27] = new Tile("Speed Cola");
+            tile[27].image = ImageIO.read(new File("src/main/resources/tiles/sc-stonewall.png"));
+            tile[27].collision = true;
+
+            tile[28] = new Tile();
+            tile[28].image = ImageIO.read(new File("src/main/resources/tiles/stakeout-stonewall.png"));
+            tile[28].collision = true;
+
+            tile[29] = new Tile("Double Tap 2.0");
+            tile[29].image = ImageIO.read(new File("src/main/resources/tiles/dt-stonewall.png"));
+            tile[29].collision = true;
+
+            tile[30] = new Tile();
+            tile[30].image = ImageIO.read(new File("src/main/resources/tiles/dirt.png"));
 
         } catch (IOException e) {
             e.printStackTrace();

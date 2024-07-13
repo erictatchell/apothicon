@@ -3,6 +3,11 @@ package etat.apothicon.main;
 import etat.apothicon.perk.*;
 import etat.apothicon.tile.TileManager;
 import etat.apothicon.entity.Player;
+import etat.apothicon.object.DoubleTapMachine;
+import etat.apothicon.object.JuggernogMachine;
+import etat.apothicon.object.QuickReviveMachine;
+import etat.apothicon.object.SpeedColaMachine;
+import etat.apothicon.object.SuperObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,17 +32,19 @@ public class Apothicon extends JPanel implements Runnable {
     String drawFPS = "FPS: " + FPS;
     TileManager tileManager = new TileManager(this);
 
+    public CollisionChecker cc = new CollisionChecker(this);
 
+    public SuperObject obj[] = new SuperObject[10];
+    public AssetSetter aSetter = new AssetSetter(this);
 
     KeyInput keyIn = new KeyInput();
     public Player player = new Player(this, keyIn);
-    JuggernogMachine jug = new JuggernogMachine(this);
-    QuickReviveMachine qr = new QuickReviveMachine(this);
-    SpeedColaMachine sc = new SpeedColaMachine(this);
-    DoubleTapMachine dt = new DoubleTapMachine(this);
+    // JuggernogMachine jug = new JuggernogMachine(this);
+    // QuickReviveMachine qr = new QuickReviveMachine(this);
+    // SpeedColaMachine sc = new SpeedColaMachine(this);
+    // DoubleTapMachine dt = new DoubleTapMachine(this);
     JLabel info = new JLabel("Text");
     Thread thread;
-
 
     Apothicon() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -47,12 +54,16 @@ public class Apothicon extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
+    public void setup() {
+        aSetter.setObject();
+
+    }
+
     public void drawText(Graphics2D g2) {
         g2.setColor(Color.RED);
         g2.drawString("" + player.getPoints(), 10, 20);
         g2.drawString("+ " + player.getHealth(), 10, 30);
     }
-
 
     public void start() {
         thread = new Thread(this);
@@ -90,21 +101,21 @@ public class Apothicon extends JPanel implements Runnable {
         }
     }
 
-    public QuickReviveMachine getQuickRevive() {
-        return qr;
-    }
+    // public QuickReviveMachine getQuickRevive() {
+    // return qr;
+    // }
 
-    public SpeedColaMachine getSpeedCola() {
-        return sc;
-    }
+    // public SpeedColaMachine getSpeedCola() {
+    // return sc;
+    // }
 
-    public DoubleTapMachine getDoubleTap() {
-        return dt;
-    }
+    // public DoubleTapMachine getDoubleTap() {
+    // return dt;
+    // }
 
-    public JuggernogMachine getJug() {
-        return jug;
-    }
+    // public JuggernogMachine getJug() {
+    // return jug;
+    // }
 
     public void update() {
         player.update();
@@ -114,10 +125,12 @@ public class Apothicon extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         tileManager.draw(g2);
-        jug.draw(g2);
-        qr.draw(g2);
-        sc.draw(g2);
-        dt.draw(g2);
+        for (int i = 0; i < obj.length; i++) {
+            if (obj[i] != null) {
+                obj[i].draw(g2, this);
+
+            }
+        }
         player.draw(g2);
         drawText(g2);
         g2.dispose();

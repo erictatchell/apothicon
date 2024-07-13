@@ -2,6 +2,7 @@ package etat.apothicon.perk;
 
 import etat.apothicon.entity.Entity;
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.tile.Tile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,6 +20,7 @@ public class PerkMachine extends Entity {
 
     protected BufferedImage machine;
     protected Apothicon ap;
+    protected Tile machineTile;
     protected String name;
     protected int price;
 
@@ -28,20 +30,8 @@ public class PerkMachine extends Entity {
         this.price = price;
     }
 
-    public void draw(Graphics2D g2) {
-        g2.drawImage(this.machine, this.worldX, this.worldY, ap.tileSize, ap.tileSize, null);
-    }
-
     public int getPrice() {
         return price;
-    }
-
-    public void render(String url) {
-        try {
-            this.machine = ImageIO.read(new File("src/main/resources/perks/" + url));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public String getName() {

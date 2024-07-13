@@ -15,6 +15,7 @@ public class App {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        ap.setup();
         ap.start();
     }
 }

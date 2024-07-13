@@ -1,9 +1,10 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.perk.Perk;
+import etat.apothicon.perk.PerkMachine;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
-import etat.apothicon.perk.PerkMachine;
+import etat.apothicon.object.SuperObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -39,6 +40,7 @@ public class Player extends Entity {
         this.keyIn = keyIn;
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
+        solidArea = new Rectangle(8, 16, 32, 32);
 
         screenX = ap.screenWidth / 2 - (ap.tileSize / 2);
         screenY = ap.screenHeight / 2 - (ap.tileSize / 2);
@@ -54,7 +56,6 @@ public class Player extends Entity {
         this.revives = revives;
     }
 
-
     public float getReloadRate() {
         return reloadRate;
     }
@@ -62,7 +63,6 @@ public class Player extends Entity {
     public void setReloadRate(float reloadRate) {
         this.reloadRate = reloadRate;
     }
-
 
     public void getPlayerImage() {
         try {
@@ -79,17 +79,16 @@ public class Player extends Entity {
         }
     }
 
-
     public void setDefaultValues() {
-        this.worldX = ap.tileSize * 23;
-        this.worldY = ap.tileSize * 21;
+        this.worldX = ap.tileSize * 29;
+        this.worldY = ap.tileSize * 43;
         this.points = 10000;
         this.revives = 0;
         this.slotX = 16;
         this.perkOffset = 16;
         this.health = 150;
         this.defaultHealth = 150;
-        this.speed = 4;
+        this.speed = 8;
         this.direction = "down";
         this.reloadRate = 1.0f;
         Gun m1911 = new Gun(10, 8, 32, 1, 100);
@@ -105,13 +104,13 @@ public class Player extends Entity {
         this.points = points;
     }
 
-    public boolean isPurchasable(PerkMachine perk) {
+    public boolean isPerkPurchasable(SuperObject perk) {
         int n = this.perks.size();
         if (n >= 4) {
             return false;
-        }// max perks
+        } // max perks
 
-        String purchasingName = perk.getName();
+        String purchasingName = perk.name;
         for (int i = 0; i < n; i++) {
             if (purchasingName == this.perks.get(i).getName()) {
                 return false;
@@ -125,19 +124,38 @@ public class Player extends Entity {
         if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {
             if (keyIn.upPressed) {
                 direction = "up";
-                this.worldY -= this.speed;
             }
             if (keyIn.downPressed) {
                 direction = "down";
-                this.worldY += this.speed;
             }
             if (keyIn.leftPressed) {
                 direction = "left";
-                this.worldX -= this.speed;
             }
             if (keyIn.rightPressed) {
                 direction = "right";
-                this.worldX += this.speed;
+            }
+
+            // tile collision
+            collisionOn = false;
+            ap.cc.checkTile(this);
+            if (!collisionOn) {
+                if (direction == "up") {
+
+                    this.worldY -= this.speed;
+                }
+                if (direction == "down") {
+
+                    this.worldY += this.speed;
+                }
+                if (direction == "left") {
+
+                    this.worldX -= this.speed;
+                }
+                if (direction == "right") {
+
+                    this.worldX += this.speed;
+                }
+
             }
 
             spriteCounter++;
@@ -150,19 +168,24 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
+
         // if (keyIn.fPressed) {
-        //     if (isPlayerInPerkMachineArea(this, ap.getJug()) && this.points >= ap.getJug().getPrice()) {
-        //         ap.getJug().purchase(this);
-        //     }
-        //     if (isPlayerInPerkMachineArea(this, ap.getQuickRevive()) && this.points >= ap.getQuickRevive().getPrice()) {
-        //         ap.getQuickRevive().purchase(this);
-        //     }
-        //     if (isPlayerInPerkMachineArea(this, ap.getSpeedCola()) && this.points >= ap.getSpeedCola().getPrice()) {
-        //         ap.getSpeedCola().purchase(this);
-        //     }
-        //     if (isPlayerInPerkMachineArea(this, ap.getDoubleTap()) && this.points >= ap.getDoubleTap().getPrice()) {
-        //         ap.getDoubleTap().purchase(this);
-        //     }
+        // if (isPlayerInPerkMachineArea(this, ap.getJug()) && this.points >=
+        // ap.getJug().getPrice()) {
+        // ap.getJug().purchase(this);
+        // }
+        // if (isPlayerInPerkMachineArea(this, ap.getQuickRevive()) && this.points >=
+        // ap.getQuickRevive().getPrice()) {
+        // ap.getQuickRevive().purchase(this);
+        // }
+        // if (isPlayerInPerkMachineArea(this, ap.getSpeedCola()) && this.points >=
+        // ap.getSpeedCola().getPrice()) {
+        // ap.getSpeedCola().purchase(this);
+        // }
+        // if (isPlayerInPerkMachineArea(this, ap.getDoubleTap()) && this.points >=
+        // ap.getDoubleTap().getPrice()) {
+        // ap.getDoubleTap().purchase(this);
+        // }
         // }
     }
 
@@ -288,6 +311,7 @@ public class Player extends Entity {
     public void switchWeapon() {
         if ((currentWeapon + 1) != guns.size()) {
             this.currentWeapon++;
-        } else this.currentWeapon = 0;
+        } else
+            this.currentWeapon = 0;
     }
 }
