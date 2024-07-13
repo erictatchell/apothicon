@@ -25,6 +25,7 @@ public class Player extends Entity {
     Apothicon ap;
     KeyInput keyIn;
 
+    private String purchaseString = null;
     public final int screenX;
     public final int screenY;
     // TODO 1: man this is ugly. find a better solution
@@ -104,6 +105,7 @@ public class Player extends Entity {
         guns.add(m1911);
         this.currentWeapon = 0;
     }
+
     public void setGunNum(int x) {
         this.maxGunNum = x;
     }
@@ -205,6 +207,7 @@ public class Player extends Entity {
     }
 
     public void purchasePerk(SuperObject object) {
+        Graphics2D g2;
         switch (object.name) {
             case "Juggernog":
                 Juggernog jug = new Juggernog(this, ap);
@@ -213,20 +216,32 @@ public class Player extends Entity {
             case "Double Tap 2.0":
                 DoubleTap dt = new DoubleTap(this, ap);
                 dt.activateFor(this);
+                drawPurchaseText(object.name, 2000);
                 break;
             case "Speed Cola":
                 SpeedCola sc = new SpeedCola(this, ap);
                 sc.activateFor(this);
+                drawPurchaseText(object.name, 2000);
                 break;
             case "Quick Revive":
                 QuickRevive qr = new QuickRevive(this, ap);
                 qr.activateFor(this);
+                drawPurchaseText(object.name, 2000);
                 break;
             case "Mule Kick":
                 MuleKick mk = new MuleKick(this, ap);
                 mk.activateFor(this);
+                drawPurchaseText(object.name, 2000);
                 break;
         }
+    }
+
+    public void drawPurchaseText(String name, int price) {
+        this.purchaseString = "Press F to buy " + name + " (" + price + ")";
+    }
+
+    public void drawPurchaseText(String name) {
+        this.purchaseString = name;
     }
 
     public void pickUpObject(int index) {
@@ -237,9 +252,14 @@ public class Player extends Entity {
                     if (keyIn.fPressed && isPerkPurchasable(ap.obj[index])) {
                         purchasePerk(ap.obj[index]);
                     }
+
+                    drawPurchaseText(ap.obj[index].name, ap.obj[index].price);
             }
 
             // ap.obj[index] = null;
+        } else {
+
+            drawPurchaseText(null);
         }
 
     }
@@ -300,7 +320,14 @@ public class Player extends Entity {
                 break;
         }
         g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
+        if (this.purchaseString != null) {
+            g2.setColor(Color.white);
+            Font font = new Font("Arial", Font.BOLD, 24);
+            g2.setFont(font);
 
+            g2.drawString(purchaseString, ap.screenWidth / 2, ap.screenHeight / 2);
+
+        }
     }
 
     public void resetPerkOffset() {

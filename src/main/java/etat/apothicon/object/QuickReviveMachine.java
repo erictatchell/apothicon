@@ -15,6 +15,7 @@ public class QuickReviveMachine extends SuperObject {
 
         this.type = "perk";
         this.name = "Quick Revive";
+        this.price = 500;
         try {
             image = ImageIO.read(new File("src/main/resources/tiles/qr-stonewall.png"));
         } catch (IOException e) {

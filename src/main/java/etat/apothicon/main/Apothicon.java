@@ -67,6 +67,13 @@ public class Apothicon extends JPanel implements Runnable {
         g2.drawString("+ " + player.getHealth(), 10, 40);
     }
 
+    public void drawText(Graphics2D g2, String text, String price) {
+        g2.setColor(Color.white);
+        Font font = new Font("Arial", Font.BOLD, 24);
+        g2.setFont(font);
+        
+        g2.drawString("Press F to buy " + text + " (" + price + ")", screenWidth / 2, screenHeight / 2);
+    }
     public void start() {
         thread = new Thread(this);
         thread.start();

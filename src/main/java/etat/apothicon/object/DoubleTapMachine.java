@@ -14,6 +14,8 @@ public class DoubleTapMachine extends SuperObject{
     public DoubleTapMachine() {
         this.name = "Double Tap 2.0";
         this.type = "perk";
+
+        this.price = 2000;
         try {
             image = ImageIO.read(new File("src/main/resources/tiles/dt-stonewall.png"));
         } catch (IOException e) {

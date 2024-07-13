@@ -14,6 +14,7 @@ public class MuleKickMachine extends SuperObject{
     public MuleKickMachine() {
         this.name = "Mule Kick";
         this.type = "perk";
+        this.price = 4000;
         try {
             image = ImageIO.read(new File("src/main/resources/tiles/mulekick-snowstonewall.png"));
         } catch (IOException e) {

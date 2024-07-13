@@ -13,6 +13,7 @@ public class JuggernogMachine extends SuperObject {
     public JuggernogMachine() {
         this.name = "Juggernog";
         this.type = "perk";
+        this.price = 2500;
         try {
             image = ImageIO.read(new File("src/main/resources/perks/juggernog-machine.png"));
         } catch (IOException e) {
