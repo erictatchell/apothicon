@@ -28,7 +28,7 @@ public class Perk {
     }
 
     public void draw(Graphics2D g2) {
-        g2.drawImage(this.icon, this.slotX, ap.getHeight() - 64, ap.tileSize, ap.tileSize, null);
+        g2.drawImage(this.icon, this.slotX, ap.getHeight() - 64, ap.tileSize - 16, ap.tileSize - 16, null);
     }
 
     public BufferedImage getIcon() {

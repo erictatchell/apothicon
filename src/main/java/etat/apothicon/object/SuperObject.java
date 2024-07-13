@@ -1,6 +1,7 @@
 package etat.apothicon.object;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import etat.apothicon.main.Apothicon;
@@ -8,9 +9,12 @@ import etat.apothicon.main.Apothicon;
 public class SuperObject {
     public BufferedImage image;
     public String name;
+    public String type;
     public boolean collision = false;
     public int worldX;
     public int worldY;
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public int solidAreaDefaultX, solidAreaDefaultY = 0;
 
     public void draw(Graphics2D g2, Apothicon ap) {
         int screenX = worldX - ap.player.worldX + ap.player.screenX;

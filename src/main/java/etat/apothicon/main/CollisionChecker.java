@@ -9,6 +9,74 @@ public class CollisionChecker {
         this.ap = ap;
     }
 
+    public int checkObject(Entity e, boolean player) {
+        int index = 999;
+
+        for (int i = 0; i < ap.obj.length; i++) {
+            if (ap.obj[i] != null) {
+                // get entities solid area position
+                e.solidArea.x = e.worldX + e.solidArea.x;
+                e.solidArea.y = e.worldY + e.solidArea.y;
+
+                // get objects solid area position
+                ap.obj[i].solidArea.x = ap.obj[i].worldX + ap.obj[i].solidArea.x;
+                ap.obj[i].solidArea.y = ap.obj[i].worldY + ap.obj[i].solidArea.y;
+
+                switch (e.direction) {
+                    case "up":
+                        e.solidArea.y -= e.speed;
+                        if (e.solidArea.intersects(ap.obj[i].solidArea)) {
+                            if (ap.obj[i].collision) {
+                                e.collisionOn = true;
+                            }
+                            if (player) {
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "down":
+                        e.solidArea.y += e.speed;
+                        if (e.solidArea.intersects(ap.obj[i].solidArea)) {
+                            if (ap.obj[i].collision) {
+                                e.collisionOn = true;
+                            }
+                            if (player) {
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "left":
+                        e.solidArea.x -= e.speed;
+                        if (e.solidArea.intersects(ap.obj[i].solidArea)) {
+                            if (ap.obj[i].collision) {
+                                e.collisionOn = true;
+                            }
+                            if (player) {
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "right":
+                        e.solidArea.x += e.speed;
+                        if (e.solidArea.intersects(ap.obj[i].solidArea)) {
+                            if (ap.obj[i].collision) {
+                                e.collisionOn = true;
+                            }
+                            if (player) {
+                                index = i;
+                            }
+                        }
+                        break;
+                }
+                e.solidArea.x = e.solidAreaDefaultX;
+                e.solidArea.y = e.solidAreaDefaultY;
+                ap.obj[i].solidArea.x = ap.obj[i].solidAreaDefaultX;
+                ap.obj[i].solidArea.y = ap.obj[i].solidAreaDefaultY;
+            }
+        }
+        return index;
+    }
+
     public void checkTile(Entity e) {
         int eLeftWorldX = e.worldX + e.solidArea.x;
         int eRightWorldX = e.worldX + e.solidArea.x + e.solidArea.width;

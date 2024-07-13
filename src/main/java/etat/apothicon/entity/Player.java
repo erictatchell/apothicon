@@ -1,7 +1,12 @@
 package etat.apothicon.entity;
 
+import etat.apothicon.perk.DoubleTap;
+import etat.apothicon.perk.Juggernog;
+import etat.apothicon.perk.MuleKick;
 import etat.apothicon.perk.Perk;
 import etat.apothicon.perk.PerkMachine;
+import etat.apothicon.perk.QuickRevive;
+import etat.apothicon.perk.SpeedCola;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
 import etat.apothicon.object.SuperObject;
@@ -33,6 +38,7 @@ public class Player extends Entity {
     private int health;
     private int currentWeapon;
     private ArrayList<Perk> perks;
+    private int maxGunNum;
     private ArrayList<Gun> guns;
 
     public Player(Apothicon ap, KeyInput keyIn) {
@@ -41,6 +47,8 @@ public class Player extends Entity {
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
         solidArea = new Rectangle(8, 16, 32, 32);
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
 
         screenX = ap.screenWidth / 2 - (ap.tileSize / 2);
         screenY = ap.screenHeight / 2 - (ap.tileSize / 2);
@@ -88,12 +96,16 @@ public class Player extends Entity {
         this.perkOffset = 16;
         this.health = 150;
         this.defaultHealth = 150;
-        this.speed = 8;
+        this.speed = 4;
+        this.maxGunNum = 2;
         this.direction = "down";
         this.reloadRate = 1.0f;
         Gun m1911 = new Gun(10, 8, 32, 1, 100);
         guns.add(m1911);
         this.currentWeapon = 0;
+    }
+    public void setGunNum(int x) {
+        this.maxGunNum = x;
     }
 
     public int getPoints() {
@@ -138,6 +150,9 @@ public class Player extends Entity {
             // tile collision
             collisionOn = false;
             ap.cc.checkTile(this);
+            int objIndex = ap.cc.checkObject(this, true);
+            pickUpObject(objIndex);
+
             if (!collisionOn) {
                 if (direction == "up") {
 
@@ -187,6 +202,46 @@ public class Player extends Entity {
         // ap.getDoubleTap().purchase(this);
         // }
         // }
+    }
+
+    public void purchasePerk(SuperObject object) {
+        switch (object.name) {
+            case "Juggernog":
+                Juggernog jug = new Juggernog(this, ap);
+                jug.activateFor(this);
+                break;
+            case "Double Tap 2.0":
+                DoubleTap dt = new DoubleTap(this, ap);
+                dt.activateFor(this);
+                break;
+            case "Speed Cola":
+                SpeedCola sc = new SpeedCola(this, ap);
+                sc.activateFor(this);
+                break;
+            case "Quick Revive":
+                QuickRevive qr = new QuickRevive(this, ap);
+                qr.activateFor(this);
+                break;
+            case "Mule Kick":
+                MuleKick mk = new MuleKick(this, ap);
+                mk.activateFor(this);
+                break;
+        }
+    }
+
+    public void pickUpObject(int index) {
+        if (index != 999) {
+
+            switch (ap.obj[index].type) {
+                case "perk":
+                    if (keyIn.fPressed && isPerkPurchasable(ap.obj[index])) {
+                        purchasePerk(ap.obj[index]);
+                    }
+            }
+
+            // ap.obj[index] = null;
+        }
+
     }
 
     public boolean isPlayerInPerkMachineArea(Player player, PerkMachine perkMachine) {
@@ -253,7 +308,7 @@ public class Player extends Entity {
     }
 
     public void incrementPerkOffset() {
-        this.perkOffset += 50;
+        this.perkOffset += 40;
     }
 
     public int getSlotX() {

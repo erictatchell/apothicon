@@ -13,6 +13,7 @@ import etat.apothicon.perk.PerkMachine;
 public class MuleKickMachine extends SuperObject{
     public MuleKickMachine() {
         this.name = "Mule Kick";
+        this.type = "perk";
         try {
             image = ImageIO.read(new File("src/main/resources/tiles/mulekick-snowstonewall.png"));
         } catch (IOException e) {

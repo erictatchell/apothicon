@@ -13,11 +13,13 @@ import etat.apothicon.perk.PerkMachine;
 public class DoubleTapMachine extends SuperObject{
     public DoubleTapMachine() {
         this.name = "Double Tap 2.0";
+        this.type = "perk";
         try {
             image = ImageIO.read(new File("src/main/resources/tiles/dt-stonewall.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        collision = true;
     }
 
     public void purchase(Player player) {

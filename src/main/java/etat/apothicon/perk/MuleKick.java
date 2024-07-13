@@ -8,16 +8,16 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
-public class DoubleTap extends Perk implements Drinkable {
-    public DoubleTap(Player player, Apothicon ap) {
+public class MuleKick extends Perk implements Drinkable {
+    public MuleKick(Player player, Apothicon ap) {
 
-        super("Double Tap 2.0", player, ap);
+        super("Mule Kick", player, ap);
         render();
     }
 
     public void render() {
         try {
-            this.icon = ImageIO.read(new File("src/main/resources/perks/doubletap-icon.png"));
+            this.icon = ImageIO.read(new File("src/main/resources/perks/mulekick-icon.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -26,7 +26,9 @@ public class DoubleTap extends Perk implements Drinkable {
     @Override
     public void activateFor(Player customer) {
 
+        customer.setGunNum(3);
         customer.addPerk(this);
-        customer.setPoints(customer.getPoints() - 2000);
+        customer.setPoints(customer.getPoints() - 4000);
     }
 }
+

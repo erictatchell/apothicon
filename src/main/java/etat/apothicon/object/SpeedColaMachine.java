@@ -13,6 +13,7 @@ import etat.apothicon.perk.SpeedCola;
 public class SpeedColaMachine extends SuperObject {
     public SpeedColaMachine() {
         this.name = "Speed Cola";
+        this.type = "perk";
         try {
             image = ImageIO.read(new File("src/main/resources/tiles/sc-stonewall.png"));
         } catch (IOException e) {
