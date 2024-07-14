@@ -19,10 +19,14 @@ import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.BiFunction;
 
 public class Player extends Entity {
 
@@ -63,6 +67,7 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
     }
+
     public void getPlayerImage() {
         try {
             up1 = ImageIO.read(new File("src/main/resources/player/player-down1.png"));
@@ -420,9 +425,10 @@ public class Player extends Entity {
                 break;
         }
         g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
-        
+
         // gun on screen. horrible
-        g2.drawImage(this.guns.get(currentWeapon).image, screenX, screenY, ap.tileSize, ap.tileSize, null);
+        g2.drawImage(getCurrentWeapon().image, screenX, screenY, ap.tileSize, ap.tileSize, null);
+
         if (this.purchaseString != null) {
             g2.setColor(Color.white);
             Font font = new Font("Arial", Font.BOLD, 16);
@@ -431,7 +437,11 @@ public class Player extends Entity {
             g2.drawString(purchaseString, ap.screenWidth / 2, ap.screenHeight / 2);
 
         }
+
     }
+
+
+
 
     public void resetPerkOffset() {
         this.perkOffset = 0;
@@ -497,7 +507,6 @@ public class Player extends Entity {
     public void setReloadRate(float reloadRate) {
         this.reloadRateMultiplier = reloadRate;
     }
-
 
     public void setPerks(ArrayList<Perk> perks) {
         this.perks = perks;

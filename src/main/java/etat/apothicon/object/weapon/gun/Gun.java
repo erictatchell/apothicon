@@ -17,7 +17,7 @@ enum SelectFire {
 }
 
 // TODO:
-public class Gun extends SuperObject {
+public class Gun {
     String name;
     public BufferedImage image;
     int damage;
