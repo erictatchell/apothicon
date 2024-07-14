@@ -52,7 +52,6 @@ public class Loadout {
         for (int i = 0; i < m; i++) {
             if (this.guns[i].getName().equals(gun.name)) {
                 return false;
-
             }
         }
         if (m >= n) {
@@ -111,7 +110,7 @@ public class Loadout {
 
     public boolean isGunPurchased(WallBuy obj) {
         for (Gun gun : this.guns) {
-            if (obj.name.equals(gun.getName())) {
+            if (gun != null && obj.name.equals(gun.getName())) {
 
                 return true;
             }

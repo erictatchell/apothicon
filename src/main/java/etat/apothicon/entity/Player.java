@@ -252,8 +252,8 @@ public class Player extends Entity {
             SuperObject obj = ap.obj[index];
             switch (obj.type) {
                 case "perk":
-                    SuperObject objCopy1 = new PerkMachine();
-                    PerkMachine perkMachine = (PerkMachine) objCopy1;
+                    obj = new PerkMachine();
+                    PerkMachine perkMachine = (PerkMachine) obj;
                     boolean isPerkPurchasable = loadout.isPerkPurchasable(perkMachine);
                     if (isPerkPurchasable) {
                         if (keyIn.fPressed) {
@@ -267,14 +267,13 @@ public class Player extends Entity {
                     this.purchaseString = null;
                     break;
                 case "gun":
-                    SuperObject objCopy2 = new WallBuy();
-                    WallBuy wallBuy = (WallBuy) objCopy2;
+                    WallBuy wallBuy = (WallBuy) obj;
                     // if the gun is purchased, we're buying ammo for it
                     boolean buyingAmmo = loadout.isGunPurchased(wallBuy);
 
                     if (!buyingAmmo) {
                         if (keyIn.fPressed && loadout.isGunPurchasable(wallBuy)) {
-                            purchaseGun(obj);
+                            purchaseGun(wallBuy);
                         }
 
                         drawPurchaseText(wallBuy.name, wallBuy.price);
@@ -282,7 +281,7 @@ public class Player extends Entity {
                     } else {
                         int ammoCost = wallBuy.price / 2;
                         if (keyIn.fPressed && loadout.isAmmoPurchasable(ammoCost)) {
-                            loadout.purchaseAmmo(obj, ammoCost);
+                            loadout.purchaseAmmo(wallBuy, ammoCost);
                         }
                         drawPurchaseText("ammo", ammoCost);
                         break;

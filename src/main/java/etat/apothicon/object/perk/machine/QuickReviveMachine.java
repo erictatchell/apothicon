@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 public class QuickReviveMachine extends PerkMachine {
     public QuickReviveMachine() {
 
-        this.type = "perk";
         this.name = "Quick Revive";
         this.price = 500;
         try {

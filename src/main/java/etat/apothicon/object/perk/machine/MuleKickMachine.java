@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 public class MuleKickMachine extends PerkMachine {
     public MuleKickMachine() {
         this.name = "Mule Kick";
-        this.type = "perk";
         this.price = 4000;
         try {
             image = ImageIO.read(new File("src/main/resources/tiles/mulekick-snowstonewall.png"));

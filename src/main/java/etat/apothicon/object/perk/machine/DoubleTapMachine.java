@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 public class DoubleTapMachine extends PerkMachine {
     public DoubleTapMachine() {
         this.name = "Double Tap 2.0";
-        this.type = "perk";
 
         this.price = 2000;
         try {
