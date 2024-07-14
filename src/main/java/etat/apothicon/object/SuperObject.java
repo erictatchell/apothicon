@@ -1,16 +1,14 @@
 package etat.apothicon.object;
 
+import etat.apothicon.main.Apothicon;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-import etat.apothicon.main.Apothicon;
 
 public class SuperObject {
     public BufferedImage image;
     public String name;
     public String type = "gun";
-    public int price = 0;
     public boolean collision = false;
     public int worldX;
     public int worldY;

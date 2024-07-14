@@ -3,10 +3,9 @@ package etat.apothicon.object.perk.bottle;
 import etat.apothicon.entity.Drinkable;
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
-
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class DoubleTap extends Perk implements Drinkable {
     public DoubleTap(Player player, Apothicon ap) {
@@ -26,7 +25,7 @@ public class DoubleTap extends Perk implements Drinkable {
     @Override
     public void activateFor(Player customer) {
 
-        customer.addPerk(this);
-        customer.setPoints(customer.getPoints() - 2000);
+        customer.loadout.addPerk(this);
+        customer.loadout.spendPoints(2000);
     }
 }

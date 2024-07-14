@@ -1,16 +1,11 @@
 package etat.apothicon.object.perk.machine;
+import etat.apothicon.entity.Player;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
-import etat.apothicon.entity.Player;
-import etat.apothicon.main.Apothicon;
-import etat.apothicon.object.SuperObject;
-import etat.apothicon.object.perk.bottle.DoubleTap;
 
-
-public class DoubleTapMachine extends SuperObject{
+public class DoubleTapMachine extends PerkMachine {
     public DoubleTapMachine() {
         this.name = "Double Tap 2.0";
         this.type = "perk";

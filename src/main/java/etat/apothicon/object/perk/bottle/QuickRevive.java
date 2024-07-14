@@ -24,8 +24,8 @@ public class QuickRevive extends Perk implements Drinkable {
 
     @Override
     public void activateFor(Player customer) {
-        customer.setRevives(1);
-        customer.addPerk(this);
-        customer.setPoints(customer.getPoints() - 500);
+        customer.loadout.setRevives(1);
+        customer.loadout.addPerk(this);
+        customer.loadout.spendPoints(500);
     }
 }

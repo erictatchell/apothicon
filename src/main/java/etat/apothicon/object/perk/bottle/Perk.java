@@ -2,12 +2,8 @@ package etat.apothicon.object.perk.bottle;
 
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class Perk {
     protected Player player;
@@ -16,14 +12,14 @@ public class Perk {
     protected int uses;
     protected int slotX;
     protected int perkID;
-    protected String name;
+    public String name;
 
     public Perk(String name, Player player, Apothicon ap) {
         this.slotX = player.getSlotX();
         this.player = player;
         this.ap = ap;
         this.name = name;
-        this.perkID = player.getPerks().size();
+        this.perkID = player.loadout.getPerks().length;
         this.player.incrementPerkOffset();
     }
 

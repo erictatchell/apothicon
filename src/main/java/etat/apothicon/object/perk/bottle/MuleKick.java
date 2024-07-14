@@ -26,9 +26,9 @@ public class MuleKick extends Perk implements Drinkable {
     @Override
     public void activateFor(Player customer) {
 
-        customer.setGunNum(3);
-        customer.addPerk(this);
-        customer.setPoints(customer.getPoints() - 4000);
+        customer.loadout.setMaxGunNum(3);
+        customer.loadout.addPerk(this);
+        customer.loadout.spendPoints(4000);
     }
 }
 

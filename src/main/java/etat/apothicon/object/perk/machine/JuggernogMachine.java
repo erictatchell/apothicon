@@ -1,15 +1,11 @@
 package etat.apothicon.object.perk.machine;
 
 import etat.apothicon.entity.Player;
-import etat.apothicon.main.Apothicon;
-import etat.apothicon.object.SuperObject;
-import etat.apothicon.object.perk.bottle.Juggernog;
-
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
-public class JuggernogMachine extends SuperObject {
+public class JuggernogMachine extends PerkMachine {
     public JuggernogMachine() {
         this.name = "Juggernog";
         this.type = "perk";

@@ -2,12 +2,9 @@ package etat.apothicon.object.weapon.wallbuy;
 
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
-import etat.apothicon.object.SuperObject;
-
-public class Stakeout_WallBuy extends SuperObject {
+public class Stakeout_WallBuy extends WallBuy {
     public Stakeout_WallBuy() {
         this.price = 1000;
         this.name = "Stakeout";

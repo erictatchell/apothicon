@@ -1,15 +1,11 @@
 package etat.apothicon.object.perk.machine;
+import etat.apothicon.entity.Player;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
-import etat.apothicon.entity.Player;
-import etat.apothicon.main.Apothicon;
-import etat.apothicon.object.SuperObject;
 
-
-public class MuleKickMachine extends SuperObject{
+public class MuleKickMachine extends PerkMachine {
     public MuleKickMachine() {
         this.name = "Mule Kick";
         this.type = "perk";

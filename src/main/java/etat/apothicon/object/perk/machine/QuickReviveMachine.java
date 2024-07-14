@@ -1,16 +1,11 @@
 package etat.apothicon.object.perk.machine;
 
+import etat.apothicon.entity.Player;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
-import etat.apothicon.entity.Player;
-import etat.apothicon.main.Apothicon;
-import etat.apothicon.object.SuperObject;
-import etat.apothicon.object.perk.bottle.DoubleTap;
-
-public class QuickReviveMachine extends SuperObject {
+public class QuickReviveMachine extends PerkMachine {
     public QuickReviveMachine() {
 
         this.type = "perk";

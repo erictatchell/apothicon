@@ -1,14 +1,10 @@
 package etat.apothicon.object.weapon.gun;
 
+import etat.apothicon.object.weapon.wallbuy.WallBuy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
-import etat.apothicon.entity.Entity;
-import etat.apothicon.main.Apothicon;
-import etat.apothicon.object.SuperObject;
 
 enum SelectFire {
     AUTO,
@@ -25,6 +21,7 @@ public class Gun {
     public int magazine;
     public int reserve;
     public int defaultReserve;
+    public WallBuy wallBuy;
     float fireRate;
     float reloadRate;
     SelectFire fireType;
@@ -63,6 +60,10 @@ public class Gun {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setWallBuy(WallBuy w) {
+        this.wallBuy = w;
     }
 
     public int getMagazine() {
@@ -113,5 +114,9 @@ public class Gun {
                 rechamberNeeded = true;
                 break;
         }
+    }
+
+    public int getPrice() {
+        return this.wallBuy.price;
     }
 }
