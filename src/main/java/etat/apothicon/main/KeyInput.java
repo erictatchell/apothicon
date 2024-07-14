@@ -9,6 +9,9 @@ public class KeyInput implements KeyListener {
     public boolean upPressed;
     public boolean leftPressed;
     public boolean rightPressed;
+    public boolean _1Pressed;
+    public boolean _2Pressed;
+    public boolean _3Pressed;
     public boolean downPressed;
     public boolean fPressed;
 
@@ -21,6 +24,10 @@ public class KeyInput implements KeyListener {
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_F) {
             fPressed = true;
+        }
+
+        if (code == KeyEvent.VK_1) {
+            _1Pressed = true;
         }
         if (code == KeyEvent.VK_W) {
             upPressed = true;
@@ -44,6 +51,9 @@ public class KeyInput implements KeyListener {
         }
         if (code == KeyEvent.VK_W) {
             upPressed = false;
+        }
+        if (code == KeyEvent.VK_1) {
+            _1Pressed = false;
         }
         if (code == KeyEvent.VK_A) {
             leftPressed = false;

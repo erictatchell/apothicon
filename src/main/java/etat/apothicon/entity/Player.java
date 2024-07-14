@@ -132,6 +132,23 @@ public class Player extends Entity {
         return this.maxGunNum;
     }
 
+    public boolean isGunPurchasable(Gun gun) {
+        int n = this.maxGunNum;
+        int m = this.guns.size();
+        if (m >= n) {
+            this.guns.remove(this.guns.get(currentWeapon));
+            return true;
+        }
+        for (int i = 0; i < m; i++) {
+            if (this.guns.get(i).getName() == gun.getName()) {
+                return false;
+            }
+        }
+        if (this.points < gun.price) {
+            return false;
+        }
+        return true;
+    }
     public boolean isPerkPurchasable(SuperObject perk) {
         int n = this.perks.size();
         if (n >= 4) {
@@ -164,6 +181,9 @@ public class Player extends Entity {
             }
         } else {
             this.guns.get(currentWeapon).rechamberNeeded = false;
+        }
+        if (keyIn._1Pressed) {
+            switchWeapon();
         }
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
