@@ -1,5 +1,7 @@
 package etat.apothicon.entity;
 
+import java.util.ArrayList;
+
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.bottle.Perk;
 import etat.apothicon.object.perk.machine.PerkMachine;
@@ -9,10 +11,11 @@ import etat.apothicon.object.weapon.wallbuy.WallBuy;
 
 public class Loadout {
 
-    private Gun[] guns;
-    private Perk[] perks;
+    private ArrayList<Gun> guns;
+    private ArrayList<Perk> perks;
     private int currentWeaponIdx;
     private int maxGunNum;
+    private int numGuns;
     private int perkLimit;
     private int revives;
     private int points;
@@ -32,30 +35,31 @@ public class Loadout {
         this.fireRateMultiplier = 1.0f;
         this.defaultHealth = 150;
         this.health = 150;
+        this.points = 20000;
         this.maxGunNum = 2;
-        this.guns = new Gun[maxGunNum];
-        this.perks = new Perk[perkLimit];
+        this.numGuns = 1; // starting pistol
+        this.guns = new ArrayList<>();
+        this.perks = new ArrayList<>();
         M1911_Gun m1911 = new M1911_Gun();
-        this.guns[0] = m1911;
+        this.guns.add(m1911);
         this.currentWeaponIdx = 0;
 
     }
 
     public boolean isAmmoPurchasable(int price) {
-        Gun current = this.guns[currentWeaponIdx];
+        Gun current = this.guns.get(currentWeaponIdx);
         return (this.points > price) && (current.reserve != current.defaultReserve);
     }
 
     public boolean isGunPurchasable(WallBuy gun) {
         int n = this.maxGunNum;
-        int m = this.guns.length;
-        for (int i = 0; i < m; i++) {
-            if (this.guns[i].getName().equals(gun.name)) {
+        for (int i = 0; i < this.numGuns; i++) {
+            if (this.guns.get(i).getName().equals(gun.name)) {
                 return false;
             }
         }
-        if (m >= n) {
-            this.guns[currentWeaponIdx] = null;
+        if (this.numGuns >= n) {
+            this.guns.remove(currentWeaponIdx);
             return true;
         }
 
@@ -63,14 +67,14 @@ public class Loadout {
     }
 
     public boolean isPerkPurchasable(PerkMachine perk) {
-        int n = this.perks.length;
-        if (n >= 4) {
+        int n = this.perks.size();
+        if (n >= 8) {
             return false;
         } // max perks
 
         String purchasingName = perk.name;
         for (int i = 0; i < n; i++) {
-            if (purchasingName.equals(this.perks[i].getName())) {
+            if (purchasingName.equals(this.perks.get(i).getName())) {
                 return false;
             }
         }
@@ -82,22 +86,22 @@ public class Loadout {
         // only guns with fire rate 1.0f and above will be impacted by this
         // all other guns are semi auto and can fire as fast as user can trigger pull
         shotCount++;
-        if (shotCount > this.guns[currentWeaponIdx].shotCount) {
-            this.guns[currentWeaponIdx].fire();
+        if (shotCount > this.guns.get(currentWeaponIdx).shotCount) {
+            this.guns.get(currentWeaponIdx).fire();
             shotCount = 0;
 
         }
         return shotCount;
     }
 
-    public void rechamberWeapon(int shotCount) {
-        shotCount = this.guns[currentWeaponIdx].shotCount;
-        this.guns[currentWeaponIdx].rechamberNeeded = false;
-
+    public int rechamberWeapon(int shotCount) {
+        shotCount = this.guns.get(currentWeaponIdx).shotCount;
+        this.guns.get(currentWeaponIdx).rechamberNeeded = false;
+        return shotCount;
     }
 
     public void purchaseAmmo(SuperObject object, int price) {
-        Gun current = this.guns[currentWeaponIdx];
+        Gun current = this.guns.get(currentWeaponIdx);
         // currently, user must be holding the weapon to buy ammo
         // change?
         if (current.getName() == object.name) {
@@ -109,8 +113,8 @@ public class Loadout {
     }
 
     public boolean isGunPurchased(WallBuy obj) {
-        for (Gun gun : this.guns) {
-            if (gun != null && obj.name.equals(gun.getName())) {
+        for (int i = 0; i < this.numGuns; i++) {
+            if (obj.name.equals(this.guns.get(i).getName())) {
 
                 return true;
             }
@@ -121,22 +125,22 @@ public class Loadout {
     public void handleGunPurchase(Gun gun) {
         // mr 4 mint greens
 
-        if (maxGunNum == 2) {
-            this.guns[currentWeaponIdx] = gun;
-        } else { // 3
-            int index = this.guns[1] == null ? 2 : 1;
-            this.guns[index] = gun;
+        if (this.guns.size() >= maxGunNum) {
+            this.guns.remove(currentWeaponIdx);
         }
+        this.guns.add(gun);
+
         this.points -= gun.getPrice();
-        this.currentWeaponIdx = this.guns.length - 1;
+        this.numGuns++;
+        this.currentWeaponIdx = this.guns.size() - 1;
     }
 
-    public Perk[] getPerks() {
+    public ArrayList<Perk> getPerks() {
         return this.perks;
     }
 
     public void switchWeapon() {
-        if ((currentWeaponIdx + 1) != guns.length) {
+        if ((currentWeaponIdx + 1) != guns.size()) {
             this.currentWeaponIdx++;
         } else {
             this.currentWeaponIdx = 0;
@@ -144,49 +148,58 @@ public class Loadout {
     }
 
     public Gun getCurrentWeapon() {
-        return this.guns[currentWeaponIdx];
+        return this.guns.get(currentWeaponIdx);
     }
+
     public int getPoints() {
         return this.points;
     }
+
     public void spendPoints(int p) {
         this.points -= p;
     }
+
     public int getHealth() {
         return this.health;
     }
+
     public int getMaxGunNum() {
-        return this.maxGunNum; 
+        return this.maxGunNum;
     }
+
     public float getReloadRate() {
         return this.reloadRateMultiplier;
     }
+
     public float getFireRateMultiplier() {
         return this.fireRateMultiplier;
     }
+
     public int getRevives() {
         return this.revives;
     }
+
     public void setHealth(int h) {
         this.health = h;
     }
+
     public void setDefaultHealth(int h) {
         this.defaultHealth = h;
     }
+
     public void setMaxGunNum(int m) {
         this.maxGunNum = m;
     }
+
     public void setRevives(int r) {
         this.revives = r;
     }
+
     public void setReloadRate(float rr) {
         this.reloadRateMultiplier = rr;
     }
+
     public void addPerk(Perk perk) {
-        int index = 0;
-        for (Perk p: this.perks) {
-            index ++;       
-        }
-        this.perks[index + 1] = perk;
+        this.perks.add(perk);
     }
 }

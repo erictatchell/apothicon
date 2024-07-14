@@ -106,9 +106,9 @@ public class Player extends Entity {
 
         if (mouseIn.leftMousePressed) {
 
-            // loadout.fireWeapon(shotCount);
+            shotCount = loadout.fireWeapon(shotCount);
         } else {
-
+            shotCount = loadout.rechamberWeapon(shotCount);
             // on release, reset shotCount
         }
 
@@ -252,7 +252,6 @@ public class Player extends Entity {
             SuperObject obj = ap.obj[index];
             switch (obj.type) {
                 case "perk":
-                    obj = new PerkMachine();
                     PerkMachine perkMachine = (PerkMachine) obj;
                     boolean isPerkPurchasable = loadout.isPerkPurchasable(perkMachine);
                     if (isPerkPurchasable) {
