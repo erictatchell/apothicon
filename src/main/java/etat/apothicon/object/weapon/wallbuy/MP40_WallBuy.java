@@ -10,7 +10,7 @@ import etat.apothicon.object.SuperObject;
 public class MP40_WallBuy extends SuperObject {
     public MP40_WallBuy() {
         this.price = 1000;
-        this.name = "MP40_WallBuy";
+        this.name = "MP40";
         try {
             image = ImageIO.read(new File("src/main/resources/tiles/mp40-stonewall.png"));
         } catch (IOException e) {

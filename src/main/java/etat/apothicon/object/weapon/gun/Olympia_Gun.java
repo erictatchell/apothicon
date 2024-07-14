@@ -10,7 +10,7 @@ public class Olympia_Gun extends Gun {
                 SelectFire.SEMI_AUTO,
                 1,
                 1.0f,
-                "src/main/resources/tiles/olympia-stonewall.png");
+                "src/main/resources/guns/olympia.png");
     }
 }
 

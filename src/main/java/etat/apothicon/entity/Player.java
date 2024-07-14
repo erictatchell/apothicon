@@ -26,8 +26,6 @@ import java.util.ArrayList;
 
 public class Player extends Entity {
 
-    // TODO: oop-ify this!
-
     Apothicon ap;
     KeyInput keyIn;
     MouseInput mouseIn;
@@ -35,7 +33,7 @@ public class Player extends Entity {
     private String purchaseString = null;
     public final int screenX;
     public final int screenY;
-    // TODO 1: man this is ugly. find a better solution
+    // for player perks. gross
     private int perkOffset = 16;
     private int slotX = 16;
 
@@ -65,23 +63,6 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
     }
-
-    public int getRevives() {
-        return revives;
-    }
-
-    public void setRevives(int revives) {
-        this.revives = revives;
-    }
-
-    public float getReloadRate() {
-        return reloadRateMultiplier;
-    }
-
-    public void setReloadRate(float reloadRate) {
-        this.reloadRateMultiplier = reloadRate;
-    }
-
     public void getPlayerImage() {
         try {
             up1 = ImageIO.read(new File("src/main/resources/player/player-down1.png"));
@@ -132,23 +113,32 @@ public class Player extends Entity {
         return this.maxGunNum;
     }
 
-    public boolean isGunPurchasable(Gun gun) {
+    public boolean isAmmoPurchasable(int price) {
+        Gun current = this.guns.get(currentWeapon);
+        return (this.points > price) && (current.reserve != current.defaultReserve);
+    }
+
+    public boolean isGunPurchasable(SuperObject gun) {
         int n = this.maxGunNum;
         int m = this.guns.size();
-        if (m >= n) {
-            this.guns.remove(this.guns.get(currentWeapon));
-            return true;
-        }
         for (int i = 0; i < m; i++) {
-            if (this.guns.get(i).getName() == gun.getName()) {
+            if (this.guns.get(i).getName() == gun.name) {
                 return false;
+
             }
         }
+        if (m >= n) {
+            this.guns.remove(currentWeapon);
+            return true;
+        }
+
         if (this.points < gun.price) {
             return false;
         }
+
         return true;
     }
+
     public boolean isPerkPurchasable(SuperObject perk) {
         int n = this.perks.size();
         if (n >= 4) {
@@ -173,6 +163,8 @@ public class Player extends Entity {
         if (mouseIn.leftMousePressed) {
 
             // simulate time/fire rate
+            // only guns with fire rate 1.0f and above will be impacted by this
+            // all other guns are semi auto and can fire as fast as user can trigger pull
             shotCount++;
             if (shotCount > this.guns.get(currentWeapon).shotCount) {
                 this.guns.get(currentWeapon).fire();
@@ -180,10 +172,17 @@ public class Player extends Entity {
 
             }
         } else {
+
+            // on release, reset shotCount
+            shotCount = this.guns.get(currentWeapon).shotCount;
             this.guns.get(currentWeapon).rechamberNeeded = false;
         }
+
+        // cycle weapons. set 1pressed to false so we dont constantly switch
+        // find better sol?
         if (keyIn._1Pressed) {
             switchWeapon();
+            keyIn._1Pressed = false;
         }
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
@@ -205,6 +204,7 @@ public class Player extends Entity {
 
             collisionOn = false;
             ap.cc.checkTile(this);
+            // for non interact pickups (powerups)
             pickUpObject(objIndex);
 
             if (!collisionOn) {
@@ -239,29 +239,44 @@ public class Player extends Entity {
         }
     }
 
+    public void purchaseAmmo(SuperObject object, int price) {
+        Gun current = this.guns.get(currentWeapon);
+        // currently, user must be holding the weapon to buy ammo
+        // change?
+        if (current.getName() == object.name) {
+
+            current.reserve = current.defaultReserve;
+            current.magazine = current.defaultAmmoPerMagazine;
+            this.points -= price;
+        }
+    }
+
+    /**
+     * wall weapon purchase
+     * 
+     * @param object interactable object (wallbuy)
+     */
     public void purchaseGun(SuperObject object) {
         switch (object.name) {
-            case "MP40_WallBuy":
+            case "MP40":
                 MP40_Gun mp40 = new MP40_Gun();
                 this.guns.add(mp40);
                 this.points -= object.price;
                 this.currentWeapon = this.guns.size() - 1;
                 break;
-            case "M14_WallBuy":
+            case "M14":
                 M14_Gun m14 = new M14_Gun();
                 this.guns.add(m14);
-
                 this.points -= object.price;
-
                 this.currentWeapon = this.guns.size() - 1;
                 break;
-            case "Olympia_WallBuy":
+            case "Olympia":
                 Olympia_Gun o = new Olympia_Gun();
                 this.guns.add(o);
                 this.points -= object.price;
                 this.currentWeapon = this.guns.size() - 1;
                 break;
-            case "Stakeout_WallBuy":
+            case "Stakeout":
                 Stakeout_Gun st = new Stakeout_Gun();
                 this.guns.add(st);
                 this.points -= object.price;
@@ -270,6 +285,11 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * perk machine purchases
+     * 
+     * @param object interactable object (perk machine)
+     */
     public void purchasePerk(SuperObject object) {
         switch (object.name) {
             case "Juggernog":
@@ -299,10 +319,12 @@ public class Player extends Entity {
         }
     }
 
+    // onscreen "Press F to buy ..."
     public void drawPurchaseText(String name, int price) {
         this.purchaseString = "Press F to buy " + name + " (" + price + ")";
     }
 
+    // rn, only used to reset. simplify?
     public void drawPurchaseText(String name) {
         this.purchaseString = name;
     }
@@ -313,39 +335,48 @@ public class Player extends Entity {
             switch (obj.type) {
                 case "perk":
                     boolean isPerkPurchasable = isPerkPurchasable(obj);
-                    if (keyIn.fPressed && isPerkPurchasable) {
-                        purchasePerk(obj);
-                        break;
-                    }
                     if (isPerkPurchasable) {
+                        if (keyIn.fPressed) {
+                            purchasePerk(obj);
+                            break;
+                        }
+
                         drawPurchaseText(obj.name, obj.price);
                         break;
                     }
                     this.purchaseString = null;
                     break;
                 case "gun":
+
                     // if the gun is purchased, we're buying ammo for it
                     boolean buyingAmmo = isGunPurchased(obj);
-                    if (keyIn.fPressed && !buyingAmmo) {
-                        purchaseGun(obj);
-                        break;
-                    }
 
                     if (!buyingAmmo) {
+                        if (keyIn.fPressed && isGunPurchasable(obj)) {
+                            purchaseGun(obj);
+                        }
+
                         drawPurchaseText(obj.name, obj.price);
+                        break;
                     } else {
-                        drawPurchaseText("ammo", obj.price / 2);
+                        int ammoCost = obj.price / 2;
+                        if (keyIn.fPressed && isAmmoPurchasable(ammoCost)) {
+                            purchaseAmmo(obj, ammoCost);
+                        }
+                        drawPurchaseText("ammo", ammoCost);
+                        break;
                     }
             }
         } else {
+            // reset purchase txt
             this.purchaseString = null;
         }
-
     }
 
     private boolean isGunPurchased(SuperObject obj) {
         for (Gun gun : this.guns) {
             if (obj.name == gun.getName()) {
+
                 return true;
             }
         }
@@ -389,7 +420,9 @@ public class Player extends Entity {
                 break;
         }
         g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
-        g2.drawImage(this.guns.get(currentWeapon).image, screenX, screenY, ap.tileSize / 2, ap.tileSize / 2, null);
+        
+        // gun on screen. horrible
+        g2.drawImage(this.guns.get(currentWeapon).image, screenX, screenY, ap.tileSize, ap.tileSize, null);
         if (this.purchaseString != null) {
             g2.setColor(Color.white);
             Font font = new Font("Arial", Font.BOLD, 16);
@@ -405,6 +438,7 @@ public class Player extends Entity {
     }
 
     public void incrementPerkOffset() {
+        // 40 just works/looks good LOL
         this.perkOffset += 40;
     }
 
@@ -447,6 +481,23 @@ public class Player extends Entity {
     public ArrayList<Perk> getPerks() {
         return perks;
     }
+
+    public int getRevives() {
+        return revives;
+    }
+
+    public void setRevives(int revives) {
+        this.revives = revives;
+    }
+
+    public float getReloadRate() {
+        return reloadRateMultiplier;
+    }
+
+    public void setReloadRate(float reloadRate) {
+        this.reloadRateMultiplier = reloadRate;
+    }
+
 
     public void setPerks(ArrayList<Perk> perks) {
         this.perks = perks;

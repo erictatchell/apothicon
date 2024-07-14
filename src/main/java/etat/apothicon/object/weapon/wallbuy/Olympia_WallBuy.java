@@ -10,7 +10,7 @@ import etat.apothicon.object.SuperObject;
 public class Olympia_WallBuy extends SuperObject {
     public Olympia_WallBuy() {
         this.price = 500;
-        this.name = "Olympia_WallBuy";
+        this.name = "Olympia";
         try {
             image = ImageIO.read(new File("src/main/resources/tiles/olympia-stonewall.png"));
         } catch (IOException e) {

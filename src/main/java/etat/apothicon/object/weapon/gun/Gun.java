@@ -21,9 +21,10 @@ public class Gun extends SuperObject {
     String name;
     public BufferedImage image;
     int damage;
-    int defaultAmmoPerMagazine;
-    int magazine;
-    int reserve;
+    public int defaultAmmoPerMagazine;
+    public int magazine;
+    public int reserve;
+    public int defaultReserve;
     float fireRate;
     float reloadRate;
     SelectFire fireType;
@@ -50,6 +51,7 @@ public class Gun extends SuperObject {
         this.defaultAmmoPerMagazine = defaultAmmoPerMagazine;
         this.magazine = defaultAmmoPerMagazine;
         this.reserve = reserve;
+        this.defaultReserve = reserve;
         this.fireType = fireType;
         this.fireRate = fireRate;
         this.shotCount = (int) ((int) 10 * fireRate);
