@@ -14,6 +14,7 @@ import etat.apothicon.object.perk.machine.PerkMachine;
 import etat.apothicon.object.weapon.gun.M14_Gun;
 import etat.apothicon.object.weapon.gun.MP40_Gun;
 import etat.apothicon.object.weapon.gun.Olympia_Gun;
+import etat.apothicon.object.weapon.gun.SelectFire;
 import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
 import java.awt.*;
@@ -21,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.SwingUtilities;
 
 public class Player extends Entity {
 
@@ -41,7 +43,7 @@ public class Player extends Entity {
         this.ap = ap;
         this.keyIn = keyIn;
         this.mouseIn = mouseIn;
-        this.loadout = new Loadout();
+        this.loadout = new Loadout(this);
         solidArea = new Rectangle(8, 16, 32, 32);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
@@ -87,16 +89,16 @@ public class Player extends Entity {
     }
 
     // public void setGunNum(int x) {
-    //     this.maxGunNum = x;
+    // this.maxGunNum = x;
     // }
     // public int getPoints() {
-    //     return points;
+    // return points;
     // }
     // public void setPoints(int points) {
-    //     this.points = points;
+    // this.points = points;
     // }
     // public int getGunNum() {
-    //     return this.maxGunNum;
+    // return this.maxGunNum;
     // }
     int shotCount = 0;
 
@@ -105,8 +107,14 @@ public class Player extends Entity {
         int objIndex = ap.cc.checkObject(this, true);
 
         if (mouseIn.leftMousePressed) {
-
             shotCount = loadout.fireWeapon(shotCount);
+            System.out.println("ScreenMiddle width,height: " + ap.screenWidth / 2 + "," + ap.screenHeight / 2);
+            System.out.println("Mouse x,y: " + MouseInfo.getPointerInfo().getLocation().x + ","
+                    + MouseInfo.getPointerInfo().getLocation().y);
+
+            if (shotCount >= 5) {
+                loadout.getCurrentWeapon().bullet = 0;
+            }
         } else {
             shotCount = loadout.rechamberWeapon(shotCount);
             // on release, reset shotCount
@@ -173,70 +181,6 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * wall weapon purchase
-     *
-     * @param object interactable object (wallbuy)
-     */
-    public void purchaseGun(SuperObject object) {
-        switch (object.name) {
-            case "MP40":
-                MP40_Gun mp40 = new MP40_Gun();
-                mp40.setWallBuy((WallBuy) object);
-                loadout.handleGunPurchase(mp40);
-                break;
-            case "M14":
-                M14_Gun m14 = new M14_Gun();
-                m14.setWallBuy((WallBuy) object);
-                loadout.handleGunPurchase(m14);
-                break;
-            case "Olympia":
-                Olympia_Gun o = new Olympia_Gun();
-                o.setWallBuy((WallBuy) object);
-                loadout.handleGunPurchase(o);
-                break;
-            case "Stakeout":
-                Stakeout_Gun st = new Stakeout_Gun();
-                st.setWallBuy((WallBuy) object);
-                loadout.handleGunPurchase(st);
-                break;
-        }
-    }
-
-    /**
-     * perk machine purchases
-     *
-     * @param object interactable object (perk machine)
-     */
-    public void purchasePerk(SuperObject object) {
-        switch (object.name) {
-            case "Juggernog":
-                Juggernog jug = new Juggernog(this, ap);
-                jug.activateFor(this);
-                break;
-            case "Double Tap 2.0":
-                DoubleTap dt = new DoubleTap(this, ap);
-                dt.activateFor(this);
-                drawPurchaseText(object.name, 2000);
-                break;
-            case "Speed Cola":
-                SpeedCola sc = new SpeedCola(this, ap);
-                sc.activateFor(this);
-                drawPurchaseText(object.name, 2000);
-                break;
-            case "Quick Revive":
-                QuickRevive qr = new QuickRevive(this, ap);
-                qr.activateFor(this);
-                drawPurchaseText(object.name, 2000);
-                break;
-            case "Mule Kick":
-                MuleKick mk = new MuleKick(this, ap);
-                mk.activateFor(this);
-                drawPurchaseText(object.name, 2000);
-                break;
-        }
-    }
-
     // onscreen "Press F to buy ..."
     public void drawPurchaseText(String name, int price) {
         this.purchaseString = "Press F to buy " + name + " (" + price + ")";
@@ -256,7 +200,7 @@ public class Player extends Entity {
                     boolean isPerkPurchasable = loadout.isPerkPurchasable(perkMachine);
                     if (isPerkPurchasable) {
                         if (keyIn.fPressed) {
-                            purchasePerk(perkMachine);
+                            loadout.purchasePerk(perkMachine);
                             break;
                         }
 
@@ -272,7 +216,7 @@ public class Player extends Entity {
 
                     if (!buyingAmmo) {
                         if (keyIn.fPressed && loadout.isGunPurchasable(wallBuy)) {
-                            purchaseGun(wallBuy);
+                            loadout.purchaseGun(wallBuy);
                         }
 
                         drawPurchaseText(wallBuy.name, wallBuy.price);
@@ -291,13 +235,27 @@ public class Player extends Entity {
             this.purchaseString = null;
         }
     }
-   public void draw(Graphics2D g2) {
+
+    public void drawPerkIcons(Graphics2D g2) {
         for (Perk perk : loadout.getPerks()) {
-            if (perk !=null) {
+            if (perk != null) {
                 perk.draw(g2);
             }
         }
+    }
 
+    public void draw(Graphics2D g2) {
+        drawPerkIcons(g2);
+        g2.setColor(Color.YELLOW);
+
+        for (int i = 0; i < loadout.getCurrentWeapon().bullet; i++) {
+            // TODO: precalculate and read from somewhere so bullets dont curve
+            Point mousePosition = MouseInfo.getPointerInfo().getLocation();
+            SwingUtilities.convertPointFromScreen(mousePosition, ap);
+            int centerX = ap.screenWidth / 2;
+            int centerY = ap.screenHeight / 2;
+            g2.drawLine(centerX, centerY, mousePosition.x, mousePosition.y);
+        }
         BufferedImage image = null;
         switch (this.direction) {
             case "up":
@@ -361,5 +319,5 @@ public class Player extends Entity {
     public void setSlotX(int slotX) {
         this.slotX = slotX;
     }
-    
+
 }

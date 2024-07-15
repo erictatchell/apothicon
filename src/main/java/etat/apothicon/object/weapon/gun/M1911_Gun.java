@@ -6,7 +6,7 @@ public class M1911_Gun extends Gun {
                 1,
                 8,
                 32,
-                0.0f,
+                1.0f,
                 SelectFire.SEMI_AUTO,
                 1,
                 1.0f,

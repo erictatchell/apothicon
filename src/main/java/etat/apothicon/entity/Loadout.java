@@ -2,42 +2,62 @@ package etat.apothicon.entity;
 
 import java.util.ArrayList;
 
+import javax.swing.Timer;
+
+import etat.apothicon.main.Apothicon;
 import etat.apothicon.object.SuperObject;
+import etat.apothicon.object.perk.bottle.DoubleTap;
+import etat.apothicon.object.perk.bottle.Juggernog;
+import etat.apothicon.object.perk.bottle.MuleKick;
 import etat.apothicon.object.perk.bottle.Perk;
+import etat.apothicon.object.perk.bottle.QuickRevive;
+import etat.apothicon.object.perk.bottle.SpeedCola;
 import etat.apothicon.object.perk.machine.PerkMachine;
 import etat.apothicon.object.weapon.gun.Gun;
+import etat.apothicon.object.weapon.gun.M14_Gun;
 import etat.apothicon.object.weapon.gun.M1911_Gun;
+import etat.apothicon.object.weapon.gun.MP40_Gun;
+import etat.apothicon.object.weapon.gun.Olympia_Gun;
+import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
 
 public class Loadout {
 
+    private Player player;
+    private Apothicon ap;
+    private Timer loadoutTimer;
+
     private ArrayList<Gun> guns;
     private ArrayList<Perk> perks;
+    private float fireDelay;
     private int currentWeaponIdx;
     private int maxGunNum;
-    private int numGuns;
     private int perkLimit;
     private int revives;
     private int points;
     private float reloadRateMultiplier;
+    private float damageMultiplier;
     private float fireRateMultiplier;
     private int defaultHealth;
     private int health;
 
-    public Loadout() {
+    public Loadout(Player player) {
         init();
+        this.player = player;
+        this.ap = player.ap;
+        this.loadoutTimer = new Timer(currentWeaponIdx, null);
     }
 
     private void init() {
         this.perkLimit = 4;
         this.revives = 0;
         this.reloadRateMultiplier = 1.0f;
+        this.damageMultiplier = 2.0f;
         this.fireRateMultiplier = 1.0f;
         this.defaultHealth = 150;
         this.health = 150;
         this.points = 20000;
         this.maxGunNum = 2;
-        this.numGuns = 1; // starting pistol
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
         M1911_Gun m1911 = new M1911_Gun();
@@ -53,12 +73,12 @@ public class Loadout {
 
     public boolean isGunPurchasable(WallBuy gun) {
         int n = this.maxGunNum;
-        for (int i = 0; i < this.numGuns; i++) {
+        for (int i = 0; i < this.guns.size(); i++) {
             if (this.guns.get(i).getName().equals(gun.name)) {
                 return false;
             }
         }
-        if (this.numGuns >= n) {
+        if (this.guns.size() >= n) {
             this.guns.remove(currentWeaponIdx);
             return true;
         }
@@ -85,18 +105,18 @@ public class Loadout {
         // simulate time/fire rate
         // only guns with fire rate 1.0f and above will be impacted by this
         // all other guns are semi auto and can fire as fast as user can trigger pull
-        shotCount++;
+        shotCount += (1 * this.fireRateMultiplier);
         if (shotCount > this.guns.get(currentWeaponIdx).shotCount) {
             this.guns.get(currentWeaponIdx).fire();
             shotCount = 0;
 
-        }
+        } 
         return shotCount;
     }
 
     public int rechamberWeapon(int shotCount) {
         shotCount = this.guns.get(currentWeaponIdx).shotCount;
-        this.guns.get(currentWeaponIdx).rechamberNeeded = false;
+        getCurrentWeapon().rechamber();
         return shotCount;
     }
 
@@ -113,9 +133,8 @@ public class Loadout {
     }
 
     public boolean isGunPurchased(WallBuy obj) {
-        for (int i = 0; i < this.numGuns; i++) {
+        for (int i = 0; i < this.guns.size(); i++) {
             if (obj.name.equals(this.guns.get(i).getName())) {
-
                 return true;
             }
         }
@@ -131,7 +150,6 @@ public class Loadout {
         this.guns.add(gun);
 
         this.points -= gun.getPrice();
-        this.numGuns++;
         this.currentWeaponIdx = this.guns.size() - 1;
     }
 
@@ -202,4 +220,78 @@ public class Loadout {
     public void addPerk(Perk perk) {
         this.perks.add(perk);
     }
+
+    public void setFireRateMultiplier(float fr) {
+        this.fireRateMultiplier = fr;
+    }
+
+    public void setDamageMultiplier(float dmg) {
+        this.damageMultiplier = dmg;
+    }
+
+    /**
+     * perk machine purchases
+     *
+     * @param object interactable object (perk machine)
+     */
+    public void purchasePerk(SuperObject object) {
+        switch (object.name) {
+            case "Juggernog":
+                Juggernog jug = new Juggernog(player, ap);
+                jug.activateFor(player);
+                player.drawPurchaseText(object.name, 2000);
+                break;
+            case "Double Tap 2.0":
+                DoubleTap dt = new DoubleTap(player, ap);
+                dt.activateFor(player);
+                player.drawPurchaseText(object.name, 2000);
+                break;
+            case "Speed Cola":
+                SpeedCola sc = new SpeedCola(player, ap);
+                sc.activateFor(player);
+                player.drawPurchaseText(object.name, 2000);
+                break;
+            case "Quick Revive":
+                QuickRevive qr = new QuickRevive(player, ap);
+                qr.activateFor(player);
+                player.drawPurchaseText(object.name, 2000);
+                break;
+            case "Mule Kick":
+                MuleKick mk = new MuleKick(player, ap);
+                mk.activateFor(player);
+                player.drawPurchaseText(object.name, 2000);
+                break;
+        }
+    }
+
+    /**
+     * wall weapon purchase
+     *
+     * @param object interactable object (wallbuy)
+     */
+    public void purchaseGun(SuperObject object) {
+        switch (object.name) {
+            case "MP40":
+                MP40_Gun mp40 = new MP40_Gun();
+                mp40.setWallBuy((WallBuy) object);
+                handleGunPurchase(mp40);
+                break;
+            case "M14":
+                M14_Gun m14 = new M14_Gun();
+                m14.setWallBuy((WallBuy) object);
+                handleGunPurchase(m14);
+                break;
+            case "Olympia":
+                Olympia_Gun o = new Olympia_Gun();
+                o.setWallBuy((WallBuy) object);
+                handleGunPurchase(o);
+                break;
+            case "Stakeout":
+                Stakeout_Gun st = new Stakeout_Gun();
+                st.setWallBuy((WallBuy) object);
+                handleGunPurchase(st);
+                break;
+        }
+    }
+
 }

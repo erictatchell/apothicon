@@ -15,7 +15,6 @@ public class DoubleTapMachine extends PerkMachine {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        collision = true;
     }
 
     public void purchase(Player player) {

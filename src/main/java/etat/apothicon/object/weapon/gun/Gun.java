@@ -6,17 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-enum SelectFire {
-    AUTO,
-    SEMI_AUTO,
-    BURST
-}
+
 
 // TODO:
 public class Gun {
     String name;
     public BufferedImage image;
+    private int fireDelay = 0;
     int damage;
+    public int bullet;
     public int defaultAmmoPerMagazine;
     public int magazine;
     public int reserve;
@@ -24,14 +22,15 @@ public class Gun {
     public WallBuy wallBuy;
     float fireRate;
     float reloadRate;
-    SelectFire fireType;
+    public SelectFire fireType;
     float range;
     public boolean rechamberNeeded = false;
     public int shotCount;
 
-    /** gun structure
+    /**
+     * gun structure
      * 
-     * @param name name
+     * @param name                   name
      * @param damage
      * @param defaultAmmoPerMagazine
      * @param reserve
@@ -99,6 +98,8 @@ public class Gun {
 
         if (!rechamberNeeded) {
             if (magazine >= 1) {
+                bullet = 1;
+                fireDelay++;
                 magazine -= 1;
             }
             if (magazine == 0) {
@@ -109,13 +110,19 @@ public class Gun {
         }
         switch (this.fireType) {
             case AUTO:
+
                 break;
             case SEMI_AUTO:
                 rechamberNeeded = true;
                 break;
         }
-    }
 
+   }
+
+    public void rechamber() {
+        this.rechamberNeeded = false;
+        this.bullet = 0; 
+    }
     public int getPrice() {
         return this.wallBuy.price;
     }
