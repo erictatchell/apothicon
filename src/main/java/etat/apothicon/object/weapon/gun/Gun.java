@@ -12,6 +12,10 @@ import javax.imageio.ImageIO;
 public class Gun {
     String name;
     public BufferedImage image;
+
+    // for when mousex goes over the middle, prevents upside down images
+    public BufferedImage image2;
+
     private int fireDelay = 0;
     int damage;
     public int bullet;

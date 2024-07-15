@@ -18,6 +18,7 @@ import etat.apothicon.object.weapon.gun.SelectFire;
 import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -248,10 +249,10 @@ public class Player extends Entity {
         drawPerkIcons(g2);
         g2.setColor(Color.YELLOW);
 
+        Point mousePosition = MouseInfo.getPointerInfo().getLocation();
+        SwingUtilities.convertPointFromScreen(mousePosition, ap);
         for (int i = 0; i < loadout.getCurrentWeapon().bullet; i++) {
             // TODO: precalculate and read from somewhere so bullets dont curve
-            Point mousePosition = MouseInfo.getPointerInfo().getLocation();
-            SwingUtilities.convertPointFromScreen(mousePosition, ap);
             int centerX = ap.screenWidth / 2;
             int centerY = ap.screenHeight / 2;
             g2.drawLine(centerX, centerY, mousePosition.x, mousePosition.y);
@@ -288,9 +289,14 @@ public class Player extends Entity {
                 break;
         }
         g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
-
-        // gun on screen. horrible
-        g2.drawImage(loadout.getCurrentWeapon().image, screenX, screenY, ap.tileSize, ap.tileSize, null);
+        int angle = calculateAngle();
+        // omg kms
+        BufferedImage weaponImage = ImageManager.createFlipped(getImage(mousePosition));
+        if (mousePosition.x > ap.screenWidth / 2) {
+            angle -= 180;
+        }
+        g2.drawImage(rotateImageByDegrees(weaponImage, angle), screenX, screenY,
+                ap.tileSize, ap.tileSize, null);
 
         if (this.purchaseString != null) {
             g2.setColor(Color.white);
@@ -302,6 +308,54 @@ public class Player extends Entity {
         }
 
     }
+
+    public BufferedImage getImage(Point mousePosition) {
+        if (mousePosition.x > ap.screenWidth / 2) {
+            return loadout.getCurrentWeapon().image;
+        }
+        return loadout.getCurrentWeapon().image2;
+    }
+
+    public int calculateAngle() {
+        Point mousePosition = MouseInfo.getPointerInfo().getLocation();
+        SwingUtilities.convertPointFromScreen(mousePosition, ap);
+        int centerX = ap.screenWidth / 2;
+        int centerY = ap.screenHeight / 2;
+    
+        int deltaX = mousePosition.x - centerX;
+        int deltaY = mousePosition.y - centerY;
+    
+        double angleInRadians = Math.atan2(deltaY, deltaX);
+    
+        int angleInDegrees = (int) Math.toDegrees(angleInRadians);
+        return angleInDegrees;
+    }
+    
+
+    public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
+        double rads = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
+        int w = img.getWidth();
+        int h = img.getHeight();
+        int newWidth = (int) Math.floor(w * cos + h * sin);
+        int newHeight = (int) Math.floor(h * cos + w * sin);
+    
+        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = rotated.createGraphics();
+        AffineTransform at = new AffineTransform();
+        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+    
+        int x = w / 2;
+        int y = h / 2;
+    
+        at.rotate(rads, x, y);
+        g2d.setTransform(at);
+        g2d.drawImage(img, 0, 0, null);
+        g2d.dispose();
+    
+        return rotated;
+    }
+    
 
     public void resetPerkOffset() {
         this.perkOffset = 0;
