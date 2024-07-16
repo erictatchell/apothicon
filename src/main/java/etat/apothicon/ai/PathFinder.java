@@ -105,7 +105,7 @@ public class PathFinder {
     }
 
     public boolean search() {
-        while (!goalReached && step == 500) {
+        while (!goalReached && step < 500) {
             int col = currentNode.col;
             int row = currentNode.row;
 
@@ -130,14 +130,13 @@ public class PathFinder {
             int bestNodeIndex = 0;
             int bestNodefCost = 999;
             for (int i = 0; i < openList.size(); i++ ) {
-                Node cur = openList.get(i);
-                if (cur.fCost < bestNodefCost) {
+                if (openList.get(i).fCost < bestNodefCost) {
                     bestNodeIndex = i;
-                    bestNodefCost = cur.fCost;
+                    bestNodefCost = openList.get(i).fCost;
                 }
                 // if fcosts are equal check gcost
-                else if (cur.fCost == bestNodefCost) {
-                    if (cur.gCost < openList.get(bestNodeIndex).gCost) {
+                else if (openList.get(i).fCost == bestNodefCost) {
+                    if (openList.get(i).gCost < openList.get(bestNodeIndex).gCost) {
                         bestNodeIndex = i;
                     }
                 }
@@ -165,7 +164,7 @@ public class PathFinder {
         while (current != startNode) {
             pathList.add(0, current);
             current = current.parent;
-            
+
         }
     }
 

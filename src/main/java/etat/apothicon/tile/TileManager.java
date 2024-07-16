@@ -1,5 +1,6 @@
 package etat.apothicon.tile;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +18,7 @@ public class TileManager {
     Apothicon ap;
     public Tile[] tile;
     public int mapTileNum[][];
+    boolean drawPath = true;
 
     public TileManager(Apothicon ap) {
         this.ap = ap;
@@ -99,12 +101,12 @@ public class TileManager {
 
             tile[11] = new Tile();
             tile[11].image = ImageIO.read(new File("src/main/resources/tiles/frozen-door.png"));
-            //tile[11].collision = true;
+            // tile[11].collision = true;
 
             tile[12] = new Tile();
             tile[12].image = ImageIO.read(new File("src/main/resources/tiles/door-barrier.png"));
             tile[12].collision = true;
-            
+
             tile[13] = new Tile();
             tile[13].image = ImageIO.read(new File("src/main/resources/tiles/stone-barrier.png"));
             tile[13].collision = true;
@@ -145,7 +147,6 @@ public class TileManager {
             tile[23] = new Tile();
             tile[23].image = ImageIO.read(new File("src/main/resources/tiles/mp40-stonewall.png"));
             tile[23].collision = true;
-            
 
             tile[24] = new Tile("Mule Kick");
             tile[24].image = ImageIO.read(new File("src/main/resources/tiles/mulekick-snowstonewall.png"));
@@ -203,6 +204,16 @@ public class TileManager {
                 worldRow++;
             }
 
+        }
+        if (drawPath) {
+            g2.setColor(new Color(255, 0, 0, 70));
+            for (int i = 0; i < ap.pFinder.pathList.size(); i++) {
+                int worldX = ap.pFinder.pathList.get(i).col * ap.tileSize;
+                int worldY = ap.pFinder.pathList.get(i).row * ap.tileSize; 
+                int screenX = worldX - ap.player.worldX + ap.player.screenX;
+                int screenY = worldY - ap.player.worldY + ap.player.screenY;
+                g2.fillRect(screenX, screenY, ap.tileSize, ap.tileSize);
+            }
         }
     }
 }

@@ -22,8 +22,8 @@ public class Entity {
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
-
-    public Rectangle solidArea;
+    public boolean onPath = true;
+    public Rectangle solidArea; 
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public int actionLockCounter = 0;
@@ -47,12 +47,83 @@ public class Entity {
 
     }
 
-    public void update() {
-        setAction();
+    public void searchPath(int goalCol, int goalRow) {
+        int startCol = (worldX + solidArea.x) / ap.tileSize;
+        int startRow = (worldY + solidArea.y) / ap.tileSize;
+
+        ap.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
+        if (ap.pFinder.search() == true) {
+            int nextX = ap.pFinder.pathList.get(0).col * ap.tileSize;
+            int nextY = ap.pFinder.pathList.get(0).row * ap.tileSize;
+            // get entities solid area
+            int eLeftX = worldX + solidArea.x;
+            int eRightX = worldX + solidArea.x + solidArea.width;
+            int eTopY = worldY + solidArea.y;
+            int eBottomY = worldY + solidArea.y + solidArea.height;
+
+            // wtf
+            if (eTopY > nextY && eLeftX >= nextX && eRightX < nextX + ap.tileSize) {
+                direction = "up";
+            } else if (eTopY < nextY && eLeftX >= nextX && eRightX < nextX + ap.tileSize) {
+                direction = "down";
+            } else if (eTopY >= nextY && eBottomY < nextY + ap.tileSize) {
+                // either left or right
+                if (eLeftX > nextX) {
+                    direction = "left";
+                }
+                if (eLeftX < nextX) {
+                    direction = "right";
+                }
+
+            } else if (eTopY > nextY && eLeftX > nextX) {
+                // either up or left
+                direction = "up";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "left";
+                }
+            } else if (eTopY > nextY && eLeftX < nextX) {
+                // either up or right
+                direction = "up";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "right";
+                }
+            } else if (eTopY < nextY && eLeftX > nextX) {
+                // either down or left
+                direction = "down";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "left";
+                }
+            } else if (eTopY < nextY && eLeftX < nextX) {
+                // either down or right
+                direction = "down";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "right";
+                }
+            }
+            // int nextCol = ap.pFinder.pathList.get(0).col;
+            // int nextRow = ap.pFinder.pathList.get(0).row;
+            // if (nextCol == goalCol && nextRow == goalRow) {
+            //     onPath = false;
+            // }
+        }
+    }
+
+    public void checkCollision() {
         collisionOn = false;
         ap.cc.checkTile(this);
         ap.cc.checkObject(this, false);
         ap.cc.checkPlayer(this);
+
+    }
+
+    public void update() {
+        setAction();
+
+        checkCollision();
         if (!collisionOn) {
             if (direction == "up") {
                 this.worldY -= this.speed;

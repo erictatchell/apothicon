@@ -2,6 +2,7 @@ package etat.apothicon.main;
 
 import etat.apothicon.tile.TileManager;
 import etat.apothicon.object.weapon.gun.*;
+import etat.apothicon.ai.PathFinder;
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
 import etat.apothicon.entity.Zombie;
@@ -35,6 +36,7 @@ public class Apothicon extends JPanel implements Runnable {
 
     public SuperObject obj[] = new SuperObject[10];
     public AssetSetter aSetter = new AssetSetter(this);
+    public PathFinder pFinder = new PathFinder(this);
 
     KeyInput keyIn = new KeyInput();
     MouseInput mouseIn = new MouseInput();

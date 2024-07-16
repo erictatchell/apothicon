@@ -46,7 +46,12 @@ public class Player extends Entity {
         this.keyIn = keyIn;
         this.mouseIn = mouseIn;
         this.loadout = new Loadout(this);
-        solidArea = new Rectangle(8, 16, 32, 32);
+
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 30;
+        solidArea.height = 30;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
