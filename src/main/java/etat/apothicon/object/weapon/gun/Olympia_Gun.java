@@ -5,9 +5,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import etat.apothicon.entity.Player;
+import etat.apothicon.main.Apothicon;
+
 public class Olympia_Gun extends Gun {
-    public Olympia_Gun() {
-        super("Olympia",
+    public Olympia_Gun(Player player) {
+        super(player,
+                "Olympia",
                 1,
                 2,
                 32,

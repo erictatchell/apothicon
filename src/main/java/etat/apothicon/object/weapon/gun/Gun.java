@@ -1,17 +1,22 @@
 package etat.apothicon.object.weapon.gun;
 
+import etat.apothicon.entity.Player;
+import etat.apothicon.main.Apothicon;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
+
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-
-
+import javax.swing.SwingUtilities;
 
 // TODO:
 public class Gun {
     String name;
     public BufferedImage image;
+    Player owner;
 
     // for when mousex goes over the middle, prevents upside down images
     public BufferedImage image2;
@@ -44,8 +49,9 @@ public class Gun {
      * @param reloadRate
      * @param imagePath
      */
-    public Gun(String name, int damage, int defaultAmmoPerMagazine, int reserve, float fireRate, SelectFire fireType,
+    public Gun(Player owner, String name, int damage, int defaultAmmoPerMagazine, int reserve, float fireRate, SelectFire fireType,
             int range, float reloadRate, String imagePath) {
+        this.owner = owner;
         this.name = name;
         this.damage = damage;
         this.defaultAmmoPerMagazine = defaultAmmoPerMagazine;
@@ -98,11 +104,35 @@ public class Gun {
 
     }
 
-    public void fire() {
+    public int calculateAngle(Point mousePosition) {
+        int centerX = 250;
+        int centerY = 250;
+
+        int mouseX = mousePosition.x;
+        int mouseY = mousePosition.y;
+
+        // Calculate the angle in radians
+        double angleRadians = Math.atan2(mouseY - centerY, mouseX - centerX);
+
+        // Convert to degrees
+        int angleDegrees = (int) Math.toDegrees(angleRadians);
+
+        // Adjust the angle to be between 0-360 degrees
+        if (angleDegrees < 0) {
+            angleDegrees += 360;
+        }
+
+        return angleDegrees;
+    }
+
+    public void fire(Point mousePosition) {
 
         if (!rechamberNeeded) {
+
             if (magazine >= 1) {
                 bullet = 1;
+                int dir = owner.calculateAngle();
+                owner.bullets.add(new Bullet(owner.ap.screenWidth / 2, owner.ap.screenHeight / 2, dir, 20));
                 fireDelay++;
                 magazine -= 1;
             }
@@ -121,12 +151,13 @@ public class Gun {
                 break;
         }
 
-   }
+    }
 
     public void rechamber() {
         this.rechamberNeeded = false;
-        this.bullet = 0; 
+        this.bullet = 0;
     }
+
     public int getPrice() {
         return this.wallBuy.price;
     }

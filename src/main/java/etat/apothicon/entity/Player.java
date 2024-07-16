@@ -11,6 +11,7 @@ import etat.apothicon.object.perk.bottle.Perk;
 import etat.apothicon.object.perk.bottle.QuickRevive;
 import etat.apothicon.object.perk.bottle.SpeedCola;
 import etat.apothicon.object.perk.machine.PerkMachine;
+import etat.apothicon.object.weapon.gun.Bullet;
 import etat.apothicon.object.weapon.gun.M14_Gun;
 import etat.apothicon.object.weapon.gun.MP40_Gun;
 import etat.apothicon.object.weapon.gun.Olympia_Gun;
@@ -22,6 +23,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
@@ -29,9 +32,10 @@ public class Player extends Entity {
 
     KeyInput keyIn;
     MouseInput mouseIn;
-    Apothicon ap;
+    public Apothicon ap;
 
     public Loadout loadout;
+    public ArrayList<Bullet> bullets = new ArrayList<>();
 
     private String purchaseString = null;
     public final int screenX;
@@ -45,7 +49,7 @@ public class Player extends Entity {
         this.ap = ap;
         this.keyIn = keyIn;
         this.mouseIn = mouseIn;
-        this.loadout = new Loadout(this);
+        this.loadout = new Loadout(this, this.ap);
 
         solidArea = new Rectangle();
         solidArea.x = 8;
@@ -177,6 +181,7 @@ public class Player extends Entity {
             System.out.println("slap him");
         }
     }
+
     public void pickUpObject(int index) {
         if (index != 999) {
             SuperObject obj = ap.obj[index];
@@ -237,26 +242,14 @@ public class Player extends Entity {
     public void draw(Graphics2D g2) {
         drawPerkIcons(g2);
         g2.setColor(Color.YELLOW);
-
         Point mousePosition = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(mousePosition, ap);
-        int centerX = ap.screenWidth / 2;
-        int centerY = ap.screenHeight / 2;
+        for (int i = 0; i < bullets.size(); i++) {
+            if (bullets.get(i) != null) {
 
-        int extendLength = calculateDistanceFromNearestCollision();
-        for (int i = 0; i < loadout.getCurrentWeapon().bullet; i++) {
-            int deltaX = mousePosition.x - centerX;
-            int deltaY = mousePosition.y - centerY;
-
-            double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-            double directionX = deltaX / distance;
-            double directionY = deltaY / distance;
-
-            int extendedX = (int) (centerX + directionX * extendLength);
-            int extendedY = (int) (centerY + directionY * extendLength);
-
-            g2.drawLine(centerX, centerY, extendedX, extendedY);
+                bullets.get(i).update();
+                g2.drawRect((int) bullets.get(i).x, (int) bullets.get(i).y, 5, 5);
+            }
         }
         BufferedImage image = null;
         switch (this.direction) {

@@ -5,9 +5,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import etat.apothicon.entity.Player;
+import etat.apothicon.main.Apothicon;
+
 public class Stakeout_Gun extends Gun {
-    public Stakeout_Gun() {
-        super("Stakeout",
+    public Stakeout_Gun(Player player) {
+        super(player,
+                "Stakeout",
                 1,
                 8,
                 32,
@@ -18,11 +22,11 @@ public class Stakeout_Gun extends Gun {
                 "src/main/resources/guns/stakeout.png");
         setImage2();
     }
+
     public void setImage2() {
         try {
             this.image2 = ImageIO.read(new File("src/main/resources/guns/stakeout-2.png"));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -51,7 +51,6 @@ public class AssetSetter {
         ap.obj[7].worldY = 20 * ap.tileSize;
         ap.obj[7].worldX = 45 * ap.tileSize;
 
-
         ap.obj[8] = new M14_WallBuy();
         ap.obj[8].worldY = 46 * ap.tileSize;
         ap.obj[8].worldX = 29 * ap.tileSize;
@@ -61,6 +60,7 @@ public class AssetSetter {
         ap.obj[9].worldX = 40 * ap.tileSize;
 
     }
+
     public void setZombie() {
         ap.zombies[0] = new Zombie(ap);
         ap.zombies[0].worldX = 32 * ap.tileSize;

@@ -5,9 +5,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import etat.apothicon.entity.Player;
+import etat.apothicon.main.Apothicon;
+
 public class MP40_Gun extends Gun {
-    public MP40_Gun() {
-        super("MP40",
+    public MP40_Gun(Player player) {
+        super(player,
+                "MP40",
                 1,
                 32,
                 192,

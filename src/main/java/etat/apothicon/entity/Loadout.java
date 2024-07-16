@@ -1,7 +1,10 @@
 package etat.apothicon.entity;
 
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import etat.apothicon.main.Apothicon;
@@ -41,11 +44,12 @@ public class Loadout {
     private int defaultHealth;
     private int health;
 
-    public Loadout(Player player) {
-        init();
+    public Loadout(Player player, Apothicon ap) {
         this.player = player;
-        this.ap = player.ap;
+        this.ap = ap;
         this.loadoutTimer = new Timer(currentWeaponIdx, null);
+
+        init();
     }
 
     private void init() {
@@ -60,7 +64,7 @@ public class Loadout {
         this.maxGunNum = 2;
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
-        M1911_Gun m1911 = new M1911_Gun();
+        M1911_Gun m1911 = new M1911_Gun(this.player);
         this.guns.add(m1911);
         this.currentWeaponIdx = 0;
 
@@ -107,10 +111,13 @@ public class Loadout {
         // all other guns are semi auto and can fire as fast as user can trigger pull
         shotCount += (1 * this.fireRateMultiplier);
         if (shotCount > this.guns.get(currentWeaponIdx).shotCount) {
-            this.guns.get(currentWeaponIdx).fire();
+            Point mousePosition = MouseInfo.getPointerInfo().getLocation();
+            SwingUtilities.convertPointFromScreen(mousePosition, ap);
+
+            this.guns.get(currentWeaponIdx).fire(mousePosition);
             shotCount = 0;
 
-        } 
+        }
         return shotCount;
     }
 
@@ -272,22 +279,22 @@ public class Loadout {
     public void purchaseGun(SuperObject object) {
         switch (object.name) {
             case "MP40":
-                MP40_Gun mp40 = new MP40_Gun();
+                MP40_Gun mp40 = new MP40_Gun(this.player);
                 mp40.setWallBuy((WallBuy) object);
                 handleGunPurchase(mp40);
                 break;
             case "M14":
-                M14_Gun m14 = new M14_Gun();
+                M14_Gun m14 = new M14_Gun(this.player);
                 m14.setWallBuy((WallBuy) object);
                 handleGunPurchase(m14);
                 break;
             case "Olympia":
-                Olympia_Gun o = new Olympia_Gun();
+                Olympia_Gun o = new Olympia_Gun(this.player);
                 o.setWallBuy((WallBuy) object);
                 handleGunPurchase(o);
                 break;
             case "Stakeout":
-                Stakeout_Gun st = new Stakeout_Gun();
+                Stakeout_Gun st = new Stakeout_Gun(this.player);
                 st.setWallBuy((WallBuy) object);
                 handleGunPurchase(st);
                 break;
