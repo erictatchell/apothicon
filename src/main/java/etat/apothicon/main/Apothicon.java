@@ -2,6 +2,7 @@ package etat.apothicon.main;
 
 import etat.apothicon.tile.TileManager;
 import etat.apothicon.object.weapon.gun.*;
+import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
 import etat.apothicon.entity.Zombie;
 import etat.apothicon.object.SuperObject;
@@ -38,7 +39,7 @@ public class Apothicon extends JPanel implements Runnable {
     KeyInput keyIn = new KeyInput();
     MouseInput mouseIn = new MouseInput();
     public Player player = new Player(this, keyIn, mouseIn);
-    public ArrayList<Zombie> zombies = new ArrayList<>();
+    public Entity zombies[] = new Entity[10];
     // JuggernogMachine jug = new JuggernogMachinje(this);
     // QuickReviveMachine qr = new QuickReviveMachine(this);
     // SpeedColaMachine sc = new SpeedColaMachine(this);
@@ -57,7 +58,7 @@ public class Apothicon extends JPanel implements Runnable {
 
     public void setup() {
         aSetter.setObject();
-
+        aSetter.setZombie();
     }
 
     public void drawText(Graphics2D g2) {
@@ -99,7 +100,6 @@ public class Apothicon extends JPanel implements Runnable {
         long currentTime;
         long timer = 0;
         int drawCount = 0;
-        zombies.add(new Zombie(this));
         while (thread != null) {
 
             currentTime = System.nanoTime();
@@ -140,14 +140,21 @@ public class Apothicon extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+        for (int i = 0; i < zombies.length; i++) {
+            if (zombies[i] != null) {
+                zombies[i].update();
+            }
+        }
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         tileManager.draw(g2);
-        for (Zombie z : zombies) {
-            z.draw(g2, this);
+        for (int i = 0; i < zombies.length; i++) {
+            if (zombies[i] != null) {
+                zombies[i].draw(g2);
+            }
         }
         for (int i = 0; i < obj.length; i++) {
             if (obj[i] != null) {
@@ -155,6 +162,7 @@ public class Apothicon extends JPanel implements Runnable {
 
             }
         }
+
         player.draw(g2);
         drawText(g2);
         g2.dispose();

@@ -1,5 +1,6 @@
 package etat.apothicon.main;
 
+import etat.apothicon.entity.Zombie;
 import etat.apothicon.object.perk.machine.DoubleTapMachine;
 import etat.apothicon.object.perk.machine.JuggernogMachine;
 import etat.apothicon.object.weapon.wallbuy.M14_WallBuy;
@@ -59,5 +60,10 @@ public class AssetSetter {
         ap.obj[9].worldY = 41 * ap.tileSize;
         ap.obj[9].worldX = 40 * ap.tileSize;
 
+    }
+    public void setZombie() {
+        ap.zombies[0] = new Zombie(ap);
+        ap.zombies[0].worldX = 32 * ap.tileSize;
+        ap.zombies[0].worldY = 43 * ap.tileSize;
     }
 }

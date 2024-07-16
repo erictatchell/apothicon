@@ -27,9 +27,9 @@ import javax.swing.SwingUtilities;
 
 public class Player extends Entity {
 
-    Apothicon ap;
     KeyInput keyIn;
     MouseInput mouseIn;
+    Apothicon ap;
 
     public Loadout loadout;
 
@@ -41,6 +41,7 @@ public class Player extends Entity {
     private int slotX = 16;
 
     public Player(Apothicon ap, KeyInput keyIn, MouseInput mouseIn) {
+        super(ap);
         this.ap = ap;
         this.keyIn = keyIn;
         this.mouseIn = mouseIn;
@@ -56,18 +57,14 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage() {
-        try {
-            up1 = ImageIO.read(new File("src/main/resources/player/player-down1.png"));
-            up2 = ImageIO.read(new File("src/main/resources/player/player-down2.png"));
-            down1 = ImageIO.read(new File("src/main/resources/player/player-up1.png"));
-            down2 = ImageIO.read(new File("src/main/resources/player/player-up2.png"));
-            left1 = ImageIO.read(new File("src/main/resources/player/player-left1.png"));
-            left2 = ImageIO.read(new File("src/main/resources/player/player-left2.png"));
-            right1 = ImageIO.read(new File("src/main/resources/player/player-right1.png"));
-            right2 = ImageIO.read(new File("src/main/resources/player/player-right2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        up1 = setup("player/player-up1.png");
+        up2 = setup("player/player-up2.png");
+        down1 = setup("player/player-down1.png");
+        down2 = setup("player/player-down2.png");
+        left1 = setup("player/player-left1.png");
+        left2 = setup("player/player-left2.png");
+        right1 = setup("player/player-right1.png");
+        right2 = setup("player/player-right2.png");
     }
 
     public void setDefaultValues() {
@@ -105,54 +102,56 @@ public class Player extends Entity {
             pickUpObject(objIndex);
         }
 
-        boolean moving = false;
+        if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {
+            if (keyIn.upPressed) {
+                direction = "up";
+            }
+            if (keyIn.downPressed) {
+                direction = "down";
+            }
+            if (keyIn.leftPressed) {
+                direction = "left";
+            }
+            if (keyIn.rightPressed) {
+                direction = "right";
+            }
 
-        // First, set the direction and check for collision
-        if (keyIn.upPressed) {
-            direction = "up";
             collisionOn = false;
             ap.cc.checkTile(this);
-            if (!collisionOn) {
-                this.worldY -= this.speed;
-            }
-            moving = true;
-        }
-        if (keyIn.downPressed) {
-            direction = "down";
-            collisionOn = false;
-            ap.cc.checkTile(this);
-            if (!collisionOn) {
-                this.worldY += this.speed;
-            }
-            moving = true;
-        }
-        if (keyIn.leftPressed) {
-            direction = "left";
-            collisionOn = false;
-            ap.cc.checkTile(this);
-            if (!collisionOn) {
-                this.worldX -= this.speed;
-            }
-            moving = true;
-        }
-        if (keyIn.rightPressed) {
-            direction = "right";
-            collisionOn = false;
-            ap.cc.checkTile(this);
-            if (!collisionOn) {
-                this.worldX += this.speed;
-            }
-            moving = true;
-        }
-
-        // Handle sprite animation
-        if (moving) {
-            // Check for non-interactive pickups (powerups)
+            // for non interact pickups (powerups)
             pickUpObject(objIndex);
+
+            // zombie collision
+            int zombieIndex = ap.cc.checkEntity(this, ap.zombies);
+            interactZombie(zombieIndex);
+
+            if (!collisionOn) {
+                if (direction == "up") {
+
+                    this.worldY -= this.speed;
+                }
+                if (direction == "down") {
+
+                    this.worldY += this.speed;
+                }
+                if (direction == "left") {
+
+                    this.worldX -= this.speed;
+                }
+                if (direction == "right") {
+
+                    this.worldX += this.speed;
+                }
+
+            }
 
             spriteCounter++;
             if (spriteCounter > 12) { // 12 frames
-                spriteNum = (spriteNum == 1) ? 2 : 1;
+                if (spriteNum == 1) {
+                    spriteNum = 2;
+                } else {
+                    spriteNum = 1;
+                }
                 spriteCounter = 0;
             }
         }
@@ -168,6 +167,11 @@ public class Player extends Entity {
         this.purchaseString = name;
     }
 
+    public void interactZombie(int index) {
+        if (index != 999) {
+            System.out.println("slap him");
+        }
+    }
     public void pickUpObject(int index) {
         if (index != 999) {
             SuperObject obj = ap.obj[index];

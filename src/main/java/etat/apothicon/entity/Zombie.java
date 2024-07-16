@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -15,13 +16,14 @@ public class Zombie extends Entity {
     public final int screenY;
 
     public Zombie(Apothicon ap) {
+        super(ap);
+        direction = "down";
+        speed = 2;
         this.ap = ap;
         solidArea = new Rectangle(8, 16, 32, 32);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        this.worldX = 32 * ap.tileSize;
-        this.worldY = 43 * ap.tileSize;
         setZombieImage();
         screenX = ap.screenWidth / 2 - (ap.tileSize / 2);
         screenY = ap.screenHeight / 2 - (ap.tileSize / 2);
@@ -29,26 +31,35 @@ public class Zombie extends Entity {
     }
 
     public void setZombieImage() {
-        try {
-            this.z1_pr = ImageIO.read(new File("src/main/resources/zombie/z1_right1.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        up1 = setup("zombie/z1_up1.png");
+        up2 = setup("zombie/z1_up2.png");
+        down1 = setup("zombie/z1_down1.png");
+        down2 = setup("zombie/z1_down2.png");
+        left1 = setup("zombie/z1_left1.png");
+        left2 = setup("zombie/z1_left2.png");
+        right1 = setup("zombie/z1_right1.png");
+        right2 = setup("zombie/z1_right2.png");
     }
-    public void update() {
 
-    }
-
-    public void draw(Graphics2D g2, Apothicon ap) {
-        int screenX = worldX - ap.player.worldX + ap.player.screenX;
-        int screenY = worldY - ap.player.worldY + ap.player.screenY;
-
-        if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX &&
-                worldX - ap.tileSize < ap.player.worldX + ap.player.screenX &&
-                worldY + ap.tileSize > ap.player.worldY - ap.player.screenY &&
-                worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
-            g2.drawImage(this.z1_pr, screenX, screenY, ap.tileSize, ap.tileSize, null);
-
+    public void setAction() {
+        actionLockCounter++;
+        if (actionLockCounter > 60) {
+            Random random = new Random();
+            int i = random.nextInt(100) + 1;
+            if (i <= 25) {
+                direction = "up";
+            }
+            if (i > 25 && i <= 50) {
+                direction = "down";
+            }
+            if (i > 50 && i <= 75) {
+                direction = "left";
+            }
+            if (i > 75 && i <= 100) {
+                direction = "right";
+            }
+            actionLockCounter = 0;
         }
+
     }
 }

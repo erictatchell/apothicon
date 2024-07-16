@@ -9,6 +9,48 @@ public class CollisionChecker {
         this.ap = ap;
     }
 
+    public void checkPlayer(Entity e) {
+        // get entities solid area position
+        e.solidArea.x = e.worldX + e.solidArea.x;
+        e.solidArea.y = e.worldY + e.solidArea.y;
+
+        // get objects solid area position
+        ap.player.solidArea.x = ap.player.worldX + ap.player.solidArea.x;
+        ap.player.solidArea.y = ap.player.worldY + ap.player.solidArea.y;
+
+        switch (e.direction) {
+            case "up":
+                e.solidArea.y -= e.speed;
+                if (e.solidArea.intersects(ap.player.solidArea)) {
+                    e.collisionOn = true;
+                }
+                break;
+            case "down":
+                e.solidArea.y += e.speed;
+                if (e.solidArea.intersects(ap.player.solidArea)) {
+                    e.collisionOn = true;
+                }
+                break;
+            case "left":
+                e.solidArea.x -= e.speed;
+                if (e.solidArea.intersects(ap.player.solidArea)) {
+                    e.collisionOn = true;
+                }
+                break;
+            case "right":
+                e.solidArea.x += e.speed;
+                if (e.solidArea.intersects(ap.player.solidArea)) {
+                    e.collisionOn = true;
+                }
+                break;
+        }
+        e.solidArea.x = e.solidAreaDefaultX;
+        e.solidArea.y = e.solidAreaDefaultY;
+        ap.player.solidArea.x = ap.player.solidAreaDefaultX;
+        ap.player.solidArea.y = ap.player.solidAreaDefaultY;
+
+    }
+
     public int checkObject(Entity e, boolean player) {
         int index = 999;
 
@@ -125,5 +167,58 @@ public class CollisionChecker {
             }
 
         }
+    }
+
+    // zombie collision
+    public int checkEntity(Entity e, Entity[] target) {
+        int index = 999;
+
+        for (int i = 0; i < target.length; i++) {
+            if (target[i] != null) {
+                // get entities solid area position
+                e.solidArea.x = e.worldX + e.solidArea.x;
+                e.solidArea.y = e.worldY + e.solidArea.y;
+
+                // get objects solid area position
+                target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
+                target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
+
+                switch (e.direction) {
+                    case "up":
+                        e.solidArea.y -= e.speed;
+                        if (e.solidArea.intersects(target[i].solidArea)) {
+                            e.collisionOn = true;
+                            index = i;
+                        }
+                        break;
+                    case "down":
+                        e.solidArea.y += e.speed;
+                        if (e.solidArea.intersects(target[i].solidArea)) {
+                            e.collisionOn = true;
+                            index = i;
+                        }
+                        break;
+                    case "left":
+                        e.solidArea.x -= e.speed;
+                        if (e.solidArea.intersects(target[i].solidArea)) {
+                            e.collisionOn = true;
+                            index = i;
+                        }
+                        break;
+                    case "right":
+                        e.solidArea.x += e.speed;
+                        if (e.solidArea.intersects(target[i].solidArea)) {
+                            e.collisionOn = true;
+                            index = i;
+                        }
+                        break;
+                }
+                e.solidArea.x = e.solidAreaDefaultX;
+                e.solidArea.y = e.solidAreaDefaultY;
+                target[i].solidArea.x = target[i].solidAreaDefaultX;
+                target[i].solidArea.y = target[i].solidAreaDefaultY;
+            }
+        }
+        return index;
     }
 }
