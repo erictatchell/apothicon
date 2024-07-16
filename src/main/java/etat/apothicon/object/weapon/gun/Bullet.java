@@ -20,6 +20,16 @@ public class Bullet extends Entity {
         this.user = user;
     }
     public void update() {
+        if (user == this.ap.player) {
+            int zombieIndex = ap.cc.checkOmnidirectionalEntity(this, ap.zombies);
+            if (zombieIndex != 999) {
+                //ap.player.damageZombie(zombieIndex);
+                alive = false;
+            }
+        }
+        if (user != this.ap.player) {
+
+        }
         worldX += speed * Math.cos(Math.toRadians(directionAngle));
         worldY += speed * Math.sin(Math.toRadians(directionAngle));
         

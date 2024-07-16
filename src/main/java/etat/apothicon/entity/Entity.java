@@ -13,10 +13,10 @@ import etat.apothicon.main.Apothicon;
 
 public class Entity {
     // TODO: oop-ify this!
-    Apothicon ap;
+    public Apothicon ap;
     public int worldX;
     public int worldY;
-    public int speed = 10;
+    public int speed = 40;
 
     public BufferedImage up1, up2, left1, left2, right1, right2, down1, down2;
     public String direction;
@@ -26,7 +26,8 @@ public class Entity {
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public boolean onPath = false;
-    public Rectangle solidArea;
+    public Rectangle solidArea = new Rectangle();
+
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public int actionLockCounter = 0;
@@ -34,6 +35,13 @@ public class Entity {
     public Entity(Apothicon ap) {
 
         this.ap = ap;
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 30;
+        solidArea.height = 30;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+
     }
 
     public BufferedImage setup(String url) {
@@ -162,7 +170,7 @@ public class Entity {
                 worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
 
             g2.setColor(Color.yellow);
-            g2.drawRect(screenX, screenY, ap.tileSize / 3, ap.tileSize / 3);
+            g2.drawRect(screenX, screenY, ap.tileSize / 4, ap.tileSize / 4);
 
         }
     }

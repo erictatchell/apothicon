@@ -1,5 +1,7 @@
 package etat.apothicon.main;
 
+import java.awt.Rectangle;
+
 import etat.apothicon.entity.Entity;
 import etat.apothicon.object.weapon.gun.Bullet;
 
@@ -9,7 +11,6 @@ public class CollisionChecker {
     public CollisionChecker(Apothicon ap) {
         this.ap = ap;
     }
-  
 
     public void checkPlayer(Entity e) {
         // get entities solid area position
@@ -170,6 +171,30 @@ public class CollisionChecker {
 
         }
     }
+
+    public int checkOmnidirectionalEntity(Entity e, Entity[] target) {
+        int index = 999;
+    
+        int futureX = e.worldX + (int) (e.speed * Math.cos(Math.toRadians(e.directionAngle)));
+        int futureY = e.worldY + (int) (e.speed * Math.sin(Math.toRadians(e.directionAngle)));
+    
+        // THANKS CHATGPT!!!
+        for (int i = 0; i < target.length; i++) {
+            if (target[i] != null) {
+                // Get entities' solid area positions
+                Rectangle eSolidArea = new Rectangle(futureX + e.solidArea.x, futureY + e.solidArea.y, e.solidArea.width, e.solidArea.height);
+                Rectangle targetSolidArea = new Rectangle(target[i].worldX + target[i].solidArea.x, target[i].worldY + target[i].solidArea.y, target[i].solidArea.width, target[i].solidArea.height);
+    
+                if (eSolidArea.intersects(targetSolidArea)) {
+                    e.collisionOn = true;
+                    index = i;
+                    break; // Exit the loop as soon as a collision is detected
+                }
+            }
+        }
+        return index;
+    }
+    
 
     // zombie collision
     public int checkEntity(Entity e, Entity[] target) {

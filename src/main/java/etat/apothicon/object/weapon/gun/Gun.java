@@ -135,7 +135,7 @@ public class Gun {
                 int dir = owner.calculateAngle();
                 fireDelay++;
                 Bullet bullet = new Bullet(owner.ap);
-                bullet.set(owner.worldX, owner.worldY, owner.calculateAngle(), true, owner);
+                bullet.set(owner.worldX, owner.worldY, dir, true, owner);
                 owner.ap.bullets.add(bullet);
 
                 magazine -= 1;
