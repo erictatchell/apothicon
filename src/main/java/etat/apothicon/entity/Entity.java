@@ -10,6 +10,8 @@ public class Entity {
     public int speed;
 
     public BufferedImage up1, up2, left1, left2, right1, right2, down1, down2;
+    public BufferedImage z1_up1, z1_up2, z1_left1, z1_left2, z1_right1, z1_right2, z1_down1, z1_down2;
+    public BufferedImage z1_pr;
     public String direction;
 
     public int spriteCounter = 0;

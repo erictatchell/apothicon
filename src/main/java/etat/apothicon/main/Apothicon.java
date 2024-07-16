@@ -3,10 +3,12 @@ package etat.apothicon.main;
 import etat.apothicon.tile.TileManager;
 import etat.apothicon.object.weapon.gun.*;
 import etat.apothicon.entity.Player;
+import etat.apothicon.entity.Zombie;
 import etat.apothicon.object.SuperObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Apothicon extends JPanel implements Runnable {
     public final int originalTileSize = 16;
@@ -36,6 +38,7 @@ public class Apothicon extends JPanel implements Runnable {
     KeyInput keyIn = new KeyInput();
     MouseInput mouseIn = new MouseInput();
     public Player player = new Player(this, keyIn, mouseIn);
+    public ArrayList<Zombie> zombies = new ArrayList<>();
     // JuggernogMachine jug = new JuggernogMachinje(this);
     // QuickReviveMachine qr = new QuickReviveMachine(this);
     // SpeedColaMachine sc = new SpeedColaMachine(this);
@@ -96,7 +99,7 @@ public class Apothicon extends JPanel implements Runnable {
         long currentTime;
         long timer = 0;
         int drawCount = 0;
-
+        zombies.add(new Zombie(this));
         while (thread != null) {
 
             currentTime = System.nanoTime();
@@ -143,6 +146,9 @@ public class Apothicon extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         tileManager.draw(g2);
+        for (Zombie z : zombies) {
+            z.draw(g2, this);
+        }
         for (int i = 0; i < obj.length; i++) {
             if (obj[i] != null) {
                 obj[i].draw(g2, this);

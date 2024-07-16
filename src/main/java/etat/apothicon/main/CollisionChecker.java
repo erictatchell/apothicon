@@ -89,39 +89,41 @@ public class CollisionChecker {
         int eBottomRow = eBottomWorldY / ap.tileSize;
 
         int tileNum1, tileNum2;
-        switch (e.direction) {
-            case "up":
-                eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
-                tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eTopRow];
-                tileNum2 = ap.tileManager.mapTileNum[eRightCol][eTopRow];
-                if (ap.tileManager.tile[tileNum1].collision || ap.tileManager.tile[tileNum2].collision) {
-                    e.collisionOn = true;
-                }
-                break;
-            case "down":
-                eBottomRow = (eBottomWorldY + e.speed) / ap.tileSize;
-                tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
-                tileNum2 = ap.tileManager.mapTileNum[eRightCol][eBottomRow];
-                if (ap.tileManager.tile[tileNum1].collision || ap.tileManager.tile[tileNum2].collision) {
-                    e.collisionOn = true;
-                }
-                break;
-            case "left":
-                eLeftCol = (eLeftWorldX - e.speed) / ap.tileSize;
-                tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eTopRow];
-                tileNum2 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
-                if (ap.tileManager.tile[tileNum1].collision || ap.tileManager.tile[tileNum2].collision) {
-                    e.collisionOn = true;
-                }
-                break;
-            case "right":
-                eRightCol = (eRightWorldX + e.speed) / ap.tileSize;
-                tileNum1 = ap.tileManager.mapTileNum[eRightCol][eTopRow];
-                tileNum2 = ap.tileManager.mapTileNum[eRightCol][eBottomRow];
-                if (ap.tileManager.tile[tileNum1].collision || ap.tileManager.tile[tileNum2].collision) {
-                    e.collisionOn = true;
-                }
-                break;
+        if (e.direction == "up") {
+            eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
+            tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eTopRow];
+            tileNum2 = ap.tileManager.mapTileNum[eRightCol][eTopRow];
+            if (ap.tileManager.tile[tileNum1].collision || ap.tileManager.tile[tileNum2].collision) {
+                e.collisionOn = true;
+            }
+
+        }
+        if (e.direction == "down") {
+            eBottomRow = (eBottomWorldY + e.speed) / ap.tileSize;
+            tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
+            tileNum2 = ap.tileManager.mapTileNum[eRightCol][eBottomRow];
+            if (ap.tileManager.tile[tileNum1].collision || ap.tileManager.tile[tileNum2].collision) {
+                e.collisionOn = true;
+            }
+
+        }
+        if (e.direction == "left") {
+            eLeftCol = (eLeftWorldX - e.speed) / ap.tileSize;
+            tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eTopRow];
+            tileNum2 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
+            if (ap.tileManager.tile[tileNum1].collision || ap.tileManager.tile[tileNum2].collision) {
+                e.collisionOn = true;
+            }
+
+        }
+        if (e.direction == "right") {
+            eRightCol = (eRightWorldX + e.speed) / ap.tileSize;
+            tileNum1 = ap.tileManager.mapTileNum[eRightCol][eTopRow];
+            tileNum2 = ap.tileManager.mapTileNum[eRightCol][eBottomRow];
+            if (ap.tileManager.tile[tileNum1].collision || ap.tileManager.tile[tileNum2].collision) {
+                e.collisionOn = true;
+            }
+
         }
     }
 }

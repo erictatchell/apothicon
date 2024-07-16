@@ -73,34 +73,12 @@ public class Player extends Entity {
     public void setDefaultValues() {
         this.worldX = ap.tileSize * 29;
         this.worldY = ap.tileSize * 43;
-        // this.points = 20000;
-        // this.revives = 0;
         this.slotX = 16;
         this.perkOffset = 16;
-        // this.health = 150;
-        // this.defaultHealth = 150;
         this.speed = 4;
-        // this.maxGunNum = 2;
         this.direction = "down";
-        // this.reloadRateMultiplier = 1.0f;
-        // this.fireRateMultiplier = 1.0f;
-        // M1911_Gun m1911 = new M1911_Gun();
-        // this.guns.add(m1911);
-        // this.currentWeapon = 0;
     }
 
-    // public void setGunNum(int x) {
-    // this.maxGunNum = x;
-    // }
-    // public int getPoints() {
-    // return points;
-    // }
-    // public void setPoints(int points) {
-    // this.points = points;
-    // }
-    // public int getGunNum() {
-    // return this.maxGunNum;
-    // }
     int shotCount = 0;
 
     public void update() {
@@ -109,10 +87,6 @@ public class Player extends Entity {
 
         if (mouseIn.leftMousePressed) {
             shotCount = loadout.fireWeapon(shotCount);
-            System.out.println("ScreenMiddle width,height: " + ap.screenWidth / 2 + "," + ap.screenHeight / 2);
-            System.out.println("Mouse x,y: " + MouseInfo.getPointerInfo().getLocation().x + ","
-                    + MouseInfo.getPointerInfo().getLocation().y);
-
             if (shotCount >= 5) {
                 loadout.getCurrentWeapon().bullet = 0;
             }
@@ -129,54 +103,56 @@ public class Player extends Entity {
         }
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
-
         }
-        if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {
-            if (keyIn.upPressed) {
-                direction = "up";
-            }
-            if (keyIn.downPressed) {
-                direction = "down";
-            }
-            if (keyIn.leftPressed) {
-                direction = "left";
-            }
-            if (keyIn.rightPressed) {
-                direction = "right";
-            }
 
+        boolean moving = false;
+
+        // First, set the direction and check for collision
+        if (keyIn.upPressed) {
+            direction = "up";
             collisionOn = false;
             ap.cc.checkTile(this);
-            // for non interact pickups (powerups)
-            pickUpObject(objIndex);
-
             if (!collisionOn) {
-                if (direction == "up") {
-
-                    this.worldY -= this.speed;
-                }
-                if (direction == "down") {
-
-                    this.worldY += this.speed;
-                }
-                if (direction == "left") {
-
-                    this.worldX -= this.speed;
-                }
-                if (direction == "right") {
-
-                    this.worldX += this.speed;
-                }
-
+                this.worldY -= this.speed;
             }
+            moving = true;
+        }
+        if (keyIn.downPressed) {
+            direction = "down";
+            collisionOn = false;
+            ap.cc.checkTile(this);
+            if (!collisionOn) {
+                this.worldY += this.speed;
+            }
+            moving = true;
+        }
+        if (keyIn.leftPressed) {
+            direction = "left";
+            collisionOn = false;
+            ap.cc.checkTile(this);
+            if (!collisionOn) {
+                this.worldX -= this.speed;
+            }
+            moving = true;
+        }
+        if (keyIn.rightPressed) {
+            direction = "right";
+            collisionOn = false;
+            ap.cc.checkTile(this);
+            if (!collisionOn) {
+                this.worldX += this.speed;
+            }
+            moving = true;
+        }
+
+        // Handle sprite animation
+        if (moving) {
+            // Check for non-interactive pickups (powerups)
+            pickUpObject(objIndex);
 
             spriteCounter++;
             if (spriteCounter > 12) { // 12 frames
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else {
-                    spriteNum = 1;
-                }
+                spriteNum = (spriteNum == 1) ? 2 : 1;
                 spriteCounter = 0;
             }
         }
@@ -245,17 +221,33 @@ public class Player extends Entity {
         }
     }
 
+    public int calculateDistanceFromNearestCollision() {
+        return 1000;
+    }
+
     public void draw(Graphics2D g2) {
         drawPerkIcons(g2);
         g2.setColor(Color.YELLOW);
 
         Point mousePosition = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(mousePosition, ap);
+        int centerX = ap.screenWidth / 2;
+        int centerY = ap.screenHeight / 2;
+
+        int extendLength = calculateDistanceFromNearestCollision();
         for (int i = 0; i < loadout.getCurrentWeapon().bullet; i++) {
-            // TODO: precalculate and read from somewhere so bullets dont curve
-            int centerX = ap.screenWidth / 2;
-            int centerY = ap.screenHeight / 2;
-            g2.drawLine(centerX, centerY, mousePosition.x, mousePosition.y);
+            int deltaX = mousePosition.x - centerX;
+            int deltaY = mousePosition.y - centerY;
+
+            double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            double directionX = deltaX / distance;
+            double directionY = deltaY / distance;
+
+            int extendedX = (int) (centerX + directionX * extendLength);
+            int extendedY = (int) (centerY + directionY * extendLength);
+
+            g2.drawLine(centerX, centerY, extendedX, extendedY);
         }
         BufferedImage image = null;
         switch (this.direction) {
@@ -289,6 +281,8 @@ public class Player extends Entity {
                 break;
         }
         g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
+
+        // Display weapon image, flips based on mouse
         int angle = calculateAngle();
         // omg kms
         BufferedImage weaponImage = ImageManager.createFlipped(getImage(mousePosition));
@@ -309,6 +303,14 @@ public class Player extends Entity {
 
     }
 
+    /**
+     * Return the current weapon image based on mouse
+     * 
+     * @param mousePosition
+     * @return an image based on the following:
+     *         mousePosition > middle = image1 (left facing barrel)
+     *         mousePosition < middle = image2 (right facing barrel)
+     */
     public BufferedImage getImage(Point mousePosition) {
         if (mousePosition.x > ap.screenWidth / 2) {
             return loadout.getCurrentWeapon().image;
@@ -316,22 +318,28 @@ public class Player extends Entity {
         return loadout.getCurrentWeapon().image2;
     }
 
+    /**
+     * Calculates the angle between mousePosition.x and centerscreen (player)
+     * 
+     * @return angle in degrees
+     */
     public int calculateAngle() {
         Point mousePosition = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(mousePosition, ap);
         int centerX = ap.screenWidth / 2;
         int centerY = ap.screenHeight / 2;
-    
+
         int deltaX = mousePosition.x - centerX;
         int deltaY = mousePosition.y - centerY;
-    
-        double angleInRadians = Math.atan2(deltaY, deltaX);
-    
-        int angleInDegrees = (int) Math.toDegrees(angleInRadians);
-        return angleInDegrees;
-    }
-    
 
+        // atan2 for / 0 error
+        double angleInRadians = Math.atan2(deltaY, deltaX);
+
+        return (int) Math.toDegrees(angleInRadians);
+    }
+
+    // Credit:
+    // https://stackoverflow.com/questions/37758061/rotate-a-buffered-image-in-java
     public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
         double rads = Math.toRadians(angle);
         double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
@@ -339,31 +347,30 @@ public class Player extends Entity {
         int h = img.getHeight();
         int newWidth = (int) Math.floor(w * cos + h * sin);
         int newHeight = (int) Math.floor(h * cos + w * sin);
-    
+
         BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = rotated.createGraphics();
         AffineTransform at = new AffineTransform();
         at.translate((newWidth - w) / 2, (newHeight - h) / 2);
-    
+
         int x = w / 2;
         int y = h / 2;
-    
+
         at.rotate(rads, x, y);
         g2d.setTransform(at);
         g2d.drawImage(img, 0, 0, null);
         g2d.dispose();
-    
+
         return rotated;
     }
-    
 
     public void resetPerkOffset() {
         this.perkOffset = 0;
     }
 
     public void incrementPerkOffset() {
-        // 40 just works/looks good LOL
-        this.perkOffset += 40;
+        // 35 just works/looks good LOL
+        this.perkOffset += 35;
     }
 
     public int getSlotX() {
