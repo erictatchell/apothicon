@@ -132,7 +132,7 @@ public class Player extends Entity {
 
             // zombie collision
             int zombieIndex = ap.cc.checkEntity(this, ap.zombies);
-            interactZombie(zombieIndex);
+            //interactZombie(zombieIndex);
 
             if (!collisionOn) {
                 if (direction == "up") {
@@ -176,9 +176,13 @@ public class Player extends Entity {
         this.purchaseString = name;
     }
 
-    public void interactZombie(int index) {
+    public void damageZombie(int index) {
         if (index != 999) {
-            System.out.println("slap him");
+            int damage = loadout.getCurrentWeapon().getDamage();
+            ap.zombies[index].takeDamage(damage);
+            if (ap.zombies[index].health <= 0) {
+                ap.zombies[index].die(index);
+            }
         }
     }
 

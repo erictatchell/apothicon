@@ -12,7 +12,7 @@ public class M1911_Gun extends Gun {
     public M1911_Gun(Player player) {
         super(player,
                 "M1911",
-                1,
+                15,
                 8,
                 32,
                 1.0f,

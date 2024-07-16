@@ -12,14 +12,14 @@ public class M14_Gun extends Gun {
     public M14_Gun(Player player) {
         super(player,
                 "M14",
-                1,
+                60,
                 8,
                 92,
                 0.0f,
                 SelectFire.SEMI_AUTO,
                 1,
                 1.0f,
-                "src/main/resources/guns/m14.png");
+                "src/main/resources/guns/m14-1.png");
 
         setImage2();
     }

@@ -23,7 +23,7 @@ public class Bullet extends Entity {
         if (user == this.ap.player) {
             int zombieIndex = ap.cc.checkOmnidirectionalEntity(this, ap.zombies);
             if (zombieIndex != 999) {
-                //ap.player.damageZombie(zombieIndex);
+                ap.player.damageZombie(zombieIndex);
                 alive = false;
             }
         }

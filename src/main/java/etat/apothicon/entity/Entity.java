@@ -16,7 +16,8 @@ public class Entity {
     public Apothicon ap;
     public int worldX;
     public int worldY;
-    public int speed = 40;
+    public int speed = 20;
+    public int health = 100;
 
     public BufferedImage up1, up2, left1, left2, right1, right2, down1, down2;
     public String direction;
@@ -131,9 +132,12 @@ public class Entity {
 
     }
 
+    public void die(int index) {
+        ap.zombies[index] = null;
+    }
+
     public void update() {
         setAction();
-
         checkCollision();
         if (!collisionOn) {
             if (direction == "up") {
@@ -159,6 +163,10 @@ public class Entity {
             spriteCounter = 0;
         }
     }
+    public void takeDamage(int dmg) {
+        this.health -= dmg;
+        
+    }
 
     public void drawBullet(Graphics2D g2) {
         int screenX = worldX - ap.player.worldX + ap.player.screenX;
@@ -170,7 +178,7 @@ public class Entity {
                 worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
 
             g2.setColor(Color.yellow);
-            g2.drawRect(screenX, screenY, ap.tileSize / 4, ap.tileSize / 4);
+            g2.fillRect(screenX, screenY, ap.tileSize / 5, ap.tileSize / 5);
 
         }
     }

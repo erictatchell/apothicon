@@ -44,6 +44,7 @@ public class Zombie extends Entity {
         right1 = setup("zombie/z1_right1.png");
         right2 = setup("zombie/z1_right2.png");
     }
+    
 
     public void setAction() {
         if (onPath) {

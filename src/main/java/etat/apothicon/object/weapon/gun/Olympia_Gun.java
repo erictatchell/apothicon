@@ -12,7 +12,7 @@ public class Olympia_Gun extends Gun {
     public Olympia_Gun(Player player) {
         super(player,
                 "Olympia",
-                1,
+                150,
                 2,
                 32,
                 0.5f,

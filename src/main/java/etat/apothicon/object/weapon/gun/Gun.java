@@ -131,11 +131,10 @@ public class Gun {
         if (!rechamberNeeded) {
 
             if (magazine >= 1) {
-                bullet = 1;
+
                 int dir = owner.calculateAngle();
-                fireDelay++;
                 Bullet bullet = new Bullet(owner.ap);
-                bullet.set(owner.worldX, owner.worldY, dir, true, owner);
+                bullet.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner);
                 owner.ap.bullets.add(bullet);
 
                 magazine -= 1;
@@ -164,5 +163,8 @@ public class Gun {
 
     public int getPrice() {
         return this.wallBuy.price;
+    }
+    public int getDamage() {
+        return this.damage;
     }
 }
