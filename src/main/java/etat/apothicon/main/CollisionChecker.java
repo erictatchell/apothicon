@@ -1,6 +1,7 @@
 package etat.apothicon.main;
 
 import etat.apothicon.entity.Entity;
+import etat.apothicon.object.weapon.gun.Bullet;
 
 public class CollisionChecker {
     Apothicon ap;
@@ -8,6 +9,7 @@ public class CollisionChecker {
     public CollisionChecker(Apothicon ap) {
         this.ap = ap;
     }
+  
 
     public void checkPlayer(Entity e) {
         // get entities solid area position

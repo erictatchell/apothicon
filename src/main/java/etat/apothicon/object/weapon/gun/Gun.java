@@ -49,7 +49,8 @@ public class Gun {
      * @param reloadRate
      * @param imagePath
      */
-    public Gun(Player owner, String name, int damage, int defaultAmmoPerMagazine, int reserve, float fireRate, SelectFire fireType,
+    public Gun(Player owner, String name, int damage, int defaultAmmoPerMagazine, int reserve, float fireRate,
+            SelectFire fireType,
             int range, float reloadRate, String imagePath) {
         this.owner = owner;
         this.name = name;
@@ -132,8 +133,11 @@ public class Gun {
             if (magazine >= 1) {
                 bullet = 1;
                 int dir = owner.calculateAngle();
-                owner.bullets.add(new Bullet(owner.ap.screenWidth / 2, owner.ap.screenHeight / 2, dir, 20));
                 fireDelay++;
+                Bullet bullet = new Bullet(owner.ap);
+                bullet.set(owner.worldX, owner.worldY, owner.calculateAngle(), true, owner);
+                owner.ap.bullets.add(bullet);
+
                 magazine -= 1;
             }
             if (magazine == 0) {

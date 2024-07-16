@@ -37,6 +37,7 @@ public class Apothicon extends JPanel implements Runnable {
     public SuperObject obj[] = new SuperObject[10];
     public AssetSetter aSetter = new AssetSetter(this);
     public PathFinder pFinder = new PathFinder(this);
+    public ArrayList<Bullet> bullets = new ArrayList<>();
 
     KeyInput keyIn = new KeyInput();
     MouseInput mouseIn = new MouseInput();
@@ -147,6 +148,13 @@ public class Apothicon extends JPanel implements Runnable {
                 zombies[i].update();
             }
         }
+        for (int i = 0; i < bullets.size(); i++) {
+            if (bullets.get(i) != null && bullets.get(i).alive) {
+                bullets.get(i).update();
+            } else if (!bullets.get(i).alive) {
+                bullets.remove(i);
+            }
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -156,6 +164,11 @@ public class Apothicon extends JPanel implements Runnable {
         for (int i = 0; i < zombies.length; i++) {
             if (zombies[i] != null) {
                 zombies[i].draw(g2);
+            }
+        }
+        for (int i = 0; i < bullets.size(); i++) {
+            if (bullets.get(i) != null) {
+                bullets.get(i).drawBullet(g2);
             }
         }
         for (int i = 0; i < obj.length; i++) {

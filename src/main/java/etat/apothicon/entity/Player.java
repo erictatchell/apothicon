@@ -50,7 +50,7 @@ public class Player extends Entity {
         this.keyIn = keyIn;
         this.mouseIn = mouseIn;
         this.loadout = new Loadout(this, this.ap);
-
+        this.bullets = new ArrayList<>();
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
@@ -244,13 +244,6 @@ public class Player extends Entity {
         g2.setColor(Color.YELLOW);
         Point mousePosition = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(mousePosition, ap);
-        for (int i = 0; i < bullets.size(); i++) {
-            if (bullets.get(i) != null) {
-
-                bullets.get(i).update();
-                g2.drawRect((int) bullets.get(i).x, (int) bullets.get(i).y, 5, 5);
-            }
-        }
         BufferedImage image = null;
         switch (this.direction) {
             case "up":

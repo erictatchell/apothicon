@@ -1,5 +1,6 @@
 package etat.apothicon.entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -15,15 +16,17 @@ public class Entity {
     Apothicon ap;
     public int worldX;
     public int worldY;
-    public int speed;
+    public int speed = 10;
 
     public BufferedImage up1, up2, left1, left2, right1, right2, down1, down2;
     public String direction;
+    public int directionAngle;
 
+    public boolean alive;
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public boolean onPath = false;
-    public Rectangle solidArea; 
+    public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public int actionLockCounter = 0;
@@ -107,7 +110,7 @@ public class Entity {
             // int nextCol = ap.pFinder.pathList.get(0).col;
             // int nextRow = ap.pFinder.pathList.get(0).row;
             // if (nextCol == goalCol && nextRow == goalRow) {
-            //     onPath = false;
+            // onPath = false;
             // }
         }
     }
@@ -146,6 +149,21 @@ public class Entity {
                 spriteNum = 1;
             }
             spriteCounter = 0;
+        }
+    }
+
+    public void drawBullet(Graphics2D g2) {
+        int screenX = worldX - ap.player.worldX + ap.player.screenX;
+        int screenY = worldY - ap.player.worldY + ap.player.screenY;
+
+        if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX &&
+                worldX - ap.tileSize < ap.player.worldX + ap.player.screenX &&
+                worldY + ap.tileSize > ap.player.worldY - ap.player.screenY &&
+                worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
+
+            g2.setColor(Color.yellow);
+            g2.drawRect(screenX, screenY, ap.tileSize / 3, ap.tileSize / 3);
+
         }
     }
 
