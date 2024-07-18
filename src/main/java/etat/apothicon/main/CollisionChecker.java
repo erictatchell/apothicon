@@ -1,9 +1,7 @@
 package etat.apothicon.main;
 
-import java.awt.Rectangle;
-
 import etat.apothicon.entity.Entity;
-import etat.apothicon.object.weapon.gun.Bullet;
+import java.awt.Rectangle;
 
 public class CollisionChecker {
     Apothicon ap;
@@ -191,7 +189,7 @@ public class CollisionChecker {
         int eBottomRow = eBottomWorldY / ap.tileSize;
 
         int tileNum1, tileNum2;
-        if (e.direction == "up") {
+        if ("up".equals(e.direction)) {
             eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
             tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eTopRow];
             tileNum2 = ap.tileManager.mapTileNum[eRightCol][eTopRow];
@@ -200,7 +198,7 @@ public class CollisionChecker {
             }
 
         }
-        if (e.direction == "down") {
+        if ("down".equals(e.direction)) {
             eBottomRow = (eBottomWorldY + e.speed) / ap.tileSize;
             tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
             tileNum2 = ap.tileManager.mapTileNum[eRightCol][eBottomRow];
@@ -209,7 +207,7 @@ public class CollisionChecker {
             }
 
         }
-        if (e.direction == "left") {
+        if ("left".equals(e.direction)) {
             eLeftCol = (eLeftWorldX - e.speed) / ap.tileSize;
             tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eTopRow];
             tileNum2 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
@@ -218,7 +216,7 @@ public class CollisionChecker {
             }
 
         }
-        if (e.direction == "right") {
+        if ("right".equals(e.direction)) {
             eRightCol = (eRightWorldX + e.speed) / ap.tileSize;
             tileNum1 = ap.tileManager.mapTileNum[eRightCol][eTopRow];
             tileNum2 = ap.tileManager.mapTileNum[eRightCol][eBottomRow];
