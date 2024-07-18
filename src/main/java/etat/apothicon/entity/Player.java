@@ -93,19 +93,20 @@ public class Player extends Entity {
         this.slotX = perkOffset;
 
         // if we want to shoot, don't need to rechamber, and the delay is up
-        if (!rechamberNeeded && mouseIn.leftMousePressed && fireDelayCounter == loadout.getCurrentWeapon().fireDelay) {
+        if (!loadout.getCurrentWeapon().rechamberNeeded && mouseIn.leftMousePressed
+                && fireDelayCounter == loadout.getCurrentWeapon().fireDelay) {
 
             loadout.fireWeapon();
             if (loadout.getCurrentWeapon().fireType == FireType.SEMI_AUTO) {
                 // rechamber needed, prevent full auto on semi auto guns
-                rechamberNeeded = true;
+                loadout.getCurrentWeapon().rechamberNeeded = true;
             }
             fireDelayCounter = 0;
         }
 
         // if semi auto, rechamber on trigger release
         else if (loadout.getCurrentWeapon().fireType == FireType.SEMI_AUTO && !mouseIn.leftMousePressed) {
-            rechamberNeeded = false;
+            loadout.getCurrentWeapon().rechamberNeeded = false;
         }
 
         // inc fire delay
