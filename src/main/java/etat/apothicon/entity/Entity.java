@@ -16,7 +16,7 @@ public class Entity {
     public Apothicon ap;
     public int worldX;
     public int worldY;
-    public int speed = 20;
+    public int speed = 10;
     public int health = 100;
 
     public BufferedImage up1, up2, left1, left2, right1, right2, down1, down2;

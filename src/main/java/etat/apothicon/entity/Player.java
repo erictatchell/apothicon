@@ -285,10 +285,20 @@ public class Player extends Entity {
         int angle = calculateAngle();
         // omg kms
         BufferedImage weaponImage = ImageManager.createFlipped(getImage(mousePosition));
-        if (mousePosition.x > ap.screenWidth / 2) {
+        boolean mouseOnRightSide = mousePosition.x > ap.screenWidth / 2;
+        if (mouseOnRightSide) {
             angle -= 180;
         }
-        g2.drawImage(rotateImageByDegrees(weaponImage, angle), screenX, screenY,
+
+        // decide which player side to display the weapon (left if left, right if right)
+        int offset = 0;
+        if (mouseOnRightSide) {
+            offset = ap.tileSize / 2; // 24 default
+        }
+        else {
+            offset = -(ap.tileSize / 2); 
+        }
+        g2.drawImage(rotateImageByDegrees(weaponImage, angle), screenX + offset, screenY,
                 ap.tileSize, ap.tileSize, null);
 
         if (this.purchaseString != null) {
