@@ -1,5 +1,6 @@
 package etat.apothicon.object.weapon.gun;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -7,6 +8,7 @@ import etat.apothicon.entity.Entity;
 import etat.apothicon.main.Apothicon;
 
 public class Bullet extends Entity {
+    Gun gun;
     Entity user;
 
     public Bullet(Apothicon ap) {
@@ -17,12 +19,13 @@ public class Bullet extends Entity {
         solidArea.height = 1;
     }
 
-    public void set(int worldX, int worldY, int direction, boolean alive, Entity user) {
+    public void set(int worldX, int worldY, int direction, boolean alive, Entity user, Gun gun) {
         this.worldX = worldX;
         this.worldY = worldY;
         this.directionAngle = direction;
         this.alive = alive;
         this.user = user;
+        this.gun = gun;
     }
 
     public void update() {
@@ -48,6 +51,21 @@ public class Bullet extends Entity {
         if (spriteCounter > 120) {
             alive = false;
             spriteCounter = 0;
+        }
+    }
+
+    public void drawBullet(Graphics2D g2) {
+        int screenX = worldX - ap.player.worldX + ap.player.screenX;
+        int screenY = worldY - ap.player.worldY + ap.player.screenY;
+
+        if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX &&
+                worldX - ap.tileSize < ap.player.worldX + ap.player.screenX &&
+                worldY + ap.tileSize > ap.player.worldY - ap.player.screenY &&
+                worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
+
+            g2.setColor(Color.yellow);
+            g2.fillRect(screenX, screenY, (1 * this.gun.damage) / 5, (1 * this.gun.damage) / 5);
+
         }
     }
 

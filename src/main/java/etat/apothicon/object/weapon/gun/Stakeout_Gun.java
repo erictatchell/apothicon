@@ -12,10 +12,10 @@ public class Stakeout_Gun extends Gun {
     public Stakeout_Gun(Player player) {
         super(player,
                 "Stakeout",
-                1,
+                80,
                 8,
                 32,
-                0.0f,
+                1.0f,
                 SelectFire.SEMI_AUTO,
                 1,
                 1.0f,

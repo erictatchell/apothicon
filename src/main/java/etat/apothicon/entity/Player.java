@@ -86,19 +86,20 @@ public class Player extends Entity {
     }
 
     int shotCount = 0;
+    boolean shooting = false;
 
     public void update() {
         this.slotX = perkOffset;
         int objIndex = ap.cc.checkObject(this, true);
 
-        if (mouseIn.leftMousePressed) {
-            shotCount = loadout.fireWeapon(shotCount);
-            if (shotCount >= 5) {
-                loadout.getCurrentWeapon().bullet = 0;
-            }
-        } else {
-            shotCount = loadout.rechamberWeapon(shotCount);
-            // on release, reset shotCount
+        if (mouseIn.leftMousePressed && shotCount == loadout.getCurrentWeapon().shotCount) {
+
+            loadout.fireWeapon();
+            shotCount = 0;
+        }
+        if (shotCount < loadout.getCurrentWeapon().shotCount) {
+
+            shotCount += (1 * this.loadout.getFireRateMultiplier());
         }
 
         // cycle weapons. set 1pressed to false so we dont constantly switch
@@ -132,7 +133,7 @@ public class Player extends Entity {
 
             // zombie collision
             int zombieIndex = ap.cc.checkEntity(this, ap.zombies);
-            //interactZombie(zombieIndex);
+            // interactZombie(zombieIndex);
 
             if (!collisionOn) {
                 if (direction == "up") {
@@ -294,9 +295,8 @@ public class Player extends Entity {
         int offset = 0;
         if (mouseOnRightSide) {
             offset = ap.tileSize / 2; // 24 default
-        }
-        else {
-            offset = -(ap.tileSize / 2); 
+        } else {
+            offset = -(ap.tileSize / 2);
         }
         g2.drawImage(rotateImageByDegrees(weaponImage, angle), screenX + offset, screenY,
                 ap.tileSize, ap.tileSize, null);

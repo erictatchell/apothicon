@@ -163,24 +163,10 @@ public class Entity {
             spriteCounter = 0;
         }
     }
+
     public void takeDamage(int dmg) {
         this.health -= dmg;
-        
-    }
 
-    public void drawBullet(Graphics2D g2) {
-        int screenX = worldX - ap.player.worldX + ap.player.screenX;
-        int screenY = worldY - ap.player.worldY + ap.player.screenY;
-
-        if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX &&
-                worldX - ap.tileSize < ap.player.worldX + ap.player.screenX &&
-                worldY + ap.tileSize > ap.player.worldY - ap.player.screenY &&
-                worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
-
-            g2.setColor(Color.yellow);
-            g2.fillRect(screenX, screenY, 6, 6);
-
-        }
     }
 
     public void draw(Graphics2D g2) {

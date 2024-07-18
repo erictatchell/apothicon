@@ -15,7 +15,7 @@ public class Olympia_Gun extends Gun {
                 150,
                 2,
                 32,
-                0.5f,
+                3.0f,
                 SelectFire.SEMI_AUTO,
                 1,
                 1.0f,

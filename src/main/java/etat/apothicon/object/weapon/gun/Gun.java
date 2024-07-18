@@ -28,7 +28,7 @@ public class Gun {
     public int reserve;
     public int defaultReserve;
     public WallBuy wallBuy;
-    float fireRate;
+    public float fireRate;
     float reloadRate;
     public SelectFire fireType;
     float range;
@@ -102,37 +102,23 @@ public class Gun {
 
     public void fire() {
 
-        if (!rechamberNeeded) {
+        if (magazine >= 1) {
 
-            if (magazine >= 1) {
+            int dir = owner.calculateAngle();
+            Bullet bullet = new Bullet(owner.ap);
+            bullet.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner, this);
+            owner.ap.bullets.add(bullet);
 
-                int dir = owner.calculateAngle();
-                Bullet bullet = new Bullet(owner.ap);
-                bullet.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner);
-                owner.ap.bullets.add(bullet);
-
-                magazine -= 1;
-            }
-            if (magazine == 0) {
-
-                reload();
-            }
-
+            magazine -= 1;
         }
-        switch (this.fireType) {
-            case AUTO:
+        if (magazine == 0) {
 
-                break;
-            case SEMI_AUTO:
-                rechamberNeeded = true;
-                break;
+            reload();
         }
-
     }
 
     public void rechamber() {
         this.rechamberNeeded = false;
-        this.bullet = 0;
     }
 
     public int getPrice() {

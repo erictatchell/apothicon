@@ -105,20 +105,11 @@ public class Loadout {
         return true;
     }
 
-    public int fireWeapon(int shotCount) {
+    public void fireWeapon() {
         // simulate time/fire rate
         // only guns with fire rate 1.0f and above will be impacted by this
         // all other guns are semi auto and can fire as fast as user can trigger pull
-        shotCount += (1 * this.fireRateMultiplier);
-        if (shotCount > this.guns.get(currentWeaponIdx).shotCount) {
-            Point mousePosition = MouseInfo.getPointerInfo().getLocation();
-            SwingUtilities.convertPointFromScreen(mousePosition, ap);
-
-            this.guns.get(currentWeaponIdx).fire();
-            shotCount = 0;
-
-        }
-        return shotCount;
+        this.guns.get(currentWeaponIdx).fire();
     }
 
     public int rechamberWeapon(int shotCount) {
