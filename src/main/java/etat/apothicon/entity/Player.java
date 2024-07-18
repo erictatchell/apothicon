@@ -94,14 +94,14 @@ public class Player extends Entity {
 
         // if we want to shoot, don't need to rechamber, and the delay is up
         if (!loadout.getCurrentWeapon().rechamberNeeded && mouseIn.leftMousePressed
-                && fireDelayCounter == loadout.getCurrentWeapon().fireDelay) {
+                && loadout.getCurrentWeapon().fireDelayCounter == loadout.getCurrentWeapon().fireDelay) {
 
             loadout.fireWeapon();
             if (loadout.getCurrentWeapon().fireType == FireType.SEMI_AUTO) {
                 // rechamber needed, prevent full auto on semi auto guns
                 loadout.getCurrentWeapon().rechamberNeeded = true;
             }
-            fireDelayCounter = 0;
+            loadout.getCurrentWeapon().fireDelayCounter = 0;
         }
 
         // if semi auto, rechamber on trigger release
@@ -110,9 +110,9 @@ public class Player extends Entity {
         }
 
         // inc fire delay
-        if (fireDelayCounter < loadout.getCurrentWeapon().fireDelay) {
+        if (loadout.getCurrentWeapon().fireDelayCounter < loadout.getCurrentWeapon().fireDelay) {
 
-            fireDelayCounter += (1 * this.loadout.getFireRateMultiplier());
+            loadout.getCurrentWeapon().fireDelayCounter += (1 * this.loadout.getFireRateMultiplier());
         }
 
         // cycle weapons. set to false so we dont constantly switch

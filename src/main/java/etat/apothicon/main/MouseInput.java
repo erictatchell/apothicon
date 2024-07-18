@@ -16,11 +16,9 @@ public class MouseInput implements MouseListener {
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftMousePressed = true;
-            System.out.println("left press");
         }
         if (e.getButton() == MouseEvent.BUTTON3) {
             rightMousePressed = true;
-            System.out.println("right press");
         }
     }
 
@@ -28,11 +26,9 @@ public class MouseInput implements MouseListener {
     public void mouseReleased(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftMousePressed = false ;
-            System.out.println("left release");
         }
         if (e.getButton() == MouseEvent.BUTTON3) {
             rightMousePressed = false;
-            System.out.println("right release");
         }
     }
 

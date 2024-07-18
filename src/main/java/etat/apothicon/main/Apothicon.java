@@ -69,10 +69,6 @@ public class Apothicon extends JPanel implements Runnable {
         Font font = new Font("Arial", Font.BOLD, 18);
         g2.setFont(font);
         g2.drawString("" + player.loadout.getPoints(), 10, screenHeight - 12);
-        g2.drawString("health: " + player.loadout.getHealth(), 10, 40);
-        g2.drawString("reloadRate: " + player.loadout.getReloadRate(), 10, 60);
-        g2.drawString("maxGunNum: " + player.loadout.getMaxGunNum(), 10, 80);
-        g2.drawString("revives: " + player.loadout.getRevives(), 10, 100);
 
         Gun currentWeapon = player.loadout.getCurrentWeapon();
         String currentWeaponName = currentWeapon.getName();

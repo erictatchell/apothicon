@@ -31,6 +31,7 @@ public class Gun {
     public float fireRate;
     float reloadRate;
     public FireType fireType;
+    public int fireDelayCounter;
     float range;
     public boolean rechamberNeeded = false;
     public int fireDelay;

@@ -64,7 +64,7 @@ public class Bullet extends Entity {
                 worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
 
             g2.setColor(Color.yellow);
-            g2.fillRect(screenX, screenY, (1 * this.gun.damage) / 6, (1 * this.gun.damage) / 6);
+            g2.fillRect(screenX, screenY, 5, 5);
 
         }
     }
