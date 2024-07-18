@@ -178,7 +178,7 @@ public class Entity {
                 worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
 
             g2.setColor(Color.yellow);
-            g2.fillRect(screenX, screenY, ap.tileSize / 5, ap.tileSize / 5);
+            g2.fillRect(screenX, screenY, 6, 6);
 
         }
     }

@@ -11,10 +11,10 @@ public class Bullet extends Entity {
 
     public Bullet(Apothicon ap) {
         super(ap);
-        solidArea.x = 0;
-        solidArea.y = 0; 
-        solidArea.width = 5;
-        solidArea.height = 5;
+        solidArea.x = 15;
+        solidArea.y = 15;
+        solidArea.width = 1;
+        solidArea.height = 1;
     }
 
     public void set(int worldX, int worldY, int direction, boolean alive, Entity user) {
@@ -28,10 +28,6 @@ public class Bullet extends Entity {
     public void update() {
         if (user == this.ap.player) {
             int zombieIndex = ap.cc.checkOmnidirectionalEntity(this, ap.zombies);
-            ap.cc.bullet_checkTile(this);
-            if (this.collisionOn) {
-                ap.bullets.remove(this);
-            }
             if (zombieIndex != 999) {
                 ap.player.damageZombie(zombieIndex);
                 alive = false;
@@ -42,6 +38,10 @@ public class Bullet extends Entity {
         }
         worldX += speed * Math.cos(Math.toRadians(directionAngle));
         worldY += speed * Math.sin(Math.toRadians(directionAngle));
+        ap.cc.bullet_checkTile(this);
+        if (this.collisionOn) {
+            ap.bullets.remove(this);
+        }
 
         System.out.println(directionAngle);
         spriteCounter++;

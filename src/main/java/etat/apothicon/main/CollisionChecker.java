@@ -133,33 +133,36 @@ public class CollisionChecker {
         int eTopRow = eTopWorldY / ap.tileSize;
         int eBottomRow = eBottomWorldY / ap.tileSize;
 
-        int tileNum1;
+        int tileNum1, tileNum2;
         // upper right quadrant: case (dir < 0 && dir > -90)
         // upper left quadrant: case (dir < -90 && dir > -180)
         // lower right quadrant: case (dir > 0 && dir < 90)
         // lower left quadrant: case (dir > 90 && dir < 180)
         int dir = e.directionAngle;
-        boolean upperRight = (dir <= 0 && dir > -90);
-        boolean upperLeft = (dir < -90 && dir >-180);
-        boolean lowerRight = (dir > 0 && dir < 90);
-        boolean lowerLeft = (dir > 90 && dir <= 180);
+        boolean upperRight = (dir <= 0 && dir >= -90);
+        boolean upperLeft = (dir <= -90 && dir >= -180);
+        boolean lowerRight = (dir >= 0 && dir <= 90);
+        boolean lowerLeft = (dir >= 90 && dir <= 180);
         if (eTopRow < ap.maxWorldRow && eRightCol < ap.maxWorldCol && eBottomRow < ap.maxWorldRow
                 && eLeftCol < ap.maxWorldCol) {
             if (upperRight) {
                 eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
+                eRightCol = (eRightWorldX - e.speed) / ap.tileSize;
                 tileNum1 = ap.tileManager.mapTileNum[eRightCol][eTopRow];
                 if (ap.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
                 }
 
             } else if (upperLeft) {
-                eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
+                eTopRow = (eTopWorldY + e.speed) / ap.tileSize;
+                eLeftCol = (eLeftWorldX - e.speed) / ap.tileSize;
                 tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eTopRow];
                 if (ap.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
                 }
             } else if (lowerLeft) {
                 eBottomRow = (eBottomWorldY + e.speed) / ap.tileSize;
+                eLeftCol = (eLeftWorldX + e.speed) / ap.tileSize;
                 tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
                 if (ap.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
@@ -167,7 +170,8 @@ public class CollisionChecker {
             }
             else if (lowerRight) {
                 eBottomRow = (eBottomWorldY - e.speed) / ap.tileSize;
-                tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
+                eRightCol = (eRightWorldX - e.speed) / ap.tileSize;
+                tileNum1 = ap.tileManager.mapTileNum[eRightCol][eBottomRow];
                 if (ap.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
                 }
