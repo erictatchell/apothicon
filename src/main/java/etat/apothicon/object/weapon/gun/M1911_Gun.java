@@ -16,7 +16,7 @@ public class M1911_Gun extends Gun {
                 8,
                 32,
                 1.0f,
-                SelectFire.SEMI_AUTO,
+                FireType.SEMI_AUTO,
                 1,
                 1.0f,
                 "src/main/resources/guns/m1911.png");

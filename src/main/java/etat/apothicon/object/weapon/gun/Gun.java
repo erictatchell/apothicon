@@ -30,10 +30,10 @@ public class Gun {
     public WallBuy wallBuy;
     public float fireRate;
     float reloadRate;
-    public SelectFire fireType;
+    public FireType fireType;
     float range;
     public boolean rechamberNeeded = false;
-    public int shotCount;
+    public int fireDelay;
 
     /**
      * gun structure
@@ -49,7 +49,7 @@ public class Gun {
      * @param imagePath
      */
     public Gun(Player owner, String name, int damage, int defaultAmmoPerMagazine, int reserve, float fireRate,
-            SelectFire fireType,
+            FireType fireType,
             int range, float reloadRate, String imagePath) {
         this.owner = owner;
         this.name = name;
@@ -60,7 +60,7 @@ public class Gun {
         this.defaultReserve = reserve;
         this.fireType = fireType;
         this.fireRate = fireRate;
-        this.shotCount = (int) ((int) 10 * fireRate);
+        this.fireDelay = (int) ((int) 10 * fireRate);
         this.reloadRate = reloadRate;
         this.range = range;
 
@@ -76,11 +76,11 @@ public class Gun {
     }
 
     public int getMagazine() {
-        return magazine;
+        return this.magazine;
     }
 
     public int getReserve() {
-        return reserve;
+        return this.reserve;
     }
 
     public String getName() {
@@ -88,28 +88,27 @@ public class Gun {
     }
 
     public void reload() {
-        int ammoToBeReloaded = defaultAmmoPerMagazine - magazine;
-        if (reserve > 0) {
-            if (this.magazine != defaultAmmoPerMagazine && reserve > ammoToBeReloaded) {
-                reserve -= ammoToBeReloaded;
-                this.magazine = defaultAmmoPerMagazine;
+        int ammoToBeReloaded = this.defaultAmmoPerMagazine - this.magazine;
+        if (this.reserve > 0 && ammoToBeReloaded > 0) {
+            if (this.reserve > ammoToBeReloaded) {
+                this.reserve -= ammoToBeReloaded;
+                this.magazine += ammoToBeReloaded;
             } else {
-                this.magazine += reserve;
-                reserve = 0;
+                this.magazine += this.reserve;
+                this.reserve = 0;
             }
         }
     }
 
     public void fire() {
 
-        if (magazine >= 1) {
-
+        if (this.magazine >= 1) {
             int dir = owner.calculateAngle();
             Bullet bullet = new Bullet(owner.ap);
             bullet.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner, this);
             owner.ap.bullets.add(bullet);
 
-            magazine -= 1;
+            this.magazine -= 1;
         }
         if (magazine == 0) {
 

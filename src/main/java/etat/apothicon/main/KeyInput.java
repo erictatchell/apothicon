@@ -1,5 +1,6 @@
 package etat.apothicon.main;
 
+import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -9,7 +10,8 @@ public class KeyInput implements KeyListener {
     public boolean upPressed;
     public boolean leftPressed;
     public boolean rightPressed;
-    public boolean _1Pressed;
+    public boolean switchWpnPressed;
+    public boolean reloadPressed;
     public boolean _2Pressed;
     public boolean _3Pressed;
     public boolean downPressed;
@@ -25,9 +27,12 @@ public class KeyInput implements KeyListener {
         if (code == KeyEvent.VK_F) {
             fPressed = true;
         }
+        if (code == KeyEvent.VK_R) {
+            reloadPressed = true;
+        }
 
         if (code == KeyEvent.VK_1) {
-            _1Pressed = true;
+            switchWpnPressed = true;
         }
         if (code == KeyEvent.VK_W) {
             upPressed = true;
@@ -46,6 +51,9 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
+        if (code == KeyEvent.VK_R) {
+            reloadPressed = false;
+        }
         if (code == KeyEvent.VK_F) {
             fPressed = false;
         }
@@ -53,7 +61,7 @@ public class KeyInput implements KeyListener {
             upPressed = false;
         }
         if (code == KeyEvent.VK_1) {
-            _1Pressed = false;
+            switchWpnPressed = false;
         }
         if (code == KeyEvent.VK_A) {
             leftPressed = false;

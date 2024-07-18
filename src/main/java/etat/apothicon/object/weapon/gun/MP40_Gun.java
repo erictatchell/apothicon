@@ -16,7 +16,7 @@ public class MP40_Gun extends Gun {
                 32,
                 192,
                 1.0f,
-                SelectFire.AUTO,
+                FireType.AUTO,
                 1,
                 1.0f,
                 "src/main/resources/guns/mp40.png");

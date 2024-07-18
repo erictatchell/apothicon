@@ -15,8 +15,8 @@ public class M14_Gun extends Gun {
                 60,
                 8,
                 92,
-                0.0f,
-                SelectFire.SEMI_AUTO,
+                1.0f,
+                FireType.SEMI_AUTO,
                 1,
                 1.0f,
                 "src/main/resources/guns/m14-1.png");

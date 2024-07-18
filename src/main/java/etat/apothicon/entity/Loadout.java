@@ -106,14 +106,11 @@ public class Loadout {
     }
 
     public void fireWeapon() {
-        // simulate time/fire rate
-        // only guns with fire rate 1.0f and above will be impacted by this
-        // all other guns are semi auto and can fire as fast as user can trigger pull
         this.guns.get(currentWeaponIdx).fire();
     }
 
     public int rechamberWeapon(int shotCount) {
-        shotCount = this.guns.get(currentWeaponIdx).shotCount;
+        shotCount = this.guns.get(currentWeaponIdx).fireDelay;
         getCurrentWeapon().rechamber();
         return shotCount;
     }

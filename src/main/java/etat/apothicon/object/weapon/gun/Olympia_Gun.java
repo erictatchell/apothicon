@@ -16,7 +16,7 @@ public class Olympia_Gun extends Gun {
                 2,
                 32,
                 3.0f,
-                SelectFire.SEMI_AUTO,
+                FireType.SEMI_AUTO,
                 1,
                 1.0f,
                 "src/main/resources/guns/olympia.png");

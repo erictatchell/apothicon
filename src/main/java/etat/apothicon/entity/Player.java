@@ -12,10 +12,10 @@ import etat.apothicon.object.perk.bottle.QuickRevive;
 import etat.apothicon.object.perk.bottle.SpeedCola;
 import etat.apothicon.object.perk.machine.PerkMachine;
 import etat.apothicon.object.weapon.gun.Bullet;
+import etat.apothicon.object.weapon.gun.FireType;
 import etat.apothicon.object.weapon.gun.M14_Gun;
 import etat.apothicon.object.weapon.gun.MP40_Gun;
 import etat.apothicon.object.weapon.gun.Olympia_Gun;
-import etat.apothicon.object.weapon.gun.SelectFire;
 import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
 import java.awt.*;
@@ -85,31 +85,49 @@ public class Player extends Entity {
         this.direction = "down";
     }
 
-    int shotCount = 0;
-    boolean shooting = false;
+    static int fireDelayCounter = 0;
+    static boolean rechamberNeeded = false;
 
     public void update() {
+        // for perk placement
         this.slotX = perkOffset;
-        int objIndex = ap.cc.checkObject(this, true);
 
-        if (mouseIn.leftMousePressed && shotCount == loadout.getCurrentWeapon().shotCount) {
+        // if we want to shoot, don't need to rechamber, and the delay is up
+        if (!rechamberNeeded && mouseIn.leftMousePressed && fireDelayCounter == loadout.getCurrentWeapon().fireDelay) {
 
             loadout.fireWeapon();
-            shotCount = 0;
+            if (loadout.getCurrentWeapon().fireType == FireType.SEMI_AUTO) {
+                // rechamber needed, prevent full auto on semi auto guns
+                rechamberNeeded = true;
+            }
+            fireDelayCounter = 0;
         }
-        if (shotCount < loadout.getCurrentWeapon().shotCount) {
 
-            shotCount += (1 * this.loadout.getFireRateMultiplier());
+        // if semi auto, rechamber on trigger release
+        else if (loadout.getCurrentWeapon().fireType == FireType.SEMI_AUTO && !mouseIn.leftMousePressed) {
+            rechamberNeeded = false;
         }
 
-        // cycle weapons. set 1pressed to false so we dont constantly switch
+        // inc fire delay
+        if (fireDelayCounter < loadout.getCurrentWeapon().fireDelay) {
+
+            fireDelayCounter += (1 * this.loadout.getFireRateMultiplier());
+        }
+
+        // cycle weapons. set to false so we dont constantly switch
         // find better sol?
-        if (keyIn._1Pressed) {
+        if (keyIn.switchWpnPressed) {
             loadout.switchWeapon();
-            keyIn._1Pressed = false;
+            keyIn.switchWpnPressed = false;
         }
+
+        int objIndex = ap.cc.checkObject(this, true);
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
+        }
+
+        if (keyIn.reloadPressed) {
+            this.loadout.getCurrentWeapon().reload();
         }
 
         if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {
@@ -133,7 +151,6 @@ public class Player extends Entity {
 
             // zombie collision
             int zombieIndex = ap.cc.checkEntity(this, ap.zombies);
-            // interactZombie(zombieIndex);
 
             if (!collisionOn) {
                 if (direction == "up") {
