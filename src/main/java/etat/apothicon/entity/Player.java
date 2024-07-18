@@ -128,7 +128,7 @@ public class Player extends Entity {
         }
 
         if (keyIn.reloadPressed) {
-            this.loadout.getCurrentWeapon().reload();
+            this.loadout.getCurrentWeapon().handleReload();
         }
 
         if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {
