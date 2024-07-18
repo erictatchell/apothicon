@@ -154,14 +154,14 @@ public class CollisionChecker {
                 }
 
             } else if (upperLeft) {
-                eTopRow = (eTopWorldY + e.speed) / ap.tileSize;
-                eLeftCol = (eLeftWorldX - e.speed) / ap.tileSize;
+                eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
+                eLeftCol = (eLeftWorldX + e.speed) / ap.tileSize;
                 tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eTopRow];
                 if (ap.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
                 }
             } else if (lowerLeft) {
-                eBottomRow = (eBottomWorldY + e.speed) / ap.tileSize;
+                eBottomRow = (eBottomWorldY - e.speed) / ap.tileSize;
                 eLeftCol = (eLeftWorldX + e.speed) / ap.tileSize;
                 tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
                 if (ap.tileManager.tile[tileNum1].collision) {
