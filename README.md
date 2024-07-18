@@ -6,7 +6,7 @@
 A big portion of Apothicon, specifically the 
 - rendering logic
 - A* implementation
-- collision
+- player/zombie collision
 
 were made trivial thanks to [RyiSnow's 2D Java Game series on YouTube](https://www.youtube.com/watch?v=om59cwR7psI&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq). Great guide for anyone wanting to get into this sort of thing
 
