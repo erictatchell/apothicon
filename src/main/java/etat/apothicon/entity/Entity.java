@@ -26,7 +26,7 @@ public class Entity {
     public boolean alive;
     public int spriteCounter = 0;
     public int spriteNum = 1;
-    public boolean onPath = false;
+    public boolean onPath = true;
     public Rectangle solidArea = new Rectangle();
 
     public int solidAreaDefaultX, solidAreaDefaultY;

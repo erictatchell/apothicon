@@ -21,7 +21,6 @@ public class Gun {
     // for when mousex goes over the middle, prevents upside down images
     public BufferedImage image2;
 
-    private int fireDelay = 0;
     int damage;
     public int bullet;
     public int defaultAmmoPerMagazine;
@@ -101,32 +100,7 @@ public class Gun {
         }
     }
 
-    public void removeAmmo() {
-
-    }
-
-    public int calculateAngle(Point mousePosition) {
-        int centerX = 250;
-        int centerY = 250;
-
-        int mouseX = mousePosition.x;
-        int mouseY = mousePosition.y;
-
-        // Calculate the angle in radians
-        double angleRadians = Math.atan2(mouseY - centerY, mouseX - centerX);
-
-        // Convert to degrees
-        int angleDegrees = (int) Math.toDegrees(angleRadians);
-
-        // Adjust the angle to be between 0-360 degrees
-        if (angleDegrees < 0) {
-            angleDegrees += 360;
-        }
-
-        return angleDegrees;
-    }
-
-    public void fire(Point mousePosition) {
+    public void fire() {
 
         if (!rechamberNeeded) {
 
@@ -164,6 +138,7 @@ public class Gun {
     public int getPrice() {
         return this.wallBuy.price;
     }
+
     public int getDamage() {
         return this.damage;
     }

@@ -114,7 +114,7 @@ public class Loadout {
             Point mousePosition = MouseInfo.getPointerInfo().getLocation();
             SwingUtilities.convertPointFromScreen(mousePosition, ap);
 
-            this.guns.get(currentWeaponIdx).fire(mousePosition);
+            this.guns.get(currentWeaponIdx).fire();
             shotCount = 0;
 
         }

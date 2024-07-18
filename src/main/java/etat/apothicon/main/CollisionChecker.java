@@ -122,6 +122,59 @@ public class CollisionChecker {
         return index;
     }
 
+    public void bullet_checkTile(Entity e) {
+        int eLeftWorldX = e.worldX + e.solidArea.x;
+        int eRightWorldX = e.worldX + e.solidArea.x + e.solidArea.width;
+        int eTopWorldY = e.worldY + e.solidArea.y;
+        int eBottomWorldY = e.worldY + e.solidArea.y + e.solidArea.height;
+
+        int eLeftCol = eLeftWorldX / ap.tileSize;
+        int eRightCol = eRightWorldX / ap.tileSize;
+        int eTopRow = eTopWorldY / ap.tileSize;
+        int eBottomRow = eBottomWorldY / ap.tileSize;
+
+        int tileNum1;
+        // upper right quadrant: case (dir < 0 && dir > -90)
+        // upper left quadrant: case (dir < -90 && dir > -180)
+        // lower right quadrant: case (dir > 0 && dir < 90)
+        // lower left quadrant: case (dir > 90 && dir < 180)
+        int dir = e.directionAngle;
+        boolean upperRight = (dir <= 0 && dir > -90);
+        boolean upperLeft = (dir < -90 && dir >-180);
+        boolean lowerRight = (dir > 0 && dir < 90);
+        boolean lowerLeft = (dir > 90 && dir <= 180);
+        if (eTopRow < ap.maxWorldRow && eRightCol < ap.maxWorldCol && eBottomRow < ap.maxWorldRow
+                && eLeftCol < ap.maxWorldCol) {
+            if (upperRight) {
+                eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
+                tileNum1 = ap.tileManager.mapTileNum[eRightCol][eTopRow];
+                if (ap.tileManager.tile[tileNum1].collision) {
+                    e.collisionOn = true;
+                }
+
+            } else if (upperLeft) {
+                eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
+                tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eTopRow];
+                if (ap.tileManager.tile[tileNum1].collision) {
+                    e.collisionOn = true;
+                }
+            } else if (lowerLeft) {
+                eBottomRow = (eBottomWorldY + e.speed) / ap.tileSize;
+                tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
+                if (ap.tileManager.tile[tileNum1].collision) {
+                    e.collisionOn = true;
+                }
+            }
+            else if (lowerRight) {
+                eBottomRow = (eBottomWorldY - e.speed) / ap.tileSize;
+                tileNum1 = ap.tileManager.mapTileNum[eLeftCol][eBottomRow];
+                if (ap.tileManager.tile[tileNum1].collision) {
+                    e.collisionOn = true;
+                }
+            }
+        }
+    }
+
     public void checkTile(Entity e) {
         int eLeftWorldX = e.worldX + e.solidArea.x;
         int eRightWorldX = e.worldX + e.solidArea.x + e.solidArea.width;
@@ -174,17 +227,20 @@ public class CollisionChecker {
 
     public int checkOmnidirectionalEntity(Entity e, Entity[] target) {
         int index = 999;
-    
+
         int futureX = e.worldX + (int) (e.speed * Math.cos(Math.toRadians(e.directionAngle)));
         int futureY = e.worldY + (int) (e.speed * Math.sin(Math.toRadians(e.directionAngle)));
-    
+
         // THANKS CHATGPT!!!
         for (int i = 0; i < target.length; i++) {
             if (target[i] != null) {
                 // Get entities' solid area positions
-                Rectangle eSolidArea = new Rectangle(futureX + e.solidArea.x, futureY + e.solidArea.y, e.solidArea.width, e.solidArea.height);
-                Rectangle targetSolidArea = new Rectangle(target[i].worldX + target[i].solidArea.x, target[i].worldY + target[i].solidArea.y, target[i].solidArea.width, target[i].solidArea.height);
-    
+                Rectangle eSolidArea = new Rectangle(futureX + e.solidArea.x, futureY + e.solidArea.y,
+                        e.solidArea.width, e.solidArea.height);
+                Rectangle targetSolidArea = new Rectangle(target[i].worldX + target[i].solidArea.x,
+                        target[i].worldY + target[i].solidArea.y, target[i].solidArea.width,
+                        target[i].solidArea.height);
+
                 if (eSolidArea.intersects(targetSolidArea)) {
                     e.collisionOn = true;
                     index = i;
@@ -194,7 +250,6 @@ public class CollisionChecker {
         }
         return index;
     }
-    
 
     // zombie collision
     public int checkEntity(Entity e, Entity[] target) {
