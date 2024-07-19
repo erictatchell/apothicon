@@ -3,6 +3,7 @@ package etat.apothicon.main;
 import etat.apothicon.ai.PathFinder;
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
+import etat.apothicon.hud.HUD;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.weapon.gun.*;
 import etat.apothicon.tile.TileManager;
@@ -40,7 +41,6 @@ public class Apothicon extends JPanel implements Runnable {
 
     KeyInput keyIn = new KeyInput();
     MouseInput mouseIn = new MouseInput();
-    // public HUD hud = new HUD();
     public Player player = new Player(this, keyIn, mouseIn);
     public Entity zombies[] = new Entity[10];
     // JuggernogMachine jug = new JuggernogMachinje(this);
@@ -49,6 +49,8 @@ public class Apothicon extends JPanel implements Runnable {
     // DoubleTapMachine dt = new DoubleTapMachine(this);
     JLabel info = new JLabel("Text");
     Thread thread;
+
+    public HUD hud = new HUD(this);
 
     Apothicon() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -65,24 +67,27 @@ public class Apothicon extends JPanel implements Runnable {
     }
 
     // public void drawText(Graphics2D g2) {
-    //     BufferedImage spl = null;
-    //     try {
+    // BufferedImage spl = null;
+    // try {
 
-    //         spl = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     g2.setColor(Color.white);
-    //     Font font = new Font("Arial", Font.BOLD, 18);
-    //     g2.setFont(font);
-    //     g2.drawString("" + player.loadout.getPoints(), 10, screenHeight - 12);
+    // spl = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
+    // g2.setColor(Color.white);
+    // Font font = new Font("Arial", Font.BOLD, 18);
+    // g2.setFont(font);
+    // g2.drawString("" + player.loadout.getPoints(), 10, screenHeight - 12);
 
-    //     Gun currentWeapon = player.loadout.getCurrentWeapon();
-    //     String currentWeaponName = currentWeapon.getName();
-    //     g2.drawImage(spl, screenWidth - spl.getWidth(), screenHeight - spl.getHeight(), null);
-    //     g2.drawString("" + currentWeaponName, screenWidth - currentWeaponName.length() * 12, screenHeight - 28);
-    //     g2.drawString("" + currentWeapon.getMagazine() + " / " + currentWeapon.getReserve(), screenWidth - currentWeaponName.length() * 12,
-    //             screenHeight - 12);
+    // Gun currentWeapon = player.loadout.getCurrentWeapon();
+    // String currentWeaponName = currentWeapon.getName();
+    // g2.drawImage(spl, screenWidth - spl.getWidth(), screenHeight -
+    // spl.getHeight(), null);
+    // g2.drawString("" + currentWeaponName, screenWidth -
+    // currentWeaponName.length() * 12, screenHeight - 28);
+    // g2.drawString("" + currentWeapon.getMagazine() + " / " +
+    // currentWeapon.getReserve(), screenWidth - currentWeaponName.length() * 12,
+    // screenHeight - 12);
 
     // }
 
@@ -143,6 +148,7 @@ public class Apothicon extends JPanel implements Runnable {
     // }
     public void update() {
         player.update();
+        hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
         for (int i = 0; i < zombies.length; i++) {
             if (zombies[i] != null) {
                 zombies[i].update();
@@ -161,7 +167,7 @@ public class Apothicon extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         tileManager.draw(g2);
-        // hud.draw(g2);
+        hud.draw(g2);
         for (int i = 0; i < zombies.length; i++) {
             if (zombies[i] != null) {
                 zombies[i].draw(g2);
