@@ -15,13 +15,14 @@ public class Apothicon extends JPanel implements Runnable {
 
     public final int originalTileSize = 16;
     public final int scale = 3;
-    public final int maxScreenCol = 18;
-    public final int maxScreenRow = 12;
+    public final int maxScreenCol = 28;
+    public final int maxScreenRow = 16;
     public final int tileSize = originalTileSize * scale;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
     // world settings
+    Cursor cursor = new Cursor(Cursor.CROSSHAIR_CURSOR);
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
