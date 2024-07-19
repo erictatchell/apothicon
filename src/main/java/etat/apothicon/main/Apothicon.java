@@ -167,7 +167,6 @@ public class Apothicon extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         tileManager.draw(g2);
-        hud.draw(g2);
         for (int i = 0; i < zombies.length; i++) {
             if (zombies[i] != null) {
                 zombies[i].draw(g2);
@@ -186,6 +185,8 @@ public class Apothicon extends JPanel implements Runnable {
         }
 
         player.draw(g2);
+
+        hud.draw(g2);
         // drawText(g2);
         g2.dispose();
     }

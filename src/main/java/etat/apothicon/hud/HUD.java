@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 public class HUD {
     private Apothicon ap;
     private BufferedImage gunSplosh;
+    private BufferedImage pointSplosh;
     private ArrayList<Perk> perks;
     private String points;
     private String currentWeaponName;
@@ -36,7 +37,7 @@ public class HUD {
         this.perks = ap.player.loadout.getPerks();
         try {
             gunSplosh = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
-
+            pointSplosh = ImageIO.read(new File("src/main/resources/blood/pointSplosh.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,8 +57,13 @@ public class HUD {
                 perk.draw(g2);
             }
         }
+        g2.drawImage(pointSplosh,
+                ap.screenWidth - (pointSplosh.getWidth() * 3),  
+                ap.screenHeight - (pointSplosh.getHeight() * 6),
+                ap.tileSize * 2,
+                ap.tileSize,
+                null);
 
-        // Draw gunSplosh image
         g2.drawImage(gunSplosh,
                 ap.screenWidth - (gunSplosh.getWidth() * 3),
                 ap.screenHeight - (gunSplosh.getHeight() * 3),
@@ -91,10 +97,14 @@ public class HUD {
                 xCurrentWeaponAmmo,
                 ap.screenHeight - 14);
 
+
+        int pointTextWidth = (g2.getFontMetrics().stringWidth(points));
+        int xPoints = ap.screenWidth - pointTextWidth - 24;
+
         // Draw points text aligned to the left
         g2.drawString(points,
-                0,
-                ap.screenHeight - 12);
+                xPoints,
+                ap.screenHeight - 65);
     }
 
 }
