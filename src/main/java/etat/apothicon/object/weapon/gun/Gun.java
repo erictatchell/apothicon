@@ -120,14 +120,28 @@ public class Gun {
         this.reloading = false;
     }
 
+    public void sendBullet() {
+
+        int dir = owner.calculateAngle();
+        Bullet bullet1 = new Bullet(owner.ap);
+        bullet1.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner, this);
+
+        owner.ap.bullets.add(bullet1);
+
+        if (this.owner.loadout.hasDoubleTap) {
+
+            Bullet bullet2 = new Bullet(owner.ap);
+            bullet2.set(owner.worldX + 28, owner.worldY + 28, dir, true, owner, this);
+
+            owner.ap.bullets.add(bullet2);
+        }
+    }
+
     public void fire() {
 
         if (!this.reloading && this.magazine >= 1) {
-            int dir = owner.calculateAngle();
-            Bullet bullet = new Bullet(owner.ap);
-            bullet.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner, this);
-            owner.ap.bullets.add(bullet);
 
+            sendBullet();
             this.magazine -= 1;
         }
         if (magazine == 0) {

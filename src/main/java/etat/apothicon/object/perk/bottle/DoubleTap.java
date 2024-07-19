@@ -26,8 +26,8 @@ public class DoubleTap extends Perk implements Drinkable {
     public void activateFor(Player customer) {
 
         customer.loadout.setFireRateMultiplier(1.5f);
-        customer.loadout.setDamageMultiplier(2.0f);
         customer.loadout.addPerk(this);
         customer.loadout.spendPoints(2000);
+        customer.loadout.hasDoubleTap = true;
     }
 }

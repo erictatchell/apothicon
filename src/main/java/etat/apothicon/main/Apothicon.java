@@ -1,16 +1,14 @@
 package etat.apothicon.main;
 
-import etat.apothicon.tile.TileManager;
-import etat.apothicon.object.weapon.gun.*;
 import etat.apothicon.ai.PathFinder;
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
-import etat.apothicon.entity.Zombie;
 import etat.apothicon.object.SuperObject;
-
-import javax.swing.*;
+import etat.apothicon.object.weapon.gun.*;
+import etat.apothicon.tile.TileManager;
 import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class Apothicon extends JPanel implements Runnable {
     public final int originalTileSize = 16;
@@ -72,8 +70,8 @@ public class Apothicon extends JPanel implements Runnable {
 
         Gun currentWeapon = player.loadout.getCurrentWeapon();
         String currentWeaponName = currentWeapon.getName();
-        g2.drawString("" + currentWeaponName, screenWidth / 2, screenHeight - 28);
-        g2.drawString("" + currentWeapon.getMagazine() + " / " + currentWeapon.getReserve(), screenWidth / 2,
+        g2.drawString("" + currentWeaponName, screenWidth - currentWeaponName.length() * 12, screenHeight - 28);
+        g2.drawString("" + currentWeapon.getMagazine() + " / " + currentWeapon.getReserve(), screenWidth - currentWeaponName.length() * 12,
                 screenHeight - 12);
 
     }

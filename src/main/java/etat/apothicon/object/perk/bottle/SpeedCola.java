@@ -26,5 +26,6 @@ public class SpeedCola extends Perk implements Drinkable {
         customer.loadout.setReloadRate(0.5f);
         customer.loadout.addPerk(this);
         customer.loadout.spendPoints(3000);
+        customer.loadout.hasSpeedCola = true;
     }
 }

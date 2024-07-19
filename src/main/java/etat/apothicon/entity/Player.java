@@ -4,28 +4,15 @@ import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
 import etat.apothicon.main.MouseInput;
 import etat.apothicon.object.SuperObject;
-import etat.apothicon.object.perk.bottle.DoubleTap;
-import etat.apothicon.object.perk.bottle.Juggernog;
-import etat.apothicon.object.perk.bottle.MuleKick;
 import etat.apothicon.object.perk.bottle.Perk;
-import etat.apothicon.object.perk.bottle.QuickRevive;
-import etat.apothicon.object.perk.bottle.SpeedCola;
 import etat.apothicon.object.perk.machine.PerkMachine;
 import etat.apothicon.object.weapon.gun.Bullet;
 import etat.apothicon.object.weapon.gun.FireType;
-import etat.apothicon.object.weapon.gun.M14_Gun;
-import etat.apothicon.object.weapon.gun.MP40_Gun;
-import etat.apothicon.object.weapon.gun.Olympia_Gun;
-import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
 public class Player extends Entity {
@@ -84,9 +71,6 @@ public class Player extends Entity {
         this.speed = 4;
         this.direction = "down";
     }
-
-    static int fireDelayCounter = 0;
-    static boolean rechamberNeeded = false;
 
     public void update() {
         // for perk placement
@@ -197,7 +181,7 @@ public class Player extends Entity {
 
     public void damageZombie(int index) {
         if (index != 999) {
-            int damage = loadout.getCurrentWeapon().getDamage();
+            int damage = (int) (loadout.getCurrentWeapon().getDamage() * loadout.getDamageMultiplier());
             ap.zombies[index].takeDamage(damage);
             if (ap.zombies[index].health <= 0) {
                 ap.zombies[index].die(index);

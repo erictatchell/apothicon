@@ -1,12 +1,5 @@
 package etat.apothicon.entity;
 
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.util.ArrayList;
-
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.bottle.DoubleTap;
@@ -23,12 +16,21 @@ import etat.apothicon.object.weapon.gun.MP40_Gun;
 import etat.apothicon.object.weapon.gun.Olympia_Gun;
 import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
+import java.util.ArrayList;
+import javax.swing.Timer;
 
 public class Loadout {
 
     private Player player;
     private Apothicon ap;
     private Timer loadoutTimer;
+
+    // i hate this, but its faster than anything else i can think of :)
+    public boolean hasDoubleTap;
+    public boolean hasSpeedCola;
+    public boolean hasJuggernog;
+    public boolean hasQuickRevive;
+    public boolean hasMuleKick;
 
     private ArrayList<Gun> guns;
     private ArrayList<Perk> perks;
@@ -56,7 +58,7 @@ public class Loadout {
         this.perkLimit = 4;
         this.revives = 0;
         this.reloadRateMultiplier = 1.0f;
-        this.damageMultiplier = 2.0f;
+        this.damageMultiplier = 1.0f;
         this.fireRateMultiplier = 1.0f;
         this.defaultHealth = 150;
         this.health = 150;
@@ -178,6 +180,10 @@ public class Loadout {
 
     public int getMaxGunNum() {
         return this.maxGunNum;
+    }
+
+    public float getDamageMultiplier() {
+        return this.damageMultiplier;
     }
 
     public float getReloadRate() {
