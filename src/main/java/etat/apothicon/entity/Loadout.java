@@ -107,6 +107,16 @@ public class Loadout {
         return true;
     }
 
+    public void addPoints(boolean kill, boolean headshot) {
+        this.points += 10;
+        if (kill) {
+            this.points += 50;
+            if (headshot) {
+                this.points += 50;
+            }
+        }
+    }
+
     public void fireWeapon() {
         this.guns.get(currentWeaponIdx).fire();
     }

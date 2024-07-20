@@ -86,9 +86,7 @@ public class Player extends Entity {
                 loadout.getCurrentWeapon().rechamberNeeded = true;
             }
             loadout.getCurrentWeapon().fireDelayCounter = 0;
-        }
-
-        // if semi auto, rechamber on trigger release
+        } // if semi auto, rechamber on trigger release
         else if (loadout.getCurrentWeapon().fireType == FireType.SEMI_AUTO && !mouseIn.leftMousePressed) {
             loadout.getCurrentWeapon().rechamberNeeded = false;
         }
@@ -179,13 +177,24 @@ public class Player extends Entity {
         this.purchaseString = name;
     }
 
+
+    /**
+     * @param index position i
+     */
     public void damageZombie(int index) {
         if (index != 999) {
+            Entity zombie = ap.zombies[index];
+
+            boolean killed = false;
+            boolean headshot = false;
+
             int damage = (int) (loadout.getCurrentWeapon().getDamage() * loadout.getDamageMultiplier());
-            ap.zombies[index].takeDamage(damage);
-            if (ap.zombies[index].health <= 0) {
-                ap.zombies[index].die(index);
+            zombie.takeDamage(damage);
+            if (zombie.health <= 0) {
+                zombie.die(index);
+                killed = true;
             }
+            loadout.addPoints(killed, headshot);
         }
     }
 
@@ -316,11 +325,11 @@ public class Player extends Entity {
 
     /**
      * Return the current weapon image based on mouse
-     * 
+     *
      * @param mousePosition
-     * @return an image based on the following:
-     *         mousePosition > middle = image1 (left facing barrel)
-     *         mousePosition < middle = image2 (right facing barrel)
+     * @return an image based on the following: mousePosition > middle = image1
+     * (left facing barrel) mousePosition < middle = image2 (right facing
+     * barrel)
      */
     public BufferedImage getImage(Point mousePosition) {
         if (mousePosition.x > ap.screenWidth / 2) {
@@ -331,7 +340,7 @@ public class Player extends Entity {
 
     /**
      * Calculates the angle between mousePosition.x and centerscreen (player)
-     * 
+     *
      * @return angle in degrees
      */
     public int calculateAngle() {

@@ -123,8 +123,17 @@ public class Gun {
     public void sendBullet() {
 
         int dir = owner.calculateAngle();
+        int dirDistanceX = 0;
+        int dirDistanceY = 0;
+        boolean upperRight = (dir <= 0 && dir >= -90);
+        boolean upperLeft = (dir <= -90 && dir >= -180);
+        boolean lowerRight = (dir >= 0 && dir <= 90);
+        boolean lowerLeft = (dir >= 90 && dir <= 180);
+        if (upperRight || lowerRight) {
+            dirDistanceX = this.owner.ap.tileSize;
+        }
         Bullet bullet1 = new Bullet(owner.ap);
-        bullet1.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner, this);
+        bullet1.set(owner.worldX + dirDistanceX, owner.worldY + this.owner.ap.tileSize / 2, dir, true, owner, this);
 
         owner.ap.bullets.add(bullet1);
 
