@@ -1,6 +1,7 @@
 package etat.apothicon.main;
 
 import etat.apothicon.entity.Entity;
+import etat.apothicon.object.weapon.gun.Bullet;
 import java.awt.Rectangle;
 
 public class CollisionChecker {
@@ -227,7 +228,7 @@ public class CollisionChecker {
         }
     }
 
-    public int checkOmnidirectionalEntity(Entity e, Entity[] target) {
+    public int checkOmnidirectionalEntity(Bullet e, Entity[] target) {
         int index = 999;
 
         int futureX = e.worldX + (int) (e.speed * Math.cos(Math.toRadians(e.directionAngle)));
@@ -237,8 +238,8 @@ public class CollisionChecker {
         for (int i = 0; i < target.length; i++) {
             if (target[i] != null) {
                 // Get entities' solid area positions
-                Rectangle eSolidArea = new Rectangle(futureX + e.solidArea.x, futureY + e.solidArea.y,
-                        e.solidArea.width, e.solidArea.height);
+                Rectangle eSolidArea = new Rectangle(futureX + e.zombieSolidArea.x, futureY + e.zombieSolidArea.y,
+                        e.zombieSolidArea.width, e.zombieSolidArea.height);
                 Rectangle targetSolidArea = new Rectangle(target[i].worldX + target[i].solidArea.x,
                         target[i].worldY + target[i].solidArea.y, target[i].solidArea.width,
                         target[i].solidArea.height);

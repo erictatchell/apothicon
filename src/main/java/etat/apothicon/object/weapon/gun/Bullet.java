@@ -1,22 +1,28 @@
 package etat.apothicon.object.weapon.gun;
 
+import etat.apothicon.entity.Entity;
+import etat.apothicon.main.Apothicon;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import etat.apothicon.entity.Entity;
-import etat.apothicon.main.Apothicon;
-
 public class Bullet extends Entity {
+
     Gun gun;
     Entity user;
+    public Rectangle zombieSolidArea = new Rectangle();
 
     public Bullet(Apothicon ap) {
+
         super(ap);
         solidArea.x = 15;
         solidArea.y = 15;
         solidArea.width = 1;
         solidArea.height = 1;
+        zombieSolidArea.x = 2;
+        zombieSolidArea.y = 2;
+        zombieSolidArea.width = 15;
+        zombieSolidArea.height = 15;
     }
 
     public void set(int worldX, int worldY, int direction, boolean alive, Entity user, Gun gun) {
@@ -58,10 +64,10 @@ public class Bullet extends Entity {
         int screenX = worldX - ap.player.worldX + ap.player.screenX;
         int screenY = worldY - ap.player.worldY + ap.player.screenY;
 
-        if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX &&
-                worldX - ap.tileSize < ap.player.worldX + ap.player.screenX &&
-                worldY + ap.tileSize > ap.player.worldY - ap.player.screenY &&
-                worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
+        if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX
+                && worldX - ap.tileSize < ap.player.worldX + ap.player.screenX
+                && worldY + ap.tileSize > ap.player.worldY - ap.player.screenY
+                && worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
 
             g2.setColor(Color.yellow);
             g2.fillRect(screenX, screenY, 5, 5);
