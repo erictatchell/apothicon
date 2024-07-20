@@ -38,13 +38,7 @@ public class Apothicon extends JPanel implements Runnable {
     public SuperObject obj[] = new SuperObject[10];
     public AssetSetter aSetter = new AssetSetter(this);
     public PathFinder pFinder = new PathFinder(this);
-    public ArrayList<Bullet> bullets = new ArrayList<>();
-
-    KeyInput keyIn = new KeyInput();
-    MouseInput mouseIn = new MouseInput();
-    public Player player = new Player(this, keyIn, mouseIn);
-    public Entity zombies[] = new Entity[10];
-    // JuggernogMachine jug = new JuggernogMachinje(this);
+       // JuggernogMachine jug = new JuggernogMachinje(this);
     // QuickReviveMachine qr = new QuickReviveMachine(this);
     // SpeedColaMachine sc = new SpeedColaMachine(this);
     // DoubleTapMachine dt = new DoubleTapMachine(this);
@@ -155,13 +149,7 @@ public class Apothicon extends JPanel implements Runnable {
                 zombies[i].update();
             }
         }
-        for (int i = 0; i < bullets.size(); i++) {
-            if (bullets.get(i) != null && bullets.get(i).alive) {
-                bullets.get(i).update();
-            } else if (!bullets.get(i).alive) {
-                bullets.remove(i);
-            }
-        }
+        
     }
 
     public void paintComponent(Graphics g) {
