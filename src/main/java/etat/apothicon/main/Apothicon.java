@@ -33,7 +33,7 @@ public class Apothicon extends JPanel implements Runnable {
     String drawFPS = "FPS: " + FPS;
     public TileManager tileManager = new TileManager(this);
 
-    public CollisionChecker cc = new CollisionChecker(this);
+    public bullet_checkEntity cc = new bullet_checkEntity(this);
 
     public SuperObject obj[] = new SuperObject[10];
     public AssetSetter aSetter = new AssetSetter(this);

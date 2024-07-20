@@ -4,10 +4,10 @@ import etat.apothicon.entity.Entity;
 import etat.apothicon.object.weapon.gun.Bullet;
 import java.awt.Rectangle;
 
-public class CollisionChecker {
+public class bullet_checkEntity {
     Apothicon ap;
 
-    public CollisionChecker(Apothicon ap) {
+    public bullet_checkEntity(Apothicon ap) {
         this.ap = ap;
     }
 
