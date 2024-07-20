@@ -104,7 +104,7 @@ public class Player extends Entity {
             keyIn.switchWpnPressed = false;
         }
 
-        int objIndex = ap.cc.checkObject(this, true);
+        int objIndex = ap.gameState.cc.checkObject(this, true);
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
         }
@@ -128,12 +128,12 @@ public class Player extends Entity {
             }
 
             collisionOn = false;
-            ap.cc.checkTile(this);
+            ap.gameState.cc.checkTile(this);
             // for non interact pickups (powerups)
             pickUpObject(objIndex);
 
             // zombie collision
-            int zombieIndex = ap.cc.checkEntity(this, ap.gameState.zombies);
+            int zombieIndex = ap.gameState.cc.checkEntity(this, ap.gameState.zombies);
 
             if (!collisionOn) {
                 if (direction == "up") {

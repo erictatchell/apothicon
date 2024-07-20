@@ -1,6 +1,5 @@
 package etat.apothicon.main;
 
-import etat.apothicon.ai.PathFinder;
 import etat.apothicon.tile.TileManager;
 import java.awt.*;
 import javax.swing.*;
@@ -22,22 +21,12 @@ public class Apothicon extends JPanel implements Runnable {
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
-    public GameState gameState = new GameState(this);
+    public GameState gameState;
 
     // TODO: oop-ify these variables
     int FPS = 60;
     String drawFPS = "FPS: " + FPS;
     public TileManager tileManager = new TileManager(this);
-
-    public CollisionChecker cc = new CollisionChecker(this);
-
-    public AssetSetter aSetter = new AssetSetter(this);
-    public PathFinder pFinder = new PathFinder(this);
-    // JuggernogMachine jug = new JuggernogMachinje(this);
-    // QuickReviveMachine qr = new QuickReviveMachine(this);
-    // SpeedColaMachine sc = new SpeedColaMachine(this);
-    // DoubleTapMachine dt = new DoubleTapMachine(this);
-    JLabel info = new JLabel("Text");
     Thread thread;
 
     public KeyInput keyIn = new KeyInput();
@@ -53,34 +42,12 @@ public class Apothicon extends JPanel implements Runnable {
     }
 
     public void setup() {
-        aSetter.setObject();
-        aSetter.setZombie();
+
+        gameState = new GameState(this);
+        gameState.setup();
     }
 
-    // public void drawText(Graphics2D g2) {
-    // BufferedImage spl = null;
-    // try {
-
-    // spl = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
-    // } catch (IOException e) {
-    // e.printStackTrace();
-    // }
-    // g2.setColor(Color.white);
-    // Font font = new Font("Arial", Font.BOLD, 18);
-    // g2.setFont(font);
-    // g2.drawString("" + player.loadout.getPoints(), 10, screenHeight - 12);
-
-    // Gun currentWeapon = player.loadout.getCurrentWeapon();
-    // String currentWeaponName = currentWeapon.getName();
-    // g2.drawImage(spl, screenWidth - spl.getWidth(), screenHeight -
-    // spl.getHeight(), null);
-    // g2.drawString("" + currentWeaponName, screenWidth -
-    // currentWeaponName.length() * 12, screenHeight - 28);
-    // g2.drawString("" + currentWeapon.getMagazine() + " / " +
-    // currentWeapon.getReserve(), screenWidth - currentWeaponName.length() * 12,
-    // screenHeight - 12);
-
-    // }
+    
 
     public void drawText(Graphics2D g2, String text, String price) {
         g2.setColor(Color.white);
@@ -144,7 +111,7 @@ public class Apothicon extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        // drawText(g2);
+        gameState.draw(g2);
         g2.dispose();
     }
 }

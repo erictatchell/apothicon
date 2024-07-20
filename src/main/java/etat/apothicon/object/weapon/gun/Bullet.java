@@ -36,7 +36,7 @@ public class Bullet extends Entity {
 
     public void update() {
         if (user == this.ap.gameState.player) {
-            int zombieIndex = ap.cc.bullet_checkEntity(this, ap.gameState.zombies);
+            int zombieIndex = ap.gameState.cc.bullet_checkEntity(this, ap.gameState.zombies);
             if (zombieIndex != 999) {
                 ap.gameState.player.damageZombie(zombieIndex);
                 alive = false;
@@ -47,7 +47,7 @@ public class Bullet extends Entity {
         }
         worldX += speed * Math.cos(Math.toRadians(directionAngle));
         worldY += speed * Math.sin(Math.toRadians(directionAngle));
-        ap.cc.bullet_checkTile(this);
+        ap.gameState.cc.bullet_checkTile(this);
         if (this.collisionOn) {
             ap.gameState.bullets.remove(this);
         }

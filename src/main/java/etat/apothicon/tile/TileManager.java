@@ -1,7 +1,6 @@
 package etat.apothicon.tile;
 
 import etat.apothicon.main.Apothicon;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.File;
@@ -201,15 +200,15 @@ public class TileManager {
             }
 
         }
-        if (drawPath) {
-            g2.setColor(new Color(255, 0, 0, 70));
-            for (int i = 0; i < ap.pFinder.pathList.size(); i++) {
-                int worldX = ap.pFinder.pathList.get(i).col * ap.tileSize;
-                int worldY = ap.pFinder.pathList.get(i).row * ap.tileSize; 
-                int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
-                int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
-                g2.fillRect(screenX, screenY, ap.tileSize, ap.tileSize);
-            }
-        }
+        // if (drawPath) {
+        //     g2.setColor(new Color(255, 0, 0, 70));
+        //     for (int i = 0; i < ap.gameState.pFinder.pathList.size(); i++) {
+        //         int worldX = ap.pFinder.pathList.get(i).col * ap.tileSize;
+        //         int worldY = ap.pFinder.pathList.get(i).row * ap.tileSize; 
+        //         int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
+        //         int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
+        //         g2.fillRect(screenX, screenY, ap.tileSize, ap.tileSize);
+        //     }
+        // }
     }
 }

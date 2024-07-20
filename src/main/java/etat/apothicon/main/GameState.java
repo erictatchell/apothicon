@@ -1,5 +1,6 @@
 package etat.apothicon.main;
 
+import etat.apothicon.ai.PathFinder;
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
 import etat.apothicon.hud.HUD;
@@ -16,18 +17,27 @@ public class GameState {
     public ArrayList<Bullet> bullets;
     public SuperObject obj[];
     public HUD hud;
+    public CollisionChecker cc;
+    public AssetSetter aSetter;
+    public PathFinder pFinder;
 
     public GameState(Apothicon ap) {
         this.ap = ap;
-        setup();
     }
 
     public void setup() {
         player = new Player(ap, ap.keyIn, ap.mouseIn);
         zombies = new Entity[10];
         bullets = new ArrayList<>();
-        hud = new HUD(ap);
         obj = new SuperObject[10];
+
+        hud = new HUD(ap);
+
+        cc = new CollisionChecker(ap);
+        aSetter = new AssetSetter(ap);
+        pFinder = new PathFinder(ap);
+        aSetter.setObject();
+        aSetter.setZombie();
 
     }
 
@@ -39,7 +49,8 @@ public class GameState {
                 zombie.update();
             }
         }
-        for (Bullet bullet : bullets) {
+        for (int i = 0; i < bullets.size(); i++) {
+            Bullet bullet = bullets.get(i);
             if (bullet != null) {
                 if (bullet.alive) {
                     bullet.update();
@@ -50,7 +61,9 @@ public class GameState {
         }
     }
 
+
     public void draw(Graphics2D g2) {
+        
         ap.tileManager.draw(g2);
         for (int i = 0; i < zombies.length; i++) {
             if (zombies[i] != null) {
@@ -71,5 +84,6 @@ public class GameState {
 
         player.draw(g2);
 
+        hud.draw(g2);
     }
 }
