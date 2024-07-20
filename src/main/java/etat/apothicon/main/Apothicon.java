@@ -1,14 +1,8 @@
 package etat.apothicon.main;
 
 import etat.apothicon.ai.PathFinder;
-import etat.apothicon.entity.Entity;
-import etat.apothicon.entity.Player;
-import etat.apothicon.hud.HUD;
-import etat.apothicon.object.SuperObject;
-import etat.apothicon.object.weapon.gun.*;
 import etat.apothicon.tile.TileManager;
 import java.awt.*;
-import java.util.ArrayList;
 import javax.swing.*;
 
 public class Apothicon extends JPanel implements Runnable {
@@ -28,24 +22,26 @@ public class Apothicon extends JPanel implements Runnable {
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
+    public GameState gameState = new GameState(this);
+
     // TODO: oop-ify these variables
     int FPS = 60;
     String drawFPS = "FPS: " + FPS;
     public TileManager tileManager = new TileManager(this);
 
-    public bullet_checkEntity cc = new bullet_checkEntity(this);
+    public CollisionChecker cc = new CollisionChecker(this);
 
-    public SuperObject obj[] = new SuperObject[10];
     public AssetSetter aSetter = new AssetSetter(this);
     public PathFinder pFinder = new PathFinder(this);
-       // JuggernogMachine jug = new JuggernogMachinje(this);
+    // JuggernogMachine jug = new JuggernogMachinje(this);
     // QuickReviveMachine qr = new QuickReviveMachine(this);
     // SpeedColaMachine sc = new SpeedColaMachine(this);
     // DoubleTapMachine dt = new DoubleTapMachine(this);
     JLabel info = new JLabel("Text");
     Thread thread;
 
-    public HUD hud = new HUD(this);
+    public KeyInput keyIn = new KeyInput();
+    public MouseInput mouseIn = new MouseInput();
 
     Apothicon() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -142,40 +138,12 @@ public class Apothicon extends JPanel implements Runnable {
     // return jug;
     // }
     public void update() {
-        player.update();
-        hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
-        for (int i = 0; i < zombies.length; i++) {
-            if (zombies[i] != null) {
-                zombies[i].update();
-            }
-        }
-        
+        gameState.update();
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        tileManager.draw(g2);
-        for (int i = 0; i < zombies.length; i++) {
-            if (zombies[i] != null) {
-                zombies[i].draw(g2);
-            }
-        }
-        for (int i = 0; i < bullets.size(); i++) {
-            if (bullets.get(i) != null) {
-                bullets.get(i).drawBullet(g2);
-            }
-        }
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
-                obj[i].draw(g2, this);
-
-            }
-        }
-
-        player.draw(g2);
-
-        hud.draw(g2);
         // drawText(g2);
         g2.dispose();
     }

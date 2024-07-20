@@ -135,14 +135,14 @@ public class Gun {
         Bullet bullet1 = new Bullet(owner.ap);
         bullet1.set(owner.worldX + dirDistanceX, owner.worldY + this.owner.ap.tileSize / 2, dir, true, owner, this);
 
-        owner.ap.bullets.add(bullet1);
+        owner.ap.gameState.bullets.add(bullet1);
 
         if (this.owner.loadout.hasDoubleTap) {
 
             Bullet bullet2 = new Bullet(owner.ap);
             bullet2.set(owner.worldX + 28, owner.worldY + 28, dir, true, owner, this);
 
-            owner.ap.bullets.add(bullet2);
+            owner.ap.gameState.bullets.add(bullet2);
         }
     }
 

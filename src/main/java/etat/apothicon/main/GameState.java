@@ -2,7 +2,10 @@ package etat.apothicon.main;
 
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
+import etat.apothicon.hud.HUD;
+import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.weapon.gun.Bullet;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 public class GameState {
@@ -11,8 +14,8 @@ public class GameState {
     public Player player;
     public Entity zombies[];
     public ArrayList<Bullet> bullets;
-    public KeyInput keyIn = new KeyInput();
-    public MouseInput mouseIn = new MouseInput();
+    public SuperObject obj[];
+    public HUD hud;
 
     public GameState(Apothicon ap) {
         this.ap = ap;
@@ -20,13 +23,17 @@ public class GameState {
     }
 
     public void setup() {
-        player = new Player(ap, keyIn, mouseIn);
+        player = new Player(ap, ap.keyIn, ap.mouseIn);
         zombies = new Entity[10];
         bullets = new ArrayList<>();
+        hud = new HUD(ap);
+        obj = new SuperObject[10];
+
     }
 
     public void update() {
         player.update();
+        hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
         for (Entity zombie : zombies) {
             if (zombie != null) {
                 zombie.update();
@@ -41,5 +48,28 @@ public class GameState {
                 }
             }
         }
+    }
+
+    public void draw(Graphics2D g2) {
+        ap.tileManager.draw(g2);
+        for (int i = 0; i < zombies.length; i++) {
+            if (zombies[i] != null) {
+                zombies[i].draw(g2);
+            }
+        }
+        for (int i = 0; i < bullets.size(); i++) {
+            if (bullets.get(i) != null) {
+                bullets.get(i).drawBullet(g2);
+            }
+        }
+        for (int i = 0; i < obj.length; i++) {
+            if (obj[i] != null) {
+                obj[i].draw(g2, ap);
+
+            }
+        }
+
+        player.draw(g2);
+
     }
 }

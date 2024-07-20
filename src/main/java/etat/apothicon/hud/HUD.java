@@ -32,9 +32,9 @@ public class HUD {
     }
 
     private void setup() {
-        this.currentWeaponMagazine = Integer.toString(ap.player.loadout.getCurrentWeapon().getMagazine());
-        this.currentWeaponReserve = Integer.toString(ap.player.loadout.getCurrentWeapon().getReserve());
-        this.perks = ap.player.loadout.getPerks();
+        this.currentWeaponMagazine = Integer.toString(ap.gameState.player.loadout.getCurrentWeapon().getMagazine());
+        this.currentWeaponReserve = Integer.toString(ap.gameState.player.loadout.getCurrentWeapon().getReserve());
+        this.perks = ap.gameState.player.loadout.getPerks();
         try {
             gunSplosh = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
             pointSplosh = ImageIO.read(new File("src/main/resources/blood/pointSplosh.png"));

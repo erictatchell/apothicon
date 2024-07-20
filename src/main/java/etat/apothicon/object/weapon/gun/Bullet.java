@@ -35,21 +35,21 @@ public class Bullet extends Entity {
     }
 
     public void update() {
-        if (user == this.ap.player) {
-            int zombieIndex = ap.cc.checkOmnidirectionalEntity(this, ap.zombies);
+        if (user == this.ap.gameState.player) {
+            int zombieIndex = ap.cc.bullet_checkEntity(this, ap.gameState.zombies);
             if (zombieIndex != 999) {
-                ap.player.damageZombie(zombieIndex);
+                ap.gameState.player.damageZombie(zombieIndex);
                 alive = false;
             }
         }
-        if (user != this.ap.player) {
+        if (user != this.ap.gameState.player) {
 
         }
         worldX += speed * Math.cos(Math.toRadians(directionAngle));
         worldY += speed * Math.sin(Math.toRadians(directionAngle));
         ap.cc.bullet_checkTile(this);
         if (this.collisionOn) {
-            ap.bullets.remove(this);
+            ap.gameState.bullets.remove(this);
         }
 
         System.out.println(directionAngle);
@@ -61,13 +61,13 @@ public class Bullet extends Entity {
     }
 
     public void drawBullet(Graphics2D g2) {
-        int screenX = worldX - ap.player.worldX + ap.player.screenX;
-        int screenY = worldY - ap.player.worldY + ap.player.screenY;
+        int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
+        int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
 
-        if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX
-                && worldX - ap.tileSize < ap.player.worldX + ap.player.screenX
-                && worldY + ap.tileSize > ap.player.worldY - ap.player.screenY
-                && worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
+        if (worldX + ap.tileSize > ap.gameState.player.worldX - ap.gameState.player.screenX
+                && worldX - ap.tileSize < ap.gameState.player.worldX + ap.gameState.player.screenX
+                && worldY + ap.tileSize > ap.gameState.player.worldY - ap.gameState.player.screenY
+                && worldY - ap.tileSize < ap.gameState.player.worldY + ap.gameState.player.screenY) {
 
             g2.setColor(Color.yellow);
             g2.fillRect(screenX, screenY, 5, 5);

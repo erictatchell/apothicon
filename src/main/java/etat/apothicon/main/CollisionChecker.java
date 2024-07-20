@@ -4,10 +4,10 @@ import etat.apothicon.entity.Entity;
 import etat.apothicon.object.weapon.gun.Bullet;
 import java.awt.Rectangle;
 
-public class bullet_checkEntity {
+public class CollisionChecker {
     Apothicon ap;
 
-    public bullet_checkEntity(Apothicon ap) {
+    public CollisionChecker(Apothicon ap) {
         this.ap = ap;
     }
 
@@ -17,60 +17,60 @@ public class bullet_checkEntity {
         e.solidArea.y = e.worldY + e.solidArea.y;
 
         // get objects solid area position
-        ap.player.solidArea.x = ap.player.worldX + ap.player.solidArea.x;
-        ap.player.solidArea.y = ap.player.worldY + ap.player.solidArea.y;
+        ap.gameState.player.solidArea.x = ap.gameState.player.worldX + ap.gameState.player.solidArea.x;
+        ap.gameState.player.solidArea.y = ap.gameState.player.worldY + ap.gameState.player.solidArea.y;
 
         switch (e.direction) {
             case "up":
                 e.solidArea.y -= e.speed;
-                if (e.solidArea.intersects(ap.player.solidArea)) {
+                if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
                     e.collisionOn = true;
                 }
                 break;
             case "down":
                 e.solidArea.y += e.speed;
-                if (e.solidArea.intersects(ap.player.solidArea)) {
+                if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
                     e.collisionOn = true;
                 }
                 break;
             case "left":
                 e.solidArea.x -= e.speed;
-                if (e.solidArea.intersects(ap.player.solidArea)) {
+                if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
                     e.collisionOn = true;
                 }
                 break;
             case "right":
                 e.solidArea.x += e.speed;
-                if (e.solidArea.intersects(ap.player.solidArea)) {
+                if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
                     e.collisionOn = true;
                 }
                 break;
         }
         e.solidArea.x = e.solidAreaDefaultX;
         e.solidArea.y = e.solidAreaDefaultY;
-        ap.player.solidArea.x = ap.player.solidAreaDefaultX;
-        ap.player.solidArea.y = ap.player.solidAreaDefaultY;
+        ap.gameState.player.solidArea.x = ap.gameState.player.solidAreaDefaultX;
+        ap.gameState.player.solidArea.y = ap.gameState.player.solidAreaDefaultY;
 
     }
 
     public int checkObject(Entity e, boolean player) {
         int index = 999;
 
-        for (int i = 0; i < ap.obj.length; i++) {
-            if (ap.obj[i] != null) {
+        for (int i = 0; i < ap.gameState.obj.length; i++) {
+            if (ap.gameState.obj[i] != null) {
                 // get entities solid area position
                 e.solidArea.x = e.worldX + e.solidArea.x;
                 e.solidArea.y = e.worldY + e.solidArea.y;
 
                 // get objects solid area position
-                ap.obj[i].solidArea.x = ap.obj[i].worldX + ap.obj[i].solidArea.x;
-                ap.obj[i].solidArea.y = ap.obj[i].worldY + ap.obj[i].solidArea.y;
+                ap.gameState.obj[i].solidArea.x = ap.gameState.obj[i].worldX + ap.gameState.obj[i].solidArea.x;
+                ap.gameState.obj[i].solidArea.y = ap.gameState.obj[i].worldY + ap.gameState.obj[i].solidArea.y;
 
                 switch (e.direction) {
                     case "up":
                         e.solidArea.y -= e.speed;
-                        if (e.solidArea.intersects(ap.obj[i].solidArea)) {
-                            if (ap.obj[i].collision) {
+                        if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
+                            if (ap.gameState.obj[i].collision) {
                                 e.collisionOn = true;
                             }
                             if (player) {
@@ -80,8 +80,8 @@ public class bullet_checkEntity {
                         break;
                     case "down":
                         e.solidArea.y += e.speed;
-                        if (e.solidArea.intersects(ap.obj[i].solidArea)) {
-                            if (ap.obj[i].collision) {
+                        if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
+                            if (ap.gameState.obj[i].collision) {
                                 e.collisionOn = true;
                             }
                             if (player) {
@@ -91,8 +91,8 @@ public class bullet_checkEntity {
                         break;
                     case "left":
                         e.solidArea.x -= e.speed;
-                        if (e.solidArea.intersects(ap.obj[i].solidArea)) {
-                            if (ap.obj[i].collision) {
+                        if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
+                            if (ap.gameState.obj[i].collision) {
                                 e.collisionOn = true;
                             }
                             if (player) {
@@ -102,8 +102,8 @@ public class bullet_checkEntity {
                         break;
                     case "right":
                         e.solidArea.x += e.speed;
-                        if (e.solidArea.intersects(ap.obj[i].solidArea)) {
-                            if (ap.obj[i].collision) {
+                        if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
+                            if (ap.gameState.obj[i].collision) {
                                 e.collisionOn = true;
                             }
                             if (player) {
@@ -114,8 +114,8 @@ public class bullet_checkEntity {
                 }
                 e.solidArea.x = e.solidAreaDefaultX;
                 e.solidArea.y = e.solidAreaDefaultY;
-                ap.obj[i].solidArea.x = ap.obj[i].solidAreaDefaultX;
-                ap.obj[i].solidArea.y = ap.obj[i].solidAreaDefaultY;
+                ap.gameState.obj[i].solidArea.x = ap.gameState.obj[i].solidAreaDefaultX;
+                ap.gameState.obj[i].solidArea.y = ap.gameState.obj[i].solidAreaDefaultY;
             }
         }
         return index;
@@ -228,7 +228,7 @@ public class bullet_checkEntity {
         }
     }
 
-    public int checkOmnidirectionalEntity(Bullet e, Entity[] target) {
+    public int bullet_checkEntity(Bullet e, Entity[] target) {
         int index = 999;
 
         int futureX = e.worldX + (int) (e.speed * Math.cos(Math.toRadians(e.directionAngle)));

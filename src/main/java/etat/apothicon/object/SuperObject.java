@@ -16,13 +16,13 @@ public class SuperObject {
     public int solidAreaDefaultX, solidAreaDefaultY = 0;
 
     public void draw(Graphics2D g2, Apothicon ap) {
-        int screenX = worldX - ap.player.worldX + ap.player.screenX;
-        int screenY = worldY - ap.player.worldY + ap.player.screenY;
+        int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
+        int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
 
-        if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX &&
-                worldX - ap.tileSize < ap.player.worldX + ap.player.screenX &&
-                worldY + ap.tileSize > ap.player.worldY - ap.player.screenY &&
-                worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
+        if (worldX + ap.tileSize > ap.gameState.player.worldX - ap.gameState.player.screenX &&
+                worldX - ap.tileSize < ap.gameState.player.worldX + ap.gameState.player.screenX &&
+                worldY + ap.tileSize > ap.gameState.player.worldY - ap.gameState.player.screenY &&
+                worldY - ap.tileSize < ap.gameState.player.worldY + ap.gameState.player.screenY) {
             g2.drawImage(this.image, screenX, screenY, ap.tileSize, ap.tileSize, null);
 
         }

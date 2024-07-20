@@ -133,7 +133,7 @@ public class Player extends Entity {
             pickUpObject(objIndex);
 
             // zombie collision
-            int zombieIndex = ap.cc.checkEntity(this, ap.zombies);
+            int zombieIndex = ap.cc.checkEntity(this, ap.gameState.zombies);
 
             if (!collisionOn) {
                 if (direction == "up") {
@@ -183,7 +183,7 @@ public class Player extends Entity {
      */
     public void damageZombie(int index) {
         if (index != 999) {
-            Entity zombie = ap.zombies[index];
+            Entity zombie = ap.gameState.zombies[index];
 
             boolean killed = false;
             boolean headshot = false;
@@ -200,7 +200,7 @@ public class Player extends Entity {
 
     public void pickUpObject(int index) {
         if (index != 999) {
-            SuperObject obj = ap.obj[index];
+            SuperObject obj = ap.gameState.obj[index];
             switch (obj.type) {
                 case "perk":
                     PerkMachine perkMachine = (PerkMachine) obj;
