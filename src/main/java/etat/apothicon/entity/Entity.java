@@ -131,6 +131,7 @@ public class Entity {
 
     public void die(int index) {
         ap.gameState.zombies[index] = null;
+        ap.gameState.aSetter.setZombie();
     }
 
     public void update() {

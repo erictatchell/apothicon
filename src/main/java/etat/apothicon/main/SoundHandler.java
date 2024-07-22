@@ -18,7 +18,12 @@ public class SoundHandler {
         soundURL[4] = getClass().getClassLoader().getResource("sound/olympia-reload.wav");
         soundURL[5] = getClass().getClassLoader().getResource("sound/m14-fire.wav");
         soundURL[6] = getClass().getClassLoader().getResource("sound/m14-reload.wav");
+        
+        soundURL[7] = getClass().getClassLoader().getResource("sound/mp40-fire.wav");
+        soundURL[8] = getClass().getClassLoader().getResource("sound/mp40-reload.wav");
 
+        soundURL[9] = getClass().getClassLoader().getResource("sound/stakeout-fire.wav");
+        soundURL[10] = getClass().getClassLoader().getResource("sound/stakeout-reload.wav");
     }
 
     public void setFile(int i) {
@@ -34,7 +39,7 @@ public class SoundHandler {
 
     public void play() {
         clip.start();
-    }
+     }
 
     public void stop() {
         clip.stop();

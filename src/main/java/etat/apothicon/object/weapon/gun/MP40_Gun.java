@@ -12,15 +12,15 @@ public class MP40_Gun extends Gun {
     public MP40_Gun(Player player) {
         super(player,
                 "MP40",
-                50,
+                20,
                 32,
                 192,
-                1.2f,
+                0.8f,
                 FireType.AUTO,
                 GunSound.MP40_FIRE,
                 GunSound.MP40_RELOAD,
                 1,
-                1.0f,
+                1.5f,
                 "src/main/resources/guns/mp40.png");
         setImage2();
     }
