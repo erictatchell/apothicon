@@ -10,7 +10,7 @@ A big portion of Apothicon, specifically the
 
 were made trivial thanks to [RyiSnow's 2D Java Game series on YouTube](https://www.youtube.com/watch?v=om59cwR7psI&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq). Great guide for anyone wanting to get into this sort of thing
 
-Assets are original, some designs are not (perks)
+Assets are original, some designs/sounds are not (perks + gun sounds)
 
 Not affiliated with Activision
 
