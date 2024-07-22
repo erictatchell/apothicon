@@ -3,10 +3,9 @@ package etat.apothicon.object.perk.bottle;
 import etat.apothicon.entity.Drinkable;
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
-
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class QuickRevive extends Perk implements Drinkable {
     public QuickRevive(Player player, Apothicon ap) {
@@ -27,5 +26,6 @@ public class QuickRevive extends Perk implements Drinkable {
         customer.loadout.setRevives(1);
         customer.loadout.addPerk(this);
         customer.loadout.spendPoints(500);
+        customer.loadout.hasQuickRevive = true;
     }
 }

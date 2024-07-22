@@ -1,15 +1,12 @@
 package etat.apothicon.entity;
 
-import java.awt.Color;
+import etat.apothicon.main.Apothicon;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
-import etat.apothicon.main.Apothicon;
 
 public class Entity {
     // TODO: oop-ify this!
@@ -63,10 +60,10 @@ public class Entity {
         int startCol = (worldX + solidArea.x) / ap.tileSize;
         int startRow = (worldY + solidArea.y) / ap.tileSize;
 
-        ap.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
-        if (ap.pFinder.search() == true) {
-            int nextX = ap.pFinder.pathList.get(0).col * ap.tileSize;
-            int nextY = ap.pFinder.pathList.get(0).row * ap.tileSize;
+        ap.gameState.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
+        if (ap.gameState.pFinder.search() == true) {
+            int nextX = ap.gameState.pFinder.pathList.get(0).col * ap.tileSize;
+            int nextY = ap.gameState.pFinder.pathList.get(0).row * ap.tileSize;
             // get entities solid area
             int eLeftX = worldX + solidArea.x;
             int eRightX = worldX + solidArea.x + solidArea.width;
@@ -126,14 +123,14 @@ public class Entity {
 
     public void checkCollision() {
         collisionOn = false;
-        ap.cc.checkTile(this);
-        ap.cc.checkObject(this, false);
-        ap.cc.checkPlayer(this);
+        ap.gameState.cc.checkTile(this);
+        ap.gameState.cc.checkObject(this, false);
+        ap.gameState.cc.checkPlayer(this);
 
     }
 
     public void die(int index) {
-        ap.zombies[index] = null;
+        ap.gameState.zombies[index] = null;
     }
 
     public void update() {
@@ -170,14 +167,14 @@ public class Entity {
     }
 
     public void draw(Graphics2D g2) {
-        int screenX = worldX - ap.player.worldX + ap.player.screenX;
-        int screenY = worldY - ap.player.worldY + ap.player.screenY;
+        int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
+        int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
         BufferedImage image = null;
 
-        if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX &&
-                worldX - ap.tileSize < ap.player.worldX + ap.player.screenX &&
-                worldY + ap.tileSize > ap.player.worldY - ap.player.screenY &&
-                worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
+        if (worldX + ap.tileSize > ap.gameState.player.worldX - ap.gameState.player.screenX &&
+                worldX - ap.tileSize < ap.gameState.player.worldX + ap.gameState.player.screenX &&
+                worldY + ap.tileSize > ap.gameState.player.worldY - ap.gameState.player.screenY &&
+                worldY - ap.tileSize < ap.gameState.player.worldY + ap.gameState.player.screenY) {
             switch (this.direction) {
                 case "up":
                     if (spriteNum == 1) {

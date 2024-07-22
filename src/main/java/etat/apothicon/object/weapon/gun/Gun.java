@@ -1,19 +1,16 @@
 package etat.apothicon.object.weapon.gun;
 
 import etat.apothicon.entity.Player;
-import etat.apothicon.main.Apothicon;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
-
-import java.awt.MouseInfo;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
 import javax.imageio.ImageIO;
-import javax.swing.SwingUtilities;
 
 // TODO:
 public class Gun {
+
     String name;
     public BufferedImage image;
     Player owner;
@@ -22,6 +19,8 @@ public class Gun {
     public BufferedImage image2;
 
     int damage;
+    boolean reloading = false;
+    int delay;
     public int bullet;
     public int defaultAmmoPerMagazine;
     public int magazine;
@@ -29,17 +28,18 @@ public class Gun {
     public int defaultReserve;
     public WallBuy wallBuy;
     public float fireRate;
-    float reloadRate;
     public FireType fireType;
     public int fireDelayCounter;
+    public float reloadRate;
+    public Timer reloadTimer;
     float range;
     public boolean rechamberNeeded = false;
     public int fireDelay;
 
     /**
      * gun structure
-     * 
-     * @param name                   name
+     *
+     * @param name name
      * @param damage
      * @param defaultAmmoPerMagazine
      * @param reserve
@@ -88,6 +88,24 @@ public class Gun {
         return name;
     }
 
+    public void handleReload() {
+        if (!reloading) {
+            this.reloading = true;
+            this.reloadTimer = new Timer();
+            this.delay = (int) (1000 * this.owner.loadout.getReloadRate() * this.reloadRate);
+            reloadTimer.schedule(
+                    new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    reload();
+                }
+            },
+                    this.delay
+            );
+
+        }
+    }
+
     public void reload() {
         int ammoToBeReloaded = this.defaultAmmoPerMagazine - this.magazine;
         if (this.reserve > 0 && ammoToBeReloaded > 0) {
@@ -99,21 +117,45 @@ public class Gun {
                 this.reserve = 0;
             }
         }
+        this.reloading = false;
+    }
+
+    public void sendBullet() {
+
+        int dir = owner.calculateAngle();
+        int dirDistanceX = 0;
+        int dirDistanceY = 0;
+        boolean upperRight = (dir <= 0 && dir >= -90);
+        boolean upperLeft = (dir <= -90 && dir >= -180);
+        boolean lowerRight = (dir >= 0 && dir <= 90);
+        boolean lowerLeft = (dir >= 90 && dir <= 180);
+        if (upperRight || lowerRight) {
+            dirDistanceX = this.owner.ap.tileSize;
+        }
+        Bullet bullet1 = new Bullet(owner.ap);
+        bullet1.set(owner.worldX + dirDistanceX, owner.worldY + this.owner.ap.tileSize / 2, dir, true, owner, this);
+
+        owner.ap.gameState.bullets.add(bullet1);
+
+        if (this.owner.loadout.hasDoubleTap) {
+
+            Bullet bullet2 = new Bullet(owner.ap);
+            bullet2.set(owner.worldX + 28, owner.worldY + 28, dir, true, owner, this);
+
+            owner.ap.gameState.bullets.add(bullet2);
+        }
     }
 
     public void fire() {
 
-        if (this.magazine >= 1) {
-            int dir = owner.calculateAngle();
-            Bullet bullet = new Bullet(owner.ap);
-            bullet.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner, this);
-            owner.ap.bullets.add(bullet);
+        if (!this.reloading && this.magazine >= 1) {
 
+            sendBullet();
             this.magazine -= 1;
         }
         if (magazine == 0) {
 
-            reload();
+            handleReload();
         }
     }
 
@@ -128,4 +170,5 @@ public class Gun {
     public int getDamage() {
         return this.damage;
     }
+
 }

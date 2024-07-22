@@ -48,8 +48,8 @@ public class Zombie extends Entity {
 
     public void setAction() {
         if (onPath) {
-            int goalCol = (ap.player.worldX + ap.player.solidArea.x) / ap.tileSize;
-            int goalRow = (ap.player.worldY + ap.player.solidArea.y) / ap.tileSize;
+            int goalCol = (ap.gameState.player.worldX + ap.gameState.player.solidArea.x) / ap.tileSize;
+            int goalRow = (ap.gameState.player.worldY + ap.gameState.player.solidArea.y) / ap.tileSize;
 
             searchPath(goalCol, goalRow);
         } else {

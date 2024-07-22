@@ -3,10 +3,9 @@ package etat.apothicon.object.perk.bottle;
 import etat.apothicon.entity.Drinkable;
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
-
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class Juggernog extends Perk implements Drinkable {
     public Juggernog(Player player, Apothicon ap) {
@@ -28,5 +27,6 @@ public class Juggernog extends Perk implements Drinkable {
         customer.loadout.setDefaultHealth(250);
         customer.loadout.addPerk(this);
         customer.loadout.spendPoints(2500);
+        customer.loadout.hasJuggernog = true;
     }
 }

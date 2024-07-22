@@ -1,17 +1,12 @@
 package etat.apothicon.tile;
 
-import java.awt.Color;
+import etat.apothicon.main.Apothicon;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import javax.imageio.ImageIO;
-
-import etat.apothicon.main.Apothicon;
 
 public class TileManager {
 
@@ -188,13 +183,13 @@ public class TileManager {
 
             int worldX = worldCol * ap.tileSize;
             int worldY = worldRow * ap.tileSize;
-            int screenX = worldX - ap.player.worldX + ap.player.screenX;
-            int screenY = worldY - ap.player.worldY + ap.player.screenY;
+            int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
+            int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
 
-            if (worldX + ap.tileSize > ap.player.worldX - ap.player.screenX &&
-                    worldX - ap.tileSize < ap.player.worldX + ap.player.screenX &&
-                    worldY + ap.tileSize > ap.player.worldY - ap.player.screenY &&
-                    worldY - ap.tileSize < ap.player.worldY + ap.player.screenY) {
+            if (worldX + ap.tileSize > ap.gameState.player.worldX - ap.gameState.player.screenX &&
+                    worldX - ap.tileSize < ap.gameState.player.worldX + ap.gameState.player.screenX &&
+                    worldY + ap.tileSize > ap.gameState.player.worldY - ap.gameState.player.screenY &&
+                    worldY - ap.tileSize < ap.gameState.player.worldY + ap.gameState.player.screenY) {
                 g2.drawImage(tile[tileNum].image, screenX, screenY, ap.tileSize, ap.tileSize, null);
 
             }
@@ -205,15 +200,15 @@ public class TileManager {
             }
 
         }
-        if (drawPath) {
-            g2.setColor(new Color(255, 0, 0, 70));
-            for (int i = 0; i < ap.pFinder.pathList.size(); i++) {
-                int worldX = ap.pFinder.pathList.get(i).col * ap.tileSize;
-                int worldY = ap.pFinder.pathList.get(i).row * ap.tileSize; 
-                int screenX = worldX - ap.player.worldX + ap.player.screenX;
-                int screenY = worldY - ap.player.worldY + ap.player.screenY;
-                g2.fillRect(screenX, screenY, ap.tileSize, ap.tileSize);
-            }
-        }
+        // if (drawPath) {
+        //     g2.setColor(new Color(255, 0, 0, 70));
+        //     for (int i = 0; i < ap.gameState.pFinder.pathList.size(); i++) {
+        //         int worldX = ap.pFinder.pathList.get(i).col * ap.tileSize;
+        //         int worldY = ap.pFinder.pathList.get(i).row * ap.tileSize; 
+        //         int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
+        //         int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
+        //         g2.fillRect(screenX, screenY, ap.tileSize, ap.tileSize);
+        //     }
+        // }
     }
 }

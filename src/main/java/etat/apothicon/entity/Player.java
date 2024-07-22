@@ -4,28 +4,15 @@ import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
 import etat.apothicon.main.MouseInput;
 import etat.apothicon.object.SuperObject;
-import etat.apothicon.object.perk.bottle.DoubleTap;
-import etat.apothicon.object.perk.bottle.Juggernog;
-import etat.apothicon.object.perk.bottle.MuleKick;
 import etat.apothicon.object.perk.bottle.Perk;
-import etat.apothicon.object.perk.bottle.QuickRevive;
-import etat.apothicon.object.perk.bottle.SpeedCola;
 import etat.apothicon.object.perk.machine.PerkMachine;
 import etat.apothicon.object.weapon.gun.Bullet;
 import etat.apothicon.object.weapon.gun.FireType;
-import etat.apothicon.object.weapon.gun.M14_Gun;
-import etat.apothicon.object.weapon.gun.MP40_Gun;
-import etat.apothicon.object.weapon.gun.Olympia_Gun;
-import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
 public class Player extends Entity {
@@ -85,9 +72,6 @@ public class Player extends Entity {
         this.direction = "down";
     }
 
-    static int fireDelayCounter = 0;
-    static boolean rechamberNeeded = false;
-
     public void update() {
         // for perk placement
         this.slotX = perkOffset;
@@ -102,9 +86,7 @@ public class Player extends Entity {
                 loadout.getCurrentWeapon().rechamberNeeded = true;
             }
             loadout.getCurrentWeapon().fireDelayCounter = 0;
-        }
-
-        // if semi auto, rechamber on trigger release
+        } // if semi auto, rechamber on trigger release
         else if (loadout.getCurrentWeapon().fireType == FireType.SEMI_AUTO && !mouseIn.leftMousePressed) {
             loadout.getCurrentWeapon().rechamberNeeded = false;
         }
@@ -122,13 +104,13 @@ public class Player extends Entity {
             keyIn.switchWpnPressed = false;
         }
 
-        int objIndex = ap.cc.checkObject(this, true);
+        int objIndex = ap.gameState.cc.checkObject(this, true);
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
         }
 
         if (keyIn.reloadPressed) {
-            this.loadout.getCurrentWeapon().reload();
+            this.loadout.getCurrentWeapon().handleReload();
         }
 
         if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {
@@ -146,12 +128,12 @@ public class Player extends Entity {
             }
 
             collisionOn = false;
-            ap.cc.checkTile(this);
+            ap.gameState.cc.checkTile(this);
             // for non interact pickups (powerups)
             pickUpObject(objIndex);
 
             // zombie collision
-            int zombieIndex = ap.cc.checkEntity(this, ap.zombies);
+            int zombieIndex = ap.gameState.cc.checkEntity(this, ap.gameState.zombies);
 
             if (!collisionOn) {
                 if (direction == "up") {
@@ -195,19 +177,30 @@ public class Player extends Entity {
         this.purchaseString = name;
     }
 
+
+    /**
+     * @param index position i
+     */
     public void damageZombie(int index) {
         if (index != 999) {
-            int damage = loadout.getCurrentWeapon().getDamage();
-            ap.zombies[index].takeDamage(damage);
-            if (ap.zombies[index].health <= 0) {
-                ap.zombies[index].die(index);
+            Entity zombie = ap.gameState.zombies[index];
+
+            boolean killed = false;
+            boolean headshot = false;
+
+            int damage = (int) (loadout.getCurrentWeapon().getDamage() * loadout.getDamageMultiplier());
+            zombie.takeDamage(damage);
+            if (zombie.health <= 0) {
+                zombie.die(index);
+                killed = true;
             }
+            loadout.addPoints(killed, headshot);
         }
     }
 
     public void pickUpObject(int index) {
         if (index != 999) {
-            SuperObject obj = ap.obj[index];
+            SuperObject obj = ap.gameState.obj[index];
             switch (obj.type) {
                 case "perk":
                     PerkMachine perkMachine = (PerkMachine) obj;
@@ -332,11 +325,11 @@ public class Player extends Entity {
 
     /**
      * Return the current weapon image based on mouse
-     * 
+     *
      * @param mousePosition
-     * @return an image based on the following:
-     *         mousePosition > middle = image1 (left facing barrel)
-     *         mousePosition < middle = image2 (right facing barrel)
+     * @return an image based on the following: mousePosition > middle = image1
+     * (left facing barrel) mousePosition < middle = image2 (right facing
+     * barrel)
      */
     public BufferedImage getImage(Point mousePosition) {
         if (mousePosition.x > ap.screenWidth / 2) {
@@ -347,7 +340,7 @@ public class Player extends Entity {
 
     /**
      * Calculates the angle between mousePosition.x and centerscreen (player)
-     * 
+     *
      * @return angle in degrees
      */
     public int calculateAngle() {

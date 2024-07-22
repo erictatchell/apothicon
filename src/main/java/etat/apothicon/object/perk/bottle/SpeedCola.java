@@ -3,10 +3,9 @@ package etat.apothicon.object.perk.bottle;
 import etat.apothicon.entity.Drinkable;
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
-
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class SpeedCola extends Perk implements Drinkable {
     public SpeedCola(Player player, Apothicon ap) {
@@ -24,8 +23,9 @@ public class SpeedCola extends Perk implements Drinkable {
 
     @Override
     public void activateFor(Player customer) {
-        customer.loadout.setReloadRate(1.5f);
+        customer.loadout.setReloadRate(0.5f);
         customer.loadout.addPerk(this);
         customer.loadout.spendPoints(3000);
+        customer.loadout.hasSpeedCola = true;
     }
 }

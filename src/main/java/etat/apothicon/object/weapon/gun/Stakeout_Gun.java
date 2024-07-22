@@ -1,12 +1,9 @@
 package etat.apothicon.object.weapon.gun;
 
+import etat.apothicon.entity.Player;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
-import etat.apothicon.entity.Player;
-import etat.apothicon.main.Apothicon;
 
 public class Stakeout_Gun extends Gun {
     public Stakeout_Gun(Player player) {
