@@ -13,6 +13,9 @@ public class SoundHandler {
     public SoundHandler() {
         soundURL[0] = getClass().getClassLoader().getResource("sound/m1911.wav");
         soundURL[1] = getClass().getClassLoader().getResource("sound/m1911-reload.wav");
+
+        soundURL[2] = getClass().getClassLoader().getResource("sound/olympia-fire.wav");
+        soundURL[3] = getClass().getClassLoader().getResource("sound/olympia-reload.wav");
     }
 
     public void setFile(int i) {

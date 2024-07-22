@@ -20,7 +20,7 @@ public class Olympia_Gun extends Gun {
                 GunSound.OLYMPIA_FIRE,
                 GunSound.OLYMPIA_RELOAD,
                 1,
-                1.0f,
+                4.0f,
                 "src/main/resources/guns/olympia.png");
         setImage2();
     }

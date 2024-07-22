@@ -3,12 +3,12 @@ package etat.apothicon.object.weapon.gun;
 public enum GunSound {
     M1911_FIRE,
     M1911_RELOAD,
-    
-    MP40_FIRE,
-    MP40_RELOAD,
 
     OLYMPIA_FIRE,
     OLYMPIA_RELOAD,
+
+    MP40_FIRE,
+    MP40_RELOAD,
 
     M14_FIRE,
     M14_RELOAD,
@@ -30,7 +30,7 @@ public enum GunSound {
 
     MAC11_FIRE,
     MAC11_RELOAD,
-    
+
     MTAR_FIRE,
     MTAR_RELOAD,
 
