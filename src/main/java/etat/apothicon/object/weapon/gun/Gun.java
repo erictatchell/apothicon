@@ -39,7 +39,7 @@ public class Gun {
     /**
      * gun structure
      *
-     * @param name name
+     * @param name                   name
      * @param damage
      * @param defaultAmmoPerMagazine
      * @param reserve
@@ -95,13 +95,12 @@ public class Gun {
             this.delay = (int) (1000 * this.owner.loadout.getReloadRate() * this.reloadRate);
             reloadTimer.schedule(
                     new java.util.TimerTask() {
-                @Override
-                public void run() {
-                    reload();
-                }
-            },
-                    this.delay
-            );
+                        @Override
+                        public void run() {
+                            reload();
+                        }
+                    },
+                    this.delay);
 
         }
     }
@@ -150,8 +149,11 @@ public class Gun {
 
         if (!this.reloading && this.magazine >= 1) {
 
+            owner.ap.playSE(0);
             sendBullet();
+
             this.magazine -= 1;
+
         }
         if (magazine == 0) {
 

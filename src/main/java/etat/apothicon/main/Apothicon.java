@@ -18,8 +18,6 @@ public class Apothicon extends JPanel implements Runnable {
     Cursor cursor = new Cursor(Cursor.CROSSHAIR_CURSOR);
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final int worldHeight = tileSize * maxWorldRow;
 
     public GameState gameState;
 
@@ -28,6 +26,7 @@ public class Apothicon extends JPanel implements Runnable {
     String drawFPS = "FPS: " + FPS;
     public TileManager tileManager = new TileManager(this);
     Thread thread;
+    SoundHandler sound = new SoundHandler();
 
     public KeyInput keyIn = new KeyInput();
     public MouseInput mouseIn = new MouseInput();
@@ -106,6 +105,10 @@ public class Apothicon extends JPanel implements Runnable {
     // }
     public void update() {
         gameState.update();
+    }
+    public void playSE(int i) {
+        sound.setFile(i);
+        sound.play();
     }
 
     public void paintComponent(Graphics g) {

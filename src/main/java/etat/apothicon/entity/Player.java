@@ -3,6 +3,7 @@ package etat.apothicon.entity;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
 import etat.apothicon.main.MouseInput;
+import etat.apothicon.main.SoundHandler;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.bottle.Perk;
 import etat.apothicon.object.perk.machine.PerkMachine;
