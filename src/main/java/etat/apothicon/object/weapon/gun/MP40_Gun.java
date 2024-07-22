@@ -17,6 +17,8 @@ public class MP40_Gun extends Gun {
                 192,
                 1.2f,
                 FireType.AUTO,
+                GunSound.MP40_FIRE,
+                GunSound.MP40_RELOAD,
                 1,
                 1.0f,
                 "src/main/resources/guns/mp40.png");

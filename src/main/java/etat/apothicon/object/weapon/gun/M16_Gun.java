@@ -17,6 +17,8 @@ public class M16_Gun extends Gun {
                 180,
                 1.0f,
                 FireType.BURST,
+                GunSound.M16_FIRE,
+                GunSound.M16_RELOAD,
                 1,
                 1.0f,
                 "src/main/resources/guns/m16.png");

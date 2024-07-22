@@ -11,21 +11,25 @@ public class SoundHandler {
     URL soundURL[] = new URL[30];
 
     public SoundHandler() {
-            soundURL[0] = getClass().getClassLoader().getResource("sound/m1911.wav");
+        soundURL[0] = getClass().getClassLoader().getResource("sound/m1911.wav");
+        soundURL[1] = getClass().getClassLoader().getResource("sound/m1911-reload.wav");
     }
+
     public void setFile(int i) {
         try {
             AudioInputStream stream = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(stream);
 
-        } catch (Exception e){
+        } catch (Exception e) {
         }
 
     }
+
     public void play() {
         clip.start();
     }
+
     public void stop() {
         clip.stop();
     }

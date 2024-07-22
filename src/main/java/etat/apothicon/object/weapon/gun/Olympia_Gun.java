@@ -17,6 +17,8 @@ public class Olympia_Gun extends Gun {
                 32,
                 3.0f,
                 FireType.SEMI_AUTO,
+                GunSound.OLYMPIA_FIRE,
+                GunSound.OLYMPIA_RELOAD,
                 1,
                 1.0f,
                 "src/main/resources/guns/olympia.png");

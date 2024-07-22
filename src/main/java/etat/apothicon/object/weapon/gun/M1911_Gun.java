@@ -17,6 +17,8 @@ public class M1911_Gun extends Gun {
                 32,
                 1.0f,
                 FireType.SEMI_AUTO,
+                GunSound.M1911_FIRE,
+                GunSound.M1911_RELOAD,
                 1,
                 1.0f,
                 "src/main/resources/guns/m1911.png");

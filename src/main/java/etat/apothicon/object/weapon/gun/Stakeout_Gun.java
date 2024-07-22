@@ -14,6 +14,8 @@ public class Stakeout_Gun extends Gun {
                 32,
                 1.0f,
                 FireType.SEMI_AUTO,
+                GunSound.STAKEOUT_FIRE,
+                GunSound.STAKEOUT_RELOAD,
                 1,
                 1.0f,
                 "src/main/resources/guns/stakeout.png");

@@ -18,6 +18,9 @@ public class Gun {
     // for when mousex goes over the middle, prevents upside down images
     public BufferedImage image2;
 
+    public GunSound fireSound;
+    public GunSound reloadSound;
+
     int damage;
     boolean reloading = false;
     int delay;
@@ -51,6 +54,8 @@ public class Gun {
      */
     public Gun(Player owner, String name, int damage, int defaultAmmoPerMagazine, int reserve, float fireRate,
             FireType fireType,
+            GunSound fireSound,
+            GunSound reloadSound,
             int range, float reloadRate, String imagePath) {
         this.owner = owner;
         this.name = name;
@@ -60,6 +65,8 @@ public class Gun {
         this.reserve = reserve;
         this.defaultReserve = reserve;
         this.fireType = fireType;
+        this.fireSound = fireSound;
+        this.reloadSound = reloadSound;
         this.fireRate = fireRate;
         this.fireDelay = (int) ((int) 10 * fireRate);
         this.reloadRate = reloadRate;
@@ -89,8 +96,9 @@ public class Gun {
     }
 
     public void handleReload() {
-        if (!reloading) {
+        if (!reloading && reserve > 0) {
             this.reloading = true;
+            owner.ap.playSE(this.reloadSound.ordinal());
             this.reloadTimer = new Timer();
             this.delay = (int) (1000 * this.owner.loadout.getReloadRate() * this.reloadRate);
             reloadTimer.schedule(
@@ -149,7 +157,7 @@ public class Gun {
 
         if (!this.reloading && this.magazine >= 1) {
 
-            owner.ap.playSE(0);
+            owner.ap.playSE(this.fireSound.ordinal());
             sendBullet();
 
             this.magazine -= 1;
