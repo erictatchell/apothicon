@@ -49,6 +49,7 @@ public class Bullet extends Entity {
         worldY += speed * Math.sin(Math.toRadians(directionAngle));
         ap.gameState.cc.bullet_checkTile(this);
         if (this.collisionOn) {
+            ap.playSE(GunSound.COLLISION.ordinal());
             ap.gameState.bullets.remove(this);
         }
 

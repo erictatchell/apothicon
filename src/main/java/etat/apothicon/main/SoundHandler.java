@@ -11,11 +11,14 @@ public class SoundHandler {
     URL soundURL[] = new URL[30];
 
     public SoundHandler() {
-        soundURL[0] = getClass().getClassLoader().getResource("sound/m1911.wav");
-        soundURL[1] = getClass().getClassLoader().getResource("sound/m1911-reload.wav");
+        soundURL[0] = getClass().getClassLoader().getResource("sound/collision.wav");
+        soundURL[1] = getClass().getClassLoader().getResource("sound/m1911-fire.wav");
+        soundURL[2] = getClass().getClassLoader().getResource("sound/m1911-reload.wav");
+        soundURL[3] = getClass().getClassLoader().getResource("sound/olympia-fire.wav");
+        soundURL[4] = getClass().getClassLoader().getResource("sound/olympia-reload.wav");
+        soundURL[5] = getClass().getClassLoader().getResource("sound/m14-fire.wav");
+        soundURL[6] = getClass().getClassLoader().getResource("sound/m14-reload.wav");
 
-        soundURL[2] = getClass().getClassLoader().getResource("sound/olympia-fire.wav");
-        soundURL[3] = getClass().getClassLoader().getResource("sound/olympia-reload.wav");
     }
 
     public void setFile(int i) {

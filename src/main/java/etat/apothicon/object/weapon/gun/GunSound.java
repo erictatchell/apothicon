@@ -1,17 +1,19 @@
 package etat.apothicon.object.weapon.gun;
 
 public enum GunSound {
+    COLLISION,
+
     M1911_FIRE,
     M1911_RELOAD,
 
     OLYMPIA_FIRE,
     OLYMPIA_RELOAD,
 
-    MP40_FIRE,
-    MP40_RELOAD,
-
     M14_FIRE,
     M14_RELOAD,
+
+    MP40_FIRE,
+    MP40_RELOAD,
 
     STAKEOUT_FIRE,
     STAKEOUT_RELOAD,
