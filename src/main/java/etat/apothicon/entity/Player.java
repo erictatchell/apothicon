@@ -164,9 +164,9 @@ public class Player extends Entity {
             }
             for (Zone zone : ap.gameState.zoneManager.zones) {
                 for (Rectangle zoneRect : zone.zoneRects) {
-                    System.out.println("zoneRect.x: " + zone.worldX / ap.tileSize + ", zoneRect.width: " + zoneRect.width);
-                    if (zone.worldX / ap.tileSize <= this.worldX / ap.tileSize && zone.worldX / ap.tileSize + zoneRect.width >= this.worldX / ap.tileSize) {
-                        System.out.println("intersect");
+                    if (zoneRect.x / ap.tileSize <= this.worldX / ap.tileSize && zoneRect.x / ap.tileSize + zoneRect.width >= this.worldX / ap.tileSize
+                        && zoneRect.y / ap.tileSize <= this.worldY / ap.tileSize && zoneRect.y / ap.tileSize + zoneRect.height >= this.worldY / ap.tileSize) {
+                        System.out.println("inside of zone " + zone.name);
                     }
                 }
             }

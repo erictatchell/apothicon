@@ -45,29 +45,34 @@ public class Zone {
 
     public ArrayList<Rectangle> zoneRects;
     public int worldX, worldY;
-    public int screenX, screenY;
+    public String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     // public ArrayList<ZombieSpawn> spawns;
-    public ArrayList<Point> coordinates;
     public Zone() {
         this.zoneRects = new ArrayList<>();
         
     }
  
-    public Zone(ArrayList<Point> coordinates) {
-        this.coordinates = coordinates;
-    }
     public void draw(Graphics2D g2, Apothicon ap) {
         for (Rectangle i : zoneRects) {
-            int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
-            int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
+            int screenX = i.x - ap.gameState.player.worldX + ap.gameState.player.screenX;
+            int screenY = i.y - ap.gameState.player.worldY + ap.gameState.player.screenY;
             int zoneWidth = i.width * ap.tileSize;
             int zoneHeight = i.height * ap.tileSize;
 
             g2.setColor(new Color(255, 0, 0, 70));
-            if     (worldX + zoneWidth > ap.gameState.player.worldX - ap.gameState.player.screenX &&
-                    worldX - zoneWidth < ap.gameState.player.worldX + ap.gameState.player.screenX &&
-                    worldY + zoneHeight > ap.gameState.player.worldY - ap.gameState.player.screenY &&
-                    worldY - zoneHeight < ap.gameState.player.worldY + ap.gameState.player.screenY) {
+            if     (i.x + zoneWidth > ap.gameState.player.worldX - ap.gameState.player.screenX &&
+                    i.x - zoneWidth < ap.gameState.player.worldX + ap.gameState.player.screenX &&
+                     i.y+ zoneHeight > ap.gameState.player.worldY - ap.gameState.player.screenY &&
+                    i.y - zoneHeight < ap.gameState.player.worldY + ap.gameState.player.screenY) {
                 g2.fillRect(screenX, screenY, zoneWidth, zoneHeight);
            }
 
