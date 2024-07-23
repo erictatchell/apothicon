@@ -2,9 +2,14 @@ package etat.apothicon.object.weapon.gun;
 
 import etat.apothicon.entity.Entity;
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.sound.GunSound;
+import etat.apothicon.sound.ImpactSound;
+import etat.apothicon.sound.SoundType;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.Random;
 
 public class Bullet extends Entity {
 
@@ -39,6 +44,29 @@ public class Bullet extends Entity {
             int zombieIndex = ap.gameState.cc.bullet_checkEntity(this, ap.gameState.zombies);
             if (zombieIndex != 999) {
                 ap.gameState.player.damageZombie(zombieIndex);
+                int sound = ImpactSound.HIT1.ordinal();
+                Random r = new Random();
+                int rn = r.nextInt(6) + 1;
+                switch (rn) {
+                    case 1:
+                        break;
+                    case 2:
+                        sound = ImpactSound.HIT2.ordinal();
+                        break;
+                    case 3:
+                        sound = ImpactSound.HIT3.ordinal();
+                        break;
+                    case 4:
+                        sound = ImpactSound.HIT4.ordinal();
+                        break;
+                    case 5:
+                        sound = ImpactSound.HIT5.ordinal();
+                        break;
+                    case 6:
+                        sound = ImpactSound.HIT6.ordinal();
+                        break;
+                }
+                ap.playSE(sound, SoundType.IMPACT);
                 alive = false;
             }
         }
@@ -49,7 +77,7 @@ public class Bullet extends Entity {
         worldY += speed * Math.sin(Math.toRadians(directionAngle));
         ap.gameState.cc.bullet_checkTile(this);
         if (this.collisionOn) {
-            ap.playSE(GunSound.COLLISION.ordinal());
+            ap.playSE(ImpactSound.WALL_COLLISION.ordinal(), SoundType.IMPACT);
             ap.gameState.bullets.remove(this);
         }
 

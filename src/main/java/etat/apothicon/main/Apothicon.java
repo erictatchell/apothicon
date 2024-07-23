@@ -1,5 +1,7 @@
 package etat.apothicon.main;
 
+import etat.apothicon.sound.SoundHandler;
+import etat.apothicon.sound.SoundType;
 import etat.apothicon.tile.TileManager;
 import java.awt.*;
 import javax.swing.*;
@@ -8,8 +10,8 @@ public class Apothicon extends JPanel implements Runnable {
 
     public final int originalTileSize = 16;
     public final int scale = 3;
-    public final int maxScreenCol = 28;
-    public final int maxScreenRow = 16;
+    public final int maxScreenCol = 18;
+    public final int maxScreenRow = 12;
     public final int tileSize = originalTileSize * scale;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
@@ -106,8 +108,8 @@ public class Apothicon extends JPanel implements Runnable {
     public void update() {
         gameState.update();
     }
-    public void playSE(int i) {
-        sound.setFile(i);
+    public void playSE(int i, SoundType t) {
+        sound.setFile(i, t);
         sound.play();
     }
 

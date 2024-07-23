@@ -1,8 +1,7 @@
-package etat.apothicon.object.weapon.gun;
+package etat.apothicon.sound;
+
 
 public enum GunSound {
-    COLLISION,
-
     M1911_FIRE,
     M1911_RELOAD,
 

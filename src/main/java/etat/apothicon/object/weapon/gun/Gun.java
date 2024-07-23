@@ -2,6 +2,9 @@ package etat.apothicon.object.weapon.gun;
 
 import etat.apothicon.entity.Player;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
+import etat.apothicon.sound.GunSound;
+import etat.apothicon.sound.SoundType;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -98,7 +101,7 @@ public class Gun {
     public void handleReload() {
         if (!reloading && reserve > 0) {
             this.reloading = true;
-            owner.ap.playSE(this.reloadSound.ordinal());
+            owner.ap.playSE(this.reloadSound.ordinal(), SoundType.GUN);
             this.reloadTimer = new Timer();
             this.delay = (int) (1000 * this.owner.loadout.getReloadRate() * this.reloadRate);
             reloadTimer.schedule(
@@ -157,7 +160,7 @@ public class Gun {
 
         if (!this.reloading && this.magazine >= 1) {
 
-            owner.ap.playSE(this.fireSound.ordinal());
+            owner.ap.playSE(this.fireSound.ordinal(), SoundType.GUN);
             sendBullet();
 
             this.magazine -= 1;

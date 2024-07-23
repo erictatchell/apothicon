@@ -1,6 +1,8 @@
 package etat.apothicon.object.weapon.gun;
 
 import etat.apothicon.entity.Player;
+import etat.apothicon.sound.GunSound;
+
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;

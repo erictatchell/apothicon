@@ -3,13 +3,14 @@ package etat.apothicon.entity;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
 import etat.apothicon.main.MouseInput;
-import etat.apothicon.main.SoundHandler;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.bottle.Perk;
 import etat.apothicon.object.perk.machine.PerkMachine;
 import etat.apothicon.object.weapon.gun.Bullet;
 import etat.apothicon.object.weapon.gun.FireType;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
+import etat.apothicon.sound.SoundHandler;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;

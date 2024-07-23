@@ -1,11 +1,16 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.sound.ImpactSound;
+import etat.apothicon.sound.SoundType;
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
+
 import javax.imageio.ImageIO;
 
 public class Entity {
@@ -131,6 +136,17 @@ public class Entity {
 
     public void die(int index) {
         ap.gameState.zombies[index] = null;
+        Random r = new Random();
+        int s = r.nextInt(3) + 1;
+        int sound = ImpactSound.KILL1.ordinal();
+        switch (s) {
+            case 2:
+                sound = ImpactSound.KILL2.ordinal();
+                break;
+            case 3:
+                sound = ImpactSound.KILL3.ordinal();
+        }
+        ap.playSE(sound, SoundType.IMPACT);
         ap.gameState.aSetter.setZombie();
     }
 
