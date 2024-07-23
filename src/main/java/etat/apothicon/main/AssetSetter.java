@@ -52,13 +52,16 @@ public class AssetSetter {
 
     }
 
-    public void setZombie() {
-        ap.gameState.zombies[0] = new Zombie(ap);
-        ap.gameState.zombies[0].worldX = 32 * ap.tileSize;
-        ap.gameState.zombies[0].worldY = 43 * ap.tileSize;
-    }
+//    public void setZombie() {
+//        ap.gameState.roundManager.getZombies()[0] = new Zombie(ap);
+//        ap.gameState.roundManager.getZombies()[0].worldX = 32 * ap.tileSize;
+//        ap.gameState.roundManager.getZombies()[0].worldY = 43 * ap.tileSize;
+//    }
 
-    public void spawnZombie() {
-        
+    public void setZombie(int worldX, int worldY, int zombieIndex) {
+        ap.gameState.roundManager.getZombies()[zombieIndex] = new Zombie(ap);
+
+        ap.gameState.roundManager.getZombies()[zombieIndex].worldX = worldX;
+        ap.gameState.roundManager.getZombies()[zombieIndex].worldY = worldY;
     }
 }

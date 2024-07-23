@@ -135,7 +135,7 @@ public class Entity {
     }
 
     public void die(int index) {
-        ap.gameState.zombies[index] = null;
+        ap.gameState.roundManager.getZombies()[index] = null;
         Random r = new Random();
         int s = r.nextInt(3) + 1;
         int sound = ImpactSound.KILL1.ordinal();
@@ -147,7 +147,7 @@ public class Entity {
                 sound = ImpactSound.KILL3.ordinal();
         }
         ap.playSE(sound, SoundType.IMPACT);
-        ap.gameState.aSetter.setZombie();
+//        ap.gameState.aSetter.setZombie();
     }
 
     public void update() {

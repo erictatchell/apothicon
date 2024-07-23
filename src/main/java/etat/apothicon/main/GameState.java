@@ -6,6 +6,10 @@ import etat.apothicon.entity.Player;
 import etat.apothicon.hud.HUD;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.weapon.gun.Bullet;
+import etat.apothicon.round.RoundManager;
+import etat.apothicon.round.Zone;
+import etat.apothicon.round.ZoneManager;
+
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -13,11 +17,11 @@ public class GameState {
 
     public Apothicon ap;
     public Player player;
-    public Entity zombies[];
     public ArrayList<Bullet> bullets;
     public SuperObject obj[];
     public HUD hud;
     public ZoneManager zoneManager;
+    public RoundManager roundManager;
     public CollisionChecker cc;
     public AssetSetter aSetter;
     public PathFinder pFinder;
@@ -28,18 +32,15 @@ public class GameState {
 
     public void setup() {
         player = new Player(ap, ap.keyIn, ap.mouseIn);
-        zombies = new Entity[10];
         bullets = new ArrayList<>();
         obj = new SuperObject[10];
         zoneManager = new ZoneManager(ap);
-
+        roundManager = new RoundManager(ap);
         hud = new HUD(ap);
-
         cc = new CollisionChecker(ap);
         aSetter = new AssetSetter(ap);
         pFinder = new PathFinder(ap);
         aSetter.setObject();
-        aSetter.setZombie();
 
     }
 
@@ -47,11 +48,12 @@ public class GameState {
         player.update();
 
         hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
-        for (Entity zombie : zombies) {
+        for (Entity zombie : roundManager.getZombies()) {
             if (zombie != null) {
                 zombie.update();
             }
         }
+        zoneManager.spawnZombie();
         for (int i = 0; i < bullets.size(); i++) {
             Bullet bullet = bullets.get(i);
             if (bullet != null) {
@@ -66,10 +68,10 @@ public class GameState {
 
 
     public void draw(Graphics2D g2) {
-       ap.tileManager.draw(g2);
-        for (int i = 0; i < zombies.length; i++) {
-            if (zombies[i] != null) {
-                zombies[i].draw(g2);
+        ap.tileManager.draw(g2);
+        for (Entity zombie : roundManager.getZombies()) {
+            if (zombie != null) {
+                zombie.draw(g2);
             }
         }
         for (int i = 0; i < bullets.size(); i++) {

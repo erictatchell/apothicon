@@ -3,7 +3,7 @@ package etat.apothicon.entity;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
 import etat.apothicon.main.MouseInput;
-import etat.apothicon.main.Zone;
+import etat.apothicon.round.Zone;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.bottle.Perk;
 import etat.apothicon.object.perk.machine.PerkMachine;
@@ -11,7 +11,6 @@ import etat.apothicon.object.weapon.gun.Bullet;
 import etat.apothicon.object.weapon.gun.FireType;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
 import etat.apothicon.sound.InteractSound;
-import etat.apothicon.sound.SoundHandler;
 import etat.apothicon.sound.SoundType;
 
 import java.awt.*;
@@ -141,7 +140,7 @@ public class Player extends Entity {
             pickUpObject(objIndex);
 
             // zombie collision
-            int zombieIndex = ap.gameState.cc.checkEntity(this, ap.gameState.zombies);
+            int zombieIndex = ap.gameState.cc.checkEntity(this, ap.gameState.roundManager.getZombies());
 
             if (!collisionOn) {
                 if (direction == "up") {
@@ -164,9 +163,8 @@ public class Player extends Entity {
             }
             for (Zone zone : ap.gameState.zoneManager.zones) {
                 for (Rectangle zoneRect : zone.zoneRects) {
-                    if (zoneRect.x / ap.tileSize <= this.worldX / ap.tileSize && zoneRect.x / ap.tileSize + zoneRect.width >= this.worldX / ap.tileSize
-                        && zoneRect.y / ap.tileSize <= this.worldY / ap.tileSize && zoneRect.y / ap.tileSize + zoneRect.height >= this.worldY / ap.tileSize) {
-                        System.out.println("inside of zone " + zone.name);
+                    if (Zone.isPlayerInZone(zoneRect, this)) {
+                        ap.gameState.zoneManager.currentZone = zone;
                     }
                 }
             }
@@ -198,7 +196,7 @@ public class Player extends Entity {
      */
     public void damageZombie(int index) {
         if (index != 999) {
-            Entity zombie = ap.gameState.zombies[index];
+            Entity zombie = ap.gameState.roundManager.getZombies()[index];
 
             boolean killed = false;
             boolean headshot = false;

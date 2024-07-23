@@ -15,10 +15,11 @@ public class Zombie extends Entity {
     public final int screenX;
     public final int screenY;
 
+    Random random = new Random();
     public Zombie(Apothicon ap) {
         super(ap);
         direction = "down";
-        speed = 0;
+        speed = random.nextInt(3) + 1;
         this.ap = ap;
         solidArea = new Rectangle();
         solidArea.x = 8;

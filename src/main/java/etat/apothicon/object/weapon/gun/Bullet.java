@@ -41,7 +41,7 @@ public class Bullet extends Entity {
 
     public void update() {
         if (user == this.ap.gameState.player) {
-            int zombieIndex = ap.gameState.cc.bullet_checkEntity(this, ap.gameState.zombies);
+            int zombieIndex = ap.gameState.cc.bullet_checkEntity(this, ap.gameState.roundManager.getZombies());
             if (zombieIndex != 999) {
                 ap.gameState.player.damageZombie(zombieIndex);
                 int sound = ImpactSound.HIT1.ordinal();
