@@ -1,6 +1,6 @@
 package etat.apothicon.main;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Zone {
@@ -41,19 +41,36 @@ public class Zone {
     //
     //          spawn.spawnZombie(); //zombieCount++ in here
     //          disable(2 seconds);
-    //      
     //
-    //                               
-    //                   
-    // 
 
-    public ArrayList<ZombieSpawn> spawns;
+    public ArrayList<Rectangle> zoneRects;
+    public int worldX, worldY;
+    public int screenX, screenY;
+    // public ArrayList<ZombieSpawn> spawns;
     public ArrayList<Point> coordinates;
     public Zone() {
+        this.zoneRects = new ArrayList<>();
         
     }
  
     public Zone(ArrayList<Point> coordinates) {
         this.coordinates = coordinates;
     }
+    public void draw(Graphics2D g2, Apothicon ap) {
+        for (Rectangle i : zoneRects) {
+            int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
+            int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
+            int zoneWidth = i.width * ap.tileSize;
+            int zoneHeight = i.height * ap.tileSize;
+
+            g2.setColor(new Color(255, 0, 0, 70));
+            if     (worldX + zoneWidth > ap.gameState.player.worldX - ap.gameState.player.screenX &&
+                    worldX - zoneWidth < ap.gameState.player.worldX + ap.gameState.player.screenX &&
+                    worldY + zoneHeight > ap.gameState.player.worldY - ap.gameState.player.screenY &&
+                    worldY - zoneHeight < ap.gameState.player.worldY + ap.gameState.player.screenY) {
+                g2.fillRect(screenX, screenY, zoneWidth, zoneHeight);
+           }
+
+        }
+   }
 }

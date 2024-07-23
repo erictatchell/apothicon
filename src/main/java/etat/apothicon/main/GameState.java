@@ -17,6 +17,7 @@ public class GameState {
     public ArrayList<Bullet> bullets;
     public SuperObject obj[];
     public HUD hud;
+    public ZoneManager zoneManager;
     public CollisionChecker cc;
     public AssetSetter aSetter;
     public PathFinder pFinder;
@@ -30,6 +31,7 @@ public class GameState {
         zombies = new Entity[10];
         bullets = new ArrayList<>();
         obj = new SuperObject[10];
+        zoneManager = new ZoneManager(ap);
 
         hud = new HUD(ap);
 
@@ -43,6 +45,7 @@ public class GameState {
 
     public void update() {
         player.update();
+
         hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
         for (Entity zombie : zombies) {
             if (zombie != null) {
@@ -63,8 +66,7 @@ public class GameState {
 
 
     public void draw(Graphics2D g2) {
-        
-        ap.tileManager.draw(g2);
+       ap.tileManager.draw(g2);
         for (int i = 0; i < zombies.length; i++) {
             if (zombies[i] != null) {
                 zombies[i].draw(g2);
@@ -83,6 +85,9 @@ public class GameState {
         }
 
         player.draw(g2);
+        for (Zone zone : zoneManager.zones) {
+            zone.draw(g2, ap);
+        }
 
         hud.draw(g2);
     }

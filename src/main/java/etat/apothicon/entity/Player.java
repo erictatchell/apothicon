@@ -3,6 +3,7 @@ package etat.apothicon.entity;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
 import etat.apothicon.main.MouseInput;
+import etat.apothicon.main.Zone;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.bottle.Perk;
 import etat.apothicon.object.perk.machine.PerkMachine;
@@ -108,6 +109,9 @@ public class Player extends Entity {
             keyIn.switchWpnPressed = false;
         }
 
+
+
+
         int objIndex = ap.gameState.cc.checkObject(this, true);
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
@@ -158,7 +162,15 @@ public class Player extends Entity {
                 }
 
             }
-
+            for (Zone zone : ap.gameState.zoneManager.zones) {
+                for (Rectangle zoneRect : zone.zoneRects) {
+                    System.out.println("zoneRect.x: " + zone.worldX / ap.tileSize + ", zoneRect.width: " + zoneRect.width);
+                    if (zone.worldX / ap.tileSize <= this.worldX / ap.tileSize && zone.worldX / ap.tileSize + zoneRect.width >= this.worldX / ap.tileSize) {
+                        System.out.println("intersect");
+                    }
+                }
+            }
+            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
             spriteCounter++;
             if (spriteCounter > 12) { // 12 frames
                 if (spriteNum == 1) {

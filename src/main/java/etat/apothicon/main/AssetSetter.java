@@ -57,4 +57,8 @@ public class AssetSetter {
         ap.gameState.zombies[0].worldX = 32 * ap.tileSize;
         ap.gameState.zombies[0].worldY = 43 * ap.tileSize;
     }
+
+    public void spawnZombie() {
+        
+    }
 }
