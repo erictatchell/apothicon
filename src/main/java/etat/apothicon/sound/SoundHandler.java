@@ -10,6 +10,7 @@ public class SoundHandler {
     Clip clip;
     URL gunSounds[] = new URL[30];
     URL impactSounds[] = new URL[30];
+    URL interactSounds[] = new URL[30];
 
     public SoundHandler() {
         gunSounds[0] = getClass().getClassLoader().getResource("sound/m1911-fire.wav");
@@ -34,6 +35,8 @@ public class SoundHandler {
         impactSounds[8] = getClass().getClassLoader().getResource("sound/hit4.wav");
         impactSounds[9] = getClass().getClassLoader().getResource("sound/hit5.wav");
         impactSounds[10] = getClass().getClassLoader().getResource("sound/hit6.wav");
+
+        interactSounds[0] = getClass().getClassLoader().getResource("sound/purchase.wav");
     }
 
     public void setFile(int i, SoundType t) {
@@ -45,6 +48,9 @@ public class SoundHandler {
                     break;
                 case GUN:
                     stream = AudioSystem.getAudioInputStream(gunSounds[i]);
+                    break;
+                case INTERACT:
+                    stream = AudioSystem.getAudioInputStream(interactSounds[i]);
                     break;
             }
             clip = AudioSystem.getClip();

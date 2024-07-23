@@ -9,11 +9,11 @@ public class MouseInput implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftMousePressed = true;
         }
@@ -25,7 +25,7 @@ public class MouseInput implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            leftMousePressed = false ;
+            leftMousePressed = false;
         }
         if (e.getButton() == MouseEvent.BUTTON3) {
             rightMousePressed = false;
@@ -34,6 +34,7 @@ public class MouseInput implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        System.out.println("hello");
     }
 
     @Override

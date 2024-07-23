@@ -16,6 +16,9 @@ import etat.apothicon.object.weapon.gun.MP40_Gun;
 import etat.apothicon.object.weapon.gun.Olympia_Gun;
 import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
+import etat.apothicon.sound.InteractSound;
+import etat.apothicon.sound.SoundType;
+
 import java.util.ArrayList;
 import javax.swing.Timer;
 

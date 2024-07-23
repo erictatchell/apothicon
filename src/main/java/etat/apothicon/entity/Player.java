@@ -9,7 +9,9 @@ import etat.apothicon.object.perk.machine.PerkMachine;
 import etat.apothicon.object.weapon.gun.Bullet;
 import etat.apothicon.object.weapon.gun.FireType;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
+import etat.apothicon.sound.InteractSound;
 import etat.apothicon.sound.SoundHandler;
+import etat.apothicon.sound.SoundType;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -179,7 +181,6 @@ public class Player extends Entity {
         this.purchaseString = name;
     }
 
-
     /**
      * @param index position i
      */
@@ -209,6 +210,8 @@ public class Player extends Entity {
                     boolean isPerkPurchasable = loadout.isPerkPurchasable(perkMachine);
                     if (isPerkPurchasable) {
                         if (keyIn.fPressed) {
+
+                            ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
                             loadout.purchasePerk(perkMachine);
                             break;
                         }
@@ -225,6 +228,8 @@ public class Player extends Entity {
 
                     if (!buyingAmmo) {
                         if (keyIn.fPressed && loadout.isGunPurchasable(wallBuy)) {
+
+                            ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
                             loadout.purchaseGun(wallBuy);
                         }
 
@@ -330,8 +335,8 @@ public class Player extends Entity {
      *
      * @param mousePosition
      * @return an image based on the following: mousePosition > middle = image1
-     * (left facing barrel) mousePosition < middle = image2 (right facing
-     * barrel)
+     *         (left facing barrel) mousePosition < middle = image2 (right facing
+     *         barrel)
      */
     public BufferedImage getImage(Point mousePosition) {
         if (mousePosition.x > ap.screenWidth / 2) {
