@@ -3,6 +3,7 @@ package etat.apothicon.entity;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
 import etat.apothicon.main.MouseInput;
+import etat.apothicon.object.weapon.gun.Gun;
 import etat.apothicon.round.Zone;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.bottle.Perk;
@@ -67,6 +68,7 @@ public class Player extends Entity {
         right2 = setup("player/player-right2.png");
     }
 
+
     public void setDefaultValues() {
         this.worldX = ap.tileSize * 29;
         this.worldY = ap.tileSize * 43;
@@ -79,26 +81,29 @@ public class Player extends Entity {
     public void update() {
         // for perk placement
         this.slotX = perkOffset;
+        Gun currentWeapon = loadout.getCurrentWeapon();
 
         // if we want to shoot, don't need to rechamber, and the delay is up
-        if (!loadout.getCurrentWeapon().rechamberNeeded && mouseIn.leftMousePressed
-                && loadout.getCurrentWeapon().fireDelayCounter == loadout.getCurrentWeapon().fireDelay) {
+        if (!currentWeapon.rechamberNeeded && mouseIn.leftMousePressed
+                && currentWeapon.fireDelayCounter == currentWeapon.fireDelay) {
 
             loadout.fireWeapon();
-            if (loadout.getCurrentWeapon().fireType == FireType.SEMI_AUTO) {
+            System.out.println("SIZE:" + ap.gameState.bullets.size());
+            if (currentWeapon.fireType == FireType.SEMI_AUTO) {
                 // rechamber needed, prevent full auto on semi auto guns
-                loadout.getCurrentWeapon().rechamberNeeded = true;
+                currentWeapon.rechamberNeeded = true;
             }
-            loadout.getCurrentWeapon().fireDelayCounter = 0;
+            currentWeapon.fireDelayCounter = 0;
         } // if semi auto, rechamber on trigger release
-        else if (loadout.getCurrentWeapon().fireType == FireType.SEMI_AUTO && !mouseIn.leftMousePressed) {
-            loadout.getCurrentWeapon().rechamberNeeded = false;
+        else if (currentWeapon.fireType == FireType.SEMI_AUTO && !mouseIn.leftMousePressed) {
+            currentWeapon.rechamberNeeded = false;
         }
 
         // inc fire delay
-        if (loadout.getCurrentWeapon().fireDelayCounter < loadout.getCurrentWeapon().fireDelay) {
+        if (currentWeapon.fireDelayCounter < currentWeapon.fireDelay) {
 
-            loadout.getCurrentWeapon().fireDelayCounter += (1 * this.loadout.getFireRateMultiplier());
+            currentWeapon.fireDelayCounter += (1 * this.loadout.getFireRateMultiplier());
+
         }
 
         // cycle weapons. set to false so we dont constantly switch
@@ -117,7 +122,7 @@ public class Player extends Entity {
         }
 
         if (keyIn.reloadPressed) {
-            this.loadout.getCurrentWeapon().handleReload();
+            currentWeapon.handleReload();
         }
 
         if (keyIn.upPressed || keyIn.downPressed || keyIn.leftPressed || keyIn.rightPressed) {

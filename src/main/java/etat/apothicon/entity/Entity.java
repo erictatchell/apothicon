@@ -1,6 +1,7 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.main.UtilityTool;
 import etat.apothicon.sound.ImpactSound;
 import etat.apothicon.sound.SoundType;
 
@@ -48,9 +49,11 @@ public class Entity {
     }
 
     public BufferedImage setup(String url) {
+        UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
         try {
             image = ImageIO.read(new File("src/main/resources/" + url));
+
         } catch (IOException e) {
             e.printStackTrace();
         }

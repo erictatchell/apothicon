@@ -62,12 +62,12 @@ public class RoundManager {
             zombies = new Entity[maxTotalZombiesForThisRound];
         }
         else {
-            System.out.println("Total Zombies on Map: " + totalZombiesOnMap);
-            System.out.println("Total Zombies Spawned for Round " + currentRound + ": " + totalZombiesSpawnedForThisRound);
-            System.out.println("Max Total Zombies For Round " + currentRound + ": " +maxTotalZombiesForThisRound);
-            System.out.println("Max Total Zombies on map allowed at one time" + ": " +maxHorde);
-            System.out.println("Total Zombies Killed on round " + currentRound + ": " + totalZombiesKilled);
-            System.out.println();
+//            System.out.println("Total Zombies on Map: " + totalZombiesOnMap);
+//            System.out.println("Total Zombies Spawned for Round " + currentRound + ": " + totalZombiesSpawnedForThisRound);
+//            System.out.println("Max Total Zombies For Round " + currentRound + ": " +maxTotalZombiesForThisRound);
+//            System.out.println("Max Total Zombies on map allowed at one time" + ": " +maxHorde);
+//            System.out.println("Total Zombies Killed on round " + currentRound + ": " + totalZombiesKilled);
+//            System.out.println();
         }
     }
 

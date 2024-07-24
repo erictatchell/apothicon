@@ -45,6 +45,7 @@ public class GameState {
 
     }
 
+
     public void update() {
         player.update();
 
@@ -54,10 +55,7 @@ public class GameState {
                 zombie.update();
             }
         }
-
-        synchronized (spawnLock) {
-            roundManager.spawnZombie(zoneManager.currentZone);
-        }
+        roundManager.spawnZombie(zoneManager.currentZone);
         for (int i = 0; i < bullets.size(); i++) {
             Bullet bullet = bullets.get(i);
             if (bullet != null) {
@@ -65,6 +63,8 @@ public class GameState {
                     bullet.update();
                 } else {
                     bullets.remove(bullet);
+
+                    System.gc();
                 }
             }
         }

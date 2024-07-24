@@ -17,6 +17,7 @@ public class Bullet extends Entity {
     Entity user;
     public Rectangle zombieSolidArea = new Rectangle();
 
+    Random r = new Random();
     public Bullet(Apothicon ap) {
 
         super(ap);
@@ -45,7 +46,6 @@ public class Bullet extends Entity {
             if (zombieIndex != 999) {
                 ap.gameState.player.damageZombie(zombieIndex);
                 int sound = ImpactSound.HIT1.ordinal();
-                Random r = new Random();
                 int rn = r.nextInt(6) + 1;
                 switch (rn) {
                     case 1:
@@ -68,17 +68,19 @@ public class Bullet extends Entity {
                 }
                 ap.playSE(sound, SoundType.IMPACT);
                 alive = false;
+
+                ap.gameState.bullets.remove(this);
+                System.gc();
             }
         }
-        if (user != this.ap.gameState.player) {
 
-        }
         worldX += speed * Math.cos(Math.toRadians(directionAngle));
         worldY += speed * Math.sin(Math.toRadians(directionAngle));
         ap.gameState.cc.bullet_checkTile(this);
         if (this.collisionOn) {
             ap.playSE(ImpactSound.WALL_COLLISION.ordinal(), SoundType.IMPACT);
             ap.gameState.bullets.remove(this);
+            System.gc();
         }
 
         System.out.println(directionAngle);
@@ -102,7 +104,7 @@ public class Bullet extends Entity {
             g2.fillRect(screenX, screenY, 5, 5);
 
         }
-    }
+    /**/}
 
     public boolean checkCollision(Entity entity) {
         return solidArea.intersects(entity.solidArea);
