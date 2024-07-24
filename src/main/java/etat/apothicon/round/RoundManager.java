@@ -12,7 +12,8 @@ public class RoundManager {
     private int currentRound;
     private int maxHorde;
     private int maxTotalZombiesForThisRound;
-    private int totalZombiesForThisRound;
+    private int totalZombiesKilled;
+    private int totalZombiesSpawnedForThisRound;
     private int totalZombiesOnMap;
     private Apothicon ap;
     final Object lock = new Object();
@@ -26,10 +27,14 @@ public class RoundManager {
 
     }
 
+    public int getTotalZombiesKilled() {
+        return totalZombiesKilled;
+    }
+
     private void setup() {
         currentRound = 1;
         totalZombiesOnMap = 0;
-        totalZombiesForThisRound = 0;
+        totalZombiesSpawnedForThisRound = 0;
         maxHorde = 24;
         maxTotalZombiesForThisRound = 5;
         zombies = new Entity[maxTotalZombiesForThisRound];
@@ -39,26 +44,30 @@ public class RoundManager {
     public synchronized void spawnZombie(Zone currentZone) {
         Random random = new Random();
         int r = random.nextInt(currentZone.spawns.size());
-        if ((totalZombiesForThisRound < maxTotalZombiesForThisRound && totalZombiesOnMap < maxHorde)) {
+        if ((totalZombiesSpawnedForThisRound < maxTotalZombiesForThisRound && totalZombiesOnMap < maxHorde)) {
             ZombieSpawn spawn = currentZone.spawns.get(r);
             if (!spawn.spawning) {
                 currentZone.spawns.get(r).handleAddZombieToMap(this, ap);
-                totalZombiesForThisRound++;
+                totalZombiesSpawnedForThisRound++;
                 totalZombiesOnMap++;
             }
 
-        } else if (totalZombiesOnMap == 0 && totalZombiesForThisRound == maxTotalZombiesForThisRound) {
+        } if ((totalZombiesOnMap == 0 && totalZombiesSpawnedForThisRound == maxTotalZombiesForThisRound)
+        || totalZombiesKilled == maxTotalZombiesForThisRound) {
             System.out.println("Round complete, going to round " + currentRound);
             currentRound++;
-            totalZombiesForThisRound = 0;
+            totalZombiesKilled = 0;
+            totalZombiesSpawnedForThisRound = 0;
             maxTotalZombiesForThisRound += 5;
             zombies = new Entity[maxTotalZombiesForThisRound];
         }
         else {
             System.out.println("Total Zombies on Map: " + totalZombiesOnMap);
-            System.out.println("Total Zombies for Round " + currentRound + ": " + totalZombiesForThisRound);
-            System.out.println("Max Total Zombies For Round" + currentRound + ": " +maxTotalZombiesForThisRound);
-            System.out.println("Max Total Zombies For Map" + ": " +maxHorde);
+            System.out.println("Total Zombies Spawned for Round " + currentRound + ": " + totalZombiesSpawnedForThisRound);
+            System.out.println("Max Total Zombies For Round " + currentRound + ": " +maxTotalZombiesForThisRound);
+            System.out.println("Max Total Zombies on map allowed at one time" + ": " +maxHorde);
+            System.out.println("Total Zombies Killed on round " + currentRound + ": " + totalZombiesKilled);
+            System.out.println();
         }
     }
 
@@ -91,12 +100,12 @@ public class RoundManager {
         this.maxTotalZombiesForThisRound = maxTotalZombiesForThisRound;
     }
 
-    public int getTotalZombiesForThisRound() {
-        return totalZombiesForThisRound;
+    public int getTotalZombiesSpawnedForThisRound() {
+        return totalZombiesSpawnedForThisRound;
     }
 
-    public void setTotalZombiesForThisRound(int totalZombiesForThisRound) {
-        this.totalZombiesForThisRound = totalZombiesForThisRound;
+    public void setTotalZombiesSpawnedForThisRound(int totalZombiesSpawnedForThisRound) {
+        this.totalZombiesSpawnedForThisRound = totalZombiesSpawnedForThisRound;
     }
 
     public int getTotalZombiesOnMap() {
@@ -105,5 +114,9 @@ public class RoundManager {
 
     public void decreaseTotalZombiesOnMap() {
         this.totalZombiesOnMap--;
+    }
+
+    public void increaseTotalZombiesKilled() {
+        this.totalZombiesKilled++;
     }
 }

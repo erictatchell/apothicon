@@ -38,7 +38,7 @@ public class ZombieSpawn {
     }
 
     private void addZombieToMap(RoundManager rm, Apothicon ap) {
-        ap.gameState.aSetter.setZombie(worldX, worldY, rm.getTotalZombiesOnMap());
+        ap.gameState.aSetter.setZombie(worldX, worldY, rm.getTotalZombiesSpawnedForThisRound());
         spawning = false;
     }
 

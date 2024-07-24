@@ -148,6 +148,7 @@ public class Entity {
         }
         ap.playSE(sound, SoundType.IMPACT);
         ap.gameState.roundManager.decreaseTotalZombiesOnMap();
+        ap.gameState.roundManager.increaseTotalZombiesKilled();
 //        ap.gameState.aSetter.setZombie();
     }
 
