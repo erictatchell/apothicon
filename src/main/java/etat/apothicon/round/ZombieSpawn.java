@@ -7,22 +7,39 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
+import java.util.Timer;
 
 public class ZombieSpawn {
     public int worldX, worldY;
     private Zone parentZone;
+    public boolean spawning;
+
+    private Timer spawnTimer;
     private RoundManager roundManager;
     private BufferedImage image;
+
 
     public ZombieSpawn(Zone parent, String imagePath, int worldX, int worldY) {
         this.parentZone = parent;
         this.worldX = worldX;
         this.worldY = worldY;
         try {
-           this.image = ImageIO.read(new File("src/main/resources/tiles/" + imagePath));
+            this.image = ImageIO.read(new File("src/main/resources/tiles/" + imagePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void handleAddZombieToMap(RoundManager rm, Apothicon ap) {
+        spawning = true;
+        addZombieToMap(rm, ap);
+
+    }
+
+    private void addZombieToMap(RoundManager rm, Apothicon ap) {
+        ap.gameState.aSetter.setZombie(worldX, worldY, rm.getTotalZombiesOnMap());
+        spawning = false;
     }
 
     public void draw(Graphics2D g2, Apothicon ap) {

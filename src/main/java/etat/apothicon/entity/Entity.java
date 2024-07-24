@@ -147,6 +147,7 @@ public class Entity {
                 sound = ImpactSound.KILL3.ordinal();
         }
         ap.playSE(sound, SoundType.IMPACT);
+        ap.gameState.roundManager.decreaseTotalZombiesOnMap();
 //        ap.gameState.aSetter.setZombie();
     }
 

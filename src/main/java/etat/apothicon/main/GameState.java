@@ -12,9 +12,10 @@ import etat.apothicon.round.ZoneManager;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class GameState {
-
+    final Object spawnLock = new Object();
     public Apothicon ap;
     public Player player;
     public ArrayList<Bullet> bullets;
@@ -53,7 +54,10 @@ public class GameState {
                 zombie.update();
             }
         }
-        zoneManager.spawnZombie();
+
+        synchronized (spawnLock) {
+            roundManager.spawnZombie(zoneManager.currentZone);
+        }
         for (int i = 0; i < bullets.size(); i++) {
             Bullet bullet = bullets.get(i);
             if (bullet != null) {
@@ -69,11 +73,10 @@ public class GameState {
 
     public void draw(Graphics2D g2) {
         ap.tileManager.draw(g2);
-        for (Entity zombie : roundManager.getZombies()) {
-            if (zombie != null) {
-                zombie.draw(g2);
-            }
+        for (Zone zone : zoneManager.zones) {
+            zone.draw(g2, ap);
         }
+
         for (int i = 0; i < bullets.size(); i++) {
             if (bullets.get(i) != null) {
                 bullets.get(i).drawBullet(g2);
@@ -85,11 +88,13 @@ public class GameState {
 
             }
         }
-
-        player.draw(g2);
-        for (Zone zone : zoneManager.zones) {
-            zone.draw(g2, ap);
+        for (Entity zombie : roundManager.getZombies()) {
+            if (zombie != null) {
+                zombie.draw(g2);
+            }
         }
+        player.draw(g2);
+
 
         hud.draw(g2);
     }

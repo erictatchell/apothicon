@@ -25,6 +25,7 @@ public class HUD {
 
     public Font arial16 = new Font("Arial", Font.BOLD, 16);
     public Font arial12 = new Font("Arial", Font.BOLD, 12);
+    public Font arial64 = new Font("Arial", Font.BOLD, 64);
 
     public HUD(Apothicon ap) {
         this.ap = ap;
@@ -98,7 +99,6 @@ public class HUD {
                 ap.screenHeight - 14);
 
         g2.drawString(ap.gameState.zoneManager.currentZone.getName(), 10, 30);
-        g2.drawString(Integer.toString(ap.gameState.roundManager.getCurrentRound()), 10, 60);
 
 
         int pointTextWidth = (g2.getFontMetrics().stringWidth(points));
@@ -108,6 +108,10 @@ public class HUD {
         g2.drawString(points,
                 xPoints,
                 ap.screenHeight - 65);
+
+        g2.setFont(arial64);
+        g2.setColor(new Color(150, 0, 0));
+        g2.drawString(Integer.toString(ap.gameState.roundManager.getCurrentRound()), 10, ap.screenHeight - 10);
     }
 
 }
