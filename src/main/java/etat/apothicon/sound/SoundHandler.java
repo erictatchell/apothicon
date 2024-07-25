@@ -1,18 +1,59 @@
 package etat.apothicon.sound;
 
 import java.net.URL;
+import java.util.Vector;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 
-public class SoundHandler {
-    Clip clip;
-    URL gunSounds[] = new URL[30];
-    URL impactSounds[] = new URL[30];
-    URL interactSounds[] = new URL[30];
+public class SoundHandler implements Runnable {
+    public static Vector<Clip> vector = new Vector<>();
+    static final int vector_size = 10;
+    static URL[] gunSounds = new URL[30];
+    static URL[] impactSounds = new URL[30];
+    static URL[] interactSounds = new URL[30];
 
     public SoundHandler() {
+
+    }
+
+    // typically called before calling play()
+    public static synchronized void consolidate() {
+        while (vector_size < vector.size()) {
+            Clip myClip = vector.get(0);
+            if (myClip.isRunning())
+                break;
+            myClip.close();
+            vector.remove(0);
+        }
+        if (vector_size * 2 < vector.size())
+            System.out.println("warning: audio consolidation lagging");
+    }
+    public static void play(int i, SoundType t) {
+        try {
+            AudioInputStream stream  = null;
+            switch (t) {
+                case IMPACT:
+                    stream = AudioSystem.getAudioInputStream(impactSounds[i]);
+                    break;
+                case GUN:
+                    stream = AudioSystem.getAudioInputStream(gunSounds[i]);
+                    break;
+                case INTERACT:
+                    stream = AudioSystem.getAudioInputStream(interactSounds[i]);
+                    break;
+            }
+            final Clip myClip = AudioSystem.getClip();
+            vector.add(myClip);
+            myClip.open(stream);
+            myClip.start();
+        } catch (Exception myException) {
+            myException.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void run() {
         gunSounds[0] = getClass().getClassLoader().getResource("sound/m1911-fire.wav");
         gunSounds[1] = getClass().getClassLoader().getResource("sound/m1911-reload.wav");
         gunSounds[2] = getClass().getClassLoader().getResource("sound/olympia-fire.wav");
@@ -38,35 +79,4 @@ public class SoundHandler {
 
         interactSounds[0] = getClass().getClassLoader().getResource("sound/purchase.wav");
     }
-
-    public void setFile(int i, SoundType t) {
-        try {
-            AudioInputStream stream = null;
-            switch (t) {
-                case IMPACT:
-                    stream = AudioSystem.getAudioInputStream(impactSounds[i]);
-                    break;
-                case GUN:
-                    stream = AudioSystem.getAudioInputStream(gunSounds[i]);
-                    break;
-                case INTERACT:
-                    stream = AudioSystem.getAudioInputStream(interactSounds[i]);
-                    break;
-            }
-            clip = AudioSystem.getClip();
-            clip.open(stream);
-
-        } catch (Exception e) {
-        }
-
-    }
-
-    public void play() {
-        clip.start();
-    }
-
-    public void stop() {
-        clip.stop();
-    }
-
 }

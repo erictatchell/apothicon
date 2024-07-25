@@ -28,6 +28,7 @@ public class Apothicon extends JPanel implements Runnable {
     String drawFPS = "FPS: " + FPS;
     public TileManager tileManager = new TileManager(this);
     Thread thread;
+    Thread soundThread;
     SoundHandler sound = new SoundHandler();
 
     public KeyInput keyIn = new KeyInput();
@@ -60,6 +61,8 @@ public class Apothicon extends JPanel implements Runnable {
 
     public void start() {
         thread = new Thread(this);
+        soundThread = new Thread(sound);
+        soundThread.start();
         thread.start();
     }
 
@@ -109,7 +112,8 @@ public class Apothicon extends JPanel implements Runnable {
         gameState.update();
     }
     public void playSE(int i, SoundType t) {
-//        sound.setFile(i, t);
+        SoundHandler.consolidate();
+        SoundHandler.play(i, t);
 //        sound.play();
 
     }

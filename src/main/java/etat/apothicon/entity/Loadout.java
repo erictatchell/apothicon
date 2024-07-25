@@ -65,7 +65,7 @@ public class Loadout {
         this.fireRateMultiplier = 1.0f;
         this.defaultHealth = 150;
         this.health = 150;
-        this.points = 20000;
+        this.points = 500;
         this.maxGunNum = 2;
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
