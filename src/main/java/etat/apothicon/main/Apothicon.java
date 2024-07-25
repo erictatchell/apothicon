@@ -109,8 +109,9 @@ public class Apothicon extends JPanel implements Runnable {
         gameState.update();
     }
     public void playSE(int i, SoundType t) {
-        sound.setFile(i, t);
-        sound.play();
+//        sound.setFile(i, t);
+//        sound.play();
+
     }
 
     public void paintComponent(Graphics g) {
