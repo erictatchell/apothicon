@@ -9,15 +9,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class ZombieSpawn {
     public int worldX, worldY;
     private Zone parentZone;
     public boolean spawning;
 
-    private Timer spawnTimer;
+    private Timer spawnDelay;
     private RoundManager roundManager;
     private BufferedImage image;
+    private Random random = new Random();
 
 
     public ZombieSpawn(Zone parent, String imagePath, int worldX, int worldY) {
@@ -35,11 +37,16 @@ public class ZombieSpawn {
         spawning = true;
         addZombieToMap(rm, ap);
 
+        spawnDelay = new Timer();
+        spawnDelay.schedule(new TimerTask() {
+            public void run() {
+                spawning = false;
+            }
+        }, random.nextInt(3000) + 500);
     }
 
     private void addZombieToMap(RoundManager rm, Apothicon ap) {
         ap.gameState.aSetter.setZombie(worldX, worldY, rm.getTotalZombiesSpawnedForThisRound());
-        spawning = false;
     }
 
     public void draw(Graphics2D g2, Apothicon ap) {

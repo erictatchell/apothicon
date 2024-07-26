@@ -1,8 +1,10 @@
+
 package etat.apothicon.main;
 
 import etat.apothicon.sound.SoundHandler;
 import etat.apothicon.sound.SoundType;
 import etat.apothicon.tile.TileManager;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -49,7 +51,6 @@ public class Apothicon extends JPanel implements Runnable {
         gameState.setup();
     }
 
-    
 
     public void drawText(Graphics2D g2, String text, String price) {
         g2.setColor(Color.white);
@@ -111,6 +112,7 @@ public class Apothicon extends JPanel implements Runnable {
     public void update() {
         gameState.update();
     }
+
     public void playSE(int i, SoundType t) {
         SoundHandler.consolidate();
         SoundHandler.play(i, t);
