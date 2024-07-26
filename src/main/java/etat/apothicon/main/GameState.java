@@ -9,6 +9,8 @@ import etat.apothicon.object.weapon.gun.Bullet;
 import etat.apothicon.round.RoundManager;
 import etat.apothicon.round.Zone;
 import etat.apothicon.round.ZoneManager;
+import etat.apothicon.tile.Tile;
+import etat.apothicon.tile.TileManager;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class GameState {
     public HUD hud;
     public ZoneManager zoneManager;
     public RoundManager roundManager;
+    public TileManager tileManager;
     public CollisionChecker cc;
     public AssetSetter aSetter;
     public PathFinder pFinder;
@@ -32,6 +35,8 @@ public class GameState {
     }
 
     public void setup() {
+
+        tileManager = new TileManager(ap);
         player = new Player(ap, ap.keyIn, ap.mouseIn);
         bullets = new ArrayList<>();
         obj = new SuperObject[10];
@@ -72,7 +77,7 @@ public class GameState {
 
 
     public void draw(Graphics2D g2) {
-        ap.tileManager.draw(g2);
+        tileManager.draw(g2);
         for (Zone zone : zoneManager.zones) {
             zone.draw(g2, ap);
         }

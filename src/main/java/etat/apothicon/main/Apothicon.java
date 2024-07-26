@@ -28,7 +28,6 @@ public class Apothicon extends JPanel implements Runnable {
     // TODO: oop-ify these variables
     int FPS = 60;
     String drawFPS = "FPS: " + FPS;
-    public TileManager tileManager = new TileManager(this);
     Thread thread;
     Thread soundThread;
     SoundHandler sound = new SoundHandler();

@@ -62,8 +62,8 @@ public class PathFinder {
         int col = 0;
         int row = 0;
         while (col < ap.maxWorldCol && row < ap.maxWorldRow) {
-            int tileNum = ap.tileManager.mapTileNum[col][row];
-            if (ap.tileManager.tile[tileNum].collision) {
+            int tileNum = ap.gameState.tileManager.mapTileNum[col][row];
+            if (ap.gameState.tileManager.tile[tileNum].collision) {
                 node[col][row].solid = true;
             }
             // check interactive tiles
