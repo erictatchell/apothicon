@@ -4,8 +4,7 @@ import etat.apothicon.main.Apothicon;
 import etat.apothicon.sound.ImpactSound;
 import etat.apothicon.sound.SoundType;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +29,10 @@ public class Entity {
     public int spriteNum = 1;
     public boolean onPath = true;
     public Rectangle solidArea = new Rectangle();
+    public int headSolidAreaDefaultX;
+    public int headSolidAreaDefaultY;
 
+    public Rectangle headSolidArea = new Rectangle();
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public int actionLockCounter = 0;
@@ -44,6 +46,12 @@ public class Entity {
         solidArea.height = 30;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+        headSolidArea.x = 8;
+        headSolidArea.y = 0;
+        headSolidArea.width = 30;
+        headSolidArea.height = 20;
+        headSolidAreaDefaultX = headSolidArea.x;
+        headSolidAreaDefaultY = headSolidArea.y;
 
     }
 
@@ -67,7 +75,7 @@ public class Entity {
         int startRow = (worldY + solidArea.y) / ap.tileSize;
 
         ap.gameState.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
-        if (ap.gameState.pFinder.search() == true) {
+        if (ap.gameState.pFinder.search()) {
             int nextX = ap.gameState.pFinder.pathList.get(0).col * ap.tileSize;
             int nextY = ap.gameState.pFinder.pathList.get(0).row * ap.tileSize;
             // get entities solid area
@@ -141,6 +149,8 @@ public class Entity {
         int s = r.nextInt(3) + 1;
         int sound = ImpactSound.KILL1.ordinal();
         switch (s) {
+            case 1:
+                sound = ImpactSound.KILL1.ordinal();
             case 2:
                 sound = ImpactSound.KILL2.ordinal();
                 break;
@@ -190,11 +200,11 @@ public class Entity {
         int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
         int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
         BufferedImage image = null;
-
         if (worldX + ap.tileSize > ap.gameState.player.worldX - ap.gameState.player.screenX &&
                 worldX - ap.tileSize < ap.gameState.player.worldX + ap.gameState.player.screenX &&
                 worldY + ap.tileSize > ap.gameState.player.worldY - ap.gameState.player.screenY &&
                 worldY - ap.tileSize < ap.gameState.player.worldY + ap.gameState.player.screenY) {
+            g2.fillRect(screenX + this.headSolidArea.x,screenY + this.headSolidArea.y,this.headSolidArea.width,this.headSolidArea.height);
             switch (this.direction) {
                 case "up":
                     if (spriteNum == 1) {
@@ -226,7 +236,6 @@ public class Entity {
                     break;
             }
             g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
-
         }
     }
 

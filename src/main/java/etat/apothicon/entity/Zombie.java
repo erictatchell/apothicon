@@ -14,7 +14,6 @@ public class Zombie extends Entity {
     Apothicon ap;
     public final int screenX;
     public final int screenY;
-
     Random random = new Random();
     public Zombie(Apothicon ap) {
         super(ap);
@@ -28,6 +27,8 @@ public class Zombie extends Entity {
         solidArea.height = 30;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
+
 
         setZombieImage();
         screenX = ap.screenWidth / 2 - (ap.tileSize / 2);

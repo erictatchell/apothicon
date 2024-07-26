@@ -1,6 +1,7 @@
 package etat.apothicon.main;
 
 import etat.apothicon.entity.Entity;
+import etat.apothicon.entity.Zombie;
 import etat.apothicon.object.weapon.gun.Bullet;
 import java.awt.Rectangle;
 
@@ -11,10 +12,16 @@ public class CollisionChecker {
         this.ap = ap;
     }
 
+    /**
+     * for zombies colliding with player
+     * @param e zombie
+     */
     public void checkPlayer(Entity e) {
         // get entities solid area position
         e.solidArea.x = e.worldX + e.solidArea.x;
         e.solidArea.y = e.worldY + e.solidArea.y;
+        e.headSolidArea.x = e.worldX + e.headSolidArea.x;
+        e.headSolidArea.y = e.worldY + e.headSolidArea.y;
 
         // get objects solid area position
         ap.gameState.player.solidArea.x = ap.gameState.player.worldX + ap.gameState.player.solidArea.x;
@@ -23,24 +30,28 @@ public class CollisionChecker {
         switch (e.direction) {
             case "up":
                 e.solidArea.y -= e.speed;
+                e.headSolidArea.y -= e.speed;
                 if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
                     e.collisionOn = true;
                 }
                 break;
             case "down":
                 e.solidArea.y += e.speed;
+                e.headSolidArea.y += e.speed;
                 if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
                     e.collisionOn = true;
                 }
                 break;
             case "left":
                 e.solidArea.x -= e.speed;
+                e.headSolidArea.x -= e.speed;
                 if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
                     e.collisionOn = true;
                 }
                 break;
             case "right":
                 e.solidArea.x += e.speed;
+                e.headSolidArea.x += e.speed;
                 if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
                     e.collisionOn = true;
                 }
@@ -48,6 +59,8 @@ public class CollisionChecker {
         }
         e.solidArea.x = e.solidAreaDefaultX;
         e.solidArea.y = e.solidAreaDefaultY;
+        e.headSolidArea.x = e.headSolidAreaDefaultX;
+        e.headSolidArea.y = e.headSolidAreaDefaultY;
         ap.gameState.player.solidArea.x = ap.gameState.player.solidAreaDefaultX;
         ap.gameState.player.solidArea.y = ap.gameState.player.solidAreaDefaultY;
 
@@ -61,6 +74,8 @@ public class CollisionChecker {
                 // get entities solid area position
                 e.solidArea.x = e.worldX + e.solidArea.x;
                 e.solidArea.y = e.worldY + e.solidArea.y;
+                e.headSolidArea.x = e.worldX + e.headSolidArea.x;
+                e.headSolidArea.y = e.worldY + e.headSolidArea.y;
 
                 // get objects solid area position
                 ap.gameState.obj[i].solidArea.x = ap.gameState.obj[i].worldX + ap.gameState.obj[i].solidArea.x;
@@ -69,6 +84,7 @@ public class CollisionChecker {
                 switch (e.direction) {
                     case "up":
                         e.solidArea.y -= e.speed;
+                        e.headSolidArea.y -= e.speed;
                         if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
                             if (ap.gameState.obj[i].collision) {
                                 e.collisionOn = true;
@@ -80,6 +96,7 @@ public class CollisionChecker {
                         break;
                     case "down":
                         e.solidArea.y += e.speed;
+                        e.headSolidArea.y += e.speed;
                         if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
                             if (ap.gameState.obj[i].collision) {
                                 e.collisionOn = true;
@@ -91,6 +108,7 @@ public class CollisionChecker {
                         break;
                     case "left":
                         e.solidArea.x -= e.speed;
+                        e.headSolidArea.y -= e.speed;
                         if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
                             if (ap.gameState.obj[i].collision) {
                                 e.collisionOn = true;
@@ -102,6 +120,7 @@ public class CollisionChecker {
                         break;
                     case "right":
                         e.solidArea.x += e.speed;
+                        e.headSolidArea.x += e.speed;
                         if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
                             if (ap.gameState.obj[i].collision) {
                                 e.collisionOn = true;
@@ -114,6 +133,8 @@ public class CollisionChecker {
                 }
                 e.solidArea.x = e.solidAreaDefaultX;
                 e.solidArea.y = e.solidAreaDefaultY;
+                e.headSolidArea.x = e.headSolidAreaDefaultX;
+                e.headSolidArea.y = e.headSolidAreaDefaultY;
                 ap.gameState.obj[i].solidArea.x = ap.gameState.obj[i].solidAreaDefaultX;
                 ap.gameState.obj[i].solidArea.y = ap.gameState.obj[i].solidAreaDefaultY;
             }
@@ -243,8 +264,14 @@ public class CollisionChecker {
                 Rectangle targetSolidArea = new Rectangle(target[i].worldX + target[i].solidArea.x,
                         target[i].worldY + target[i].solidArea.y, target[i].solidArea.width,
                         target[i].solidArea.height);
+                Rectangle targetHeadSolidArea = new Rectangle(target[i].worldX + target[i].headSolidArea.x,
+                        target[i].worldY + target[i].headSolidArea.y, target[i].headSolidArea.width,
+                        target[i].headSolidArea.height);
 
                 if (eSolidArea.intersects(targetSolidArea)) {
+                    if (eSolidArea.intersects(targetHeadSolidArea)) {
+                        System.out.println("headshot");
+                    }
                     e.collisionOn = true;
                     index = i;
                     break; // Exit the loop as soon as a collision is detected
@@ -263,14 +290,19 @@ public class CollisionChecker {
                 // get entities solid area position
                 e.solidArea.x = e.worldX + e.solidArea.x;
                 e.solidArea.y = e.worldY + e.solidArea.y;
+                e.headSolidArea.x = e.worldX + e.headSolidArea.x;
+                e.headSolidArea.y = e.worldY + e.headSolidArea.y;
 
                 // get objects solid area position
                 target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
                 target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
+                target[i].headSolidArea.x = target[i].worldX + target[i].headSolidArea.x;
+                target[i].headSolidArea.y = target[i].worldY + target[i].headSolidArea.y;
 
                 switch (e.direction) {
                     case "up":
                         e.solidArea.y -= e.speed;
+                        e.headSolidArea.y -= e.speed;
                         if (e.solidArea.intersects(target[i].solidArea)) {
                             e.collisionOn = true;
                             index = i;
@@ -278,6 +310,7 @@ public class CollisionChecker {
                         break;
                     case "down":
                         e.solidArea.y += e.speed;
+                        e.headSolidArea.y += e.speed;
                         if (e.solidArea.intersects(target[i].solidArea)) {
                             e.collisionOn = true;
                             index = i;
@@ -285,6 +318,7 @@ public class CollisionChecker {
                         break;
                     case "left":
                         e.solidArea.x -= e.speed;
+                        e.headSolidArea.x -= e.speed;
                         if (e.solidArea.intersects(target[i].solidArea)) {
                             e.collisionOn = true;
                             index = i;
@@ -292,6 +326,7 @@ public class CollisionChecker {
                         break;
                     case "right":
                         e.solidArea.x += e.speed;
+                        e.headSolidArea.x += e.speed;
                         if (e.solidArea.intersects(target[i].solidArea)) {
                             e.collisionOn = true;
                             index = i;
@@ -300,8 +335,12 @@ public class CollisionChecker {
                 }
                 e.solidArea.x = e.solidAreaDefaultX;
                 e.solidArea.y = e.solidAreaDefaultY;
+                e.headSolidArea.x = e.headSolidAreaDefaultX;
+                e.headSolidArea.y = e.headSolidAreaDefaultY;
                 target[i].solidArea.x = target[i].solidAreaDefaultX;
                 target[i].solidArea.y = target[i].solidAreaDefaultY;
+                target[i].headSolidArea.x = target[i].headSolidAreaDefaultX;
+                target[i].headSolidArea.y = target[i].headSolidAreaDefaultY;
             }
         }
         return index;

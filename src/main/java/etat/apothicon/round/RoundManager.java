@@ -1,14 +1,17 @@
 package etat.apothicon.round;
 
 import etat.apothicon.entity.Entity;
+import etat.apothicon.entity.Zombie;
 import etat.apothicon.main.Apothicon;
 
 import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class RoundManager {
     private Entity[] zombies;
-    private Timer spawnTimer;
+    private Timer roundDelay;
+    private boolean changingRound;
     private int currentRound;
     private int maxHorde;
     private int maxTotalZombiesForThisRound;
@@ -34,6 +37,7 @@ public class RoundManager {
 
     private void setup() {
         currentRound = 1;
+        changingRound = false;
         totalZombiesOnMap = 0;
         totalZombiesSpawnedForThisRound = 0;
         maxHorde = 24;
@@ -53,8 +57,9 @@ public class RoundManager {
                 spawnZombie(spawn);
             }
 
-        } else if (roundOver) {
+        } else if (roundOver && !changingRound) {
             startNewRound();
+            changingRound = true;
         }
     }
 
@@ -66,11 +71,20 @@ public class RoundManager {
 
 
     private void startNewRound() {
-        currentRound++;
-        totalZombiesKilled = 0;
-        totalZombiesSpawnedForThisRound = 0;
-        maxTotalZombiesForThisRound += 5;
-        zombies = new Entity[maxTotalZombiesForThisRound];
+        roundDelay = new Timer();
+        roundDelay.schedule(new TimerTask() {
+            public void run() {
+                currentRound++;
+                totalZombiesKilled = 0;
+                totalZombiesSpawnedForThisRound = 0;
+                maxTotalZombiesForThisRound += 5;
+                zombies = new Entity[maxTotalZombiesForThisRound];
+
+                changingRound = false;
+            }
+        }, 10000);
+
+
     }
 
 
