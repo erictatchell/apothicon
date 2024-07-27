@@ -5,10 +5,14 @@ import etat.apothicon.sound.ImpactSound;
 import etat.apothicon.sound.SoundType;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
@@ -29,6 +33,8 @@ public class Entity {
     public int spriteNum = 1;
     public boolean onPath = true;
     public Rectangle solidArea = new Rectangle();
+    private Timer feedbackTimer;
+    private boolean drawingFeedback;
     public int headSolidAreaDefaultX;
     public int headSolidAreaDefaultY;
 
@@ -144,23 +150,23 @@ public class Entity {
 
     }
 
-    public void die(int index) {
+    public void die(boolean headshot, int index) {
         ap.gameState.roundManager.getZombies()[index] = null;
         Random r = new Random();
-        int s = r.nextInt(3) + 1;
+        int soundIndex = r.nextInt(3) + 1;
         int sound = ImpactSound.KILL1.ordinal();
-        switch (s) {
-            case 2:
-                sound = ImpactSound.KILL2.ordinal();
-                break;
-            case 3:
-                sound = ImpactSound.KILL3.ordinal();
-                break;
+        if (!headshot) {
+            switch (soundIndex) {
+                case 2 -> sound = ImpactSound.KILL2.ordinal();
+                case 3 -> sound = ImpactSound.KILL3.ordinal();
+            }
+        } else {
+            sound = ImpactSound.HEADSHOT1.ordinal();
         }
+
         ap.playSE(sound, SoundType.IMPACT);
         ap.gameState.roundManager.decreaseTotalZombiesOnMap();
         ap.gameState.roundManager.increaseTotalZombiesKilled();
-//        ap.gameState.aSetter.setZombie();
     }
 
     public void update() {
@@ -191,8 +197,26 @@ public class Entity {
         }
     }
 
-    public void takeDamage(int dmg) {
+    public void takeDamage(boolean headshot, int dmg) {
         this.health -= dmg;
+
+        feedbackTimer = new Timer();
+        if (headshot) {
+            feedbackTimer.schedule(new TimerTask() {
+                public void run() {
+                    drawingFeedback = true;
+                }
+            }, 0);
+
+        }
+        feedbackTimer.schedule(new TimerTask() {
+            public void run() {
+                drawingFeedback = false;
+            }
+        }, 100);
+    }
+
+    private void drawFeedback(int screenX, int screenY, Graphics2D g2) {
 
     }
 
@@ -204,9 +228,9 @@ public class Entity {
                 worldX - ap.tileSize < ap.gameState.player.worldX + ap.gameState.player.screenX &&
                 worldY + ap.tileSize > ap.gameState.player.worldY - ap.gameState.player.screenY &&
                 worldY - ap.tileSize < ap.gameState.player.worldY + ap.gameState.player.screenY) {
-            if (this.collisionIsHeadshot) {
-
-                g2.fillRect(screenX + this.headSolidArea.x,screenY + this.headSolidArea.y,this.headSolidArea.width,this.headSolidArea.height);
+            if (drawingFeedback) {
+                g2.setColor(Color.YELLOW);
+                g2.fillRect(screenX + this.headSolidArea.x, screenY + this.headSolidArea.y, this.headSolidArea.width, this.headSolidArea.height);
             }
 
             switch (this.direction) {
