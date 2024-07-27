@@ -12,6 +12,8 @@ public class SoundHandler implements Runnable {
     static URL[] impactSounds = new URL[30];
     static URL[] interactSounds = new URL[30];
 
+    static URL[] roundChangeMusic = new URL[10];
+
     public SoundHandler() {
 
     }
@@ -41,6 +43,8 @@ public class SoundHandler implements Runnable {
                 case INTERACT:
                     stream = AudioSystem.getAudioInputStream(interactSounds[i]);
                     break;
+                case ROUND_CHANGE:
+                    stream = AudioSystem.getAudioInputStream(roundChangeMusic[i]);
             }
             final Clip myClip = AudioSystem.getClip();
             vector.add(myClip);
@@ -78,5 +82,7 @@ public class SoundHandler implements Runnable {
         impactSounds[10] = getClass().getClassLoader().getResource("sound/hit6.wav");
 
         interactSounds[0] = getClass().getClassLoader().getResource("sound/purchase.wav");
+
+        roundChangeMusic[0] = getClass().getClassLoader().getResource("sound/round-change-1.wav");
     }
 }

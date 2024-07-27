@@ -35,6 +35,7 @@ public class Entity {
     public Rectangle headSolidArea = new Rectangle();
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
+    public boolean collisionIsHeadshot = false;
     public int actionLockCounter = 0;
 
     public Entity(Apothicon ap) {
@@ -149,13 +150,12 @@ public class Entity {
         int s = r.nextInt(3) + 1;
         int sound = ImpactSound.KILL1.ordinal();
         switch (s) {
-            case 1:
-                sound = ImpactSound.KILL1.ordinal();
             case 2:
                 sound = ImpactSound.KILL2.ordinal();
                 break;
             case 3:
                 sound = ImpactSound.KILL3.ordinal();
+                break;
         }
         ap.playSE(sound, SoundType.IMPACT);
         ap.gameState.roundManager.decreaseTotalZombiesOnMap();
@@ -204,7 +204,11 @@ public class Entity {
                 worldX - ap.tileSize < ap.gameState.player.worldX + ap.gameState.player.screenX &&
                 worldY + ap.tileSize > ap.gameState.player.worldY - ap.gameState.player.screenY &&
                 worldY - ap.tileSize < ap.gameState.player.worldY + ap.gameState.player.screenY) {
-            g2.fillRect(screenX + this.headSolidArea.x,screenY + this.headSolidArea.y,this.headSolidArea.width,this.headSolidArea.height);
+            if (this.collisionIsHeadshot) {
+
+                g2.fillRect(screenX + this.headSolidArea.x,screenY + this.headSolidArea.y,this.headSolidArea.width,this.headSolidArea.height);
+            }
+
             switch (this.direction) {
                 case "up":
                     if (spriteNum == 1) {

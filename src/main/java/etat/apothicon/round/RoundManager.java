@@ -3,6 +3,8 @@ package etat.apothicon.round;
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Zombie;
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.sound.RoundChangeMusic;
+import etat.apothicon.sound.SoundType;
 
 import java.util.Random;
 import java.util.Timer;
@@ -71,6 +73,7 @@ public class RoundManager {
 
 
     private void startNewRound() {
+        ap.playSE(RoundChangeMusic.DEFAULT.ordinal(), SoundType.ROUND_CHANGE);
         roundDelay = new Timer();
         roundDelay.schedule(new TimerTask() {
             public void run() {

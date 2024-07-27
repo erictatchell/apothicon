@@ -44,7 +44,7 @@ public class Bullet extends Entity {
         if (user == this.ap.gameState.player) {
             int zombieIndex = ap.gameState.cc.bullet_checkEntity(this, ap.gameState.roundManager.getZombies());
             if (zombieIndex != 999) {
-                ap.gameState.player.damageZombie(zombieIndex);
+                ap.gameState.player.damageZombie(collisionIsHeadshot, zombieIndex);
                 int sound = ImpactSound.HIT1.ordinal();
                 int rn = r.nextInt(6) + 1;
                 switch (rn) {
@@ -67,6 +67,7 @@ public class Bullet extends Entity {
                         break;
                 }
                 ap.playSE(sound, SoundType.IMPACT);
+
                 alive = false;
 
                 ap.gameState.bullets.remove(this);

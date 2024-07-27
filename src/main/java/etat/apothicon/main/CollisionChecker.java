@@ -255,7 +255,6 @@ public class CollisionChecker {
         int futureX = e.worldX + (int) (e.speed * Math.cos(Math.toRadians(e.directionAngle)));
         int futureY = e.worldY + (int) (e.speed * Math.sin(Math.toRadians(e.directionAngle)));
 
-        // THANKS CHATGPT!!!
         for (int i = 0; i < target.length; i++) {
             if (target[i] != null) {
                 // Get entities' solid area positions
@@ -270,7 +269,7 @@ public class CollisionChecker {
 
                 if (eSolidArea.intersects(targetSolidArea)) {
                     if (eSolidArea.intersects(targetHeadSolidArea)) {
-                        System.out.println("headshot");
+                        e.collisionIsHeadshot = true;
                     }
                     e.collisionOn = true;
                     index = i;

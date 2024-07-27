@@ -199,7 +199,7 @@ public class Player extends Entity {
     /**
      * @param index position i
      */
-    public void damageZombie(int index) {
+    public void damageZombie(boolean collisionIsHeadshot, int index) {
         if (index != 999) {
             Entity zombie = ap.gameState.roundManager.getZombies()[index];
 
@@ -207,10 +207,16 @@ public class Player extends Entity {
             boolean headshot = false;
 
             int damage = (int) (loadout.getCurrentWeapon().getDamage() * loadout.getDamageMultiplier());
+            if (collisionIsHeadshot) {
+                damage *= 2.0f; // TODO make this value gun dependent?
+            }
             zombie.takeDamage(damage);
             if (zombie.health <= 0) {
                 zombie.die(index);
                 killed = true;
+                if (collisionIsHeadshot) {
+                    headshot = true;
+                }
             }
             loadout.addPoints(killed, headshot);
         }

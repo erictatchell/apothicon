@@ -4,5 +4,6 @@ public enum SoundType {
     IMPACT,
     GUN,
     AMBIENT,
-    INTERACT
+    INTERACT,
+    ROUND_CHANGE
 }
