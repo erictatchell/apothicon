@@ -1,11 +1,13 @@
 package etat.apothicon.main;
 
 import javax.swing.*;
+import java.awt.event.WindowEvent;
 
 public class App {
+    public static JFrame frame;
     public static void main(String[] args) {
 
-        JFrame frame = new JFrame("Apothicon");
+        frame = new JFrame("Apothicon");
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -17,5 +19,9 @@ public class App {
         
         ap.setup();
         ap.start();
+    }
+
+    public static void close() {
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
 }

@@ -41,10 +41,10 @@ public class Bullet extends Entity {
     }
 
     public void update() {
-        if (user == this.ap.gameState.player) {
-            int zombieIndex = ap.gameState.cc.bullet_checkEntity(this, ap.gameState.roundManager.getZombies());
+        if (user == this.ap.gameManager.player) {
+            int zombieIndex = ap.gameManager.cc.bullet_checkEntity(this, ap.gameManager.roundManager.getZombies());
             if (zombieIndex != 999) {
-                ap.gameState.player.damageZombie(collisionIsHeadshot, zombieIndex);
+                ap.gameManager.player.damageZombie(collisionIsHeadshot, zombieIndex);
                 int sound = ImpactSound.HIT1.ordinal();
                 int rn = r.nextInt(6) + 1;
                 switch (rn) {
@@ -70,17 +70,17 @@ public class Bullet extends Entity {
 
                 alive = false;
 
-                ap.gameState.bullets.remove(this);
+                ap.gameManager.bullets.remove(this);
                 System.gc();
             }
         }
 
         worldX += speed * Math.cos(Math.toRadians(directionAngle));
         worldY += speed * Math.sin(Math.toRadians(directionAngle));
-        ap.gameState.cc.bullet_checkTile(this);
+        ap.gameManager.cc.bullet_checkTile(this);
         if (this.collisionOn) {
             ap.playSE(ImpactSound.WALL_COLLISION.ordinal(), SoundType.IMPACT);
-            ap.gameState.bullets.remove(this);
+            ap.gameManager.bullets.remove(this);
             System.gc();
         }
 
@@ -93,13 +93,13 @@ public class Bullet extends Entity {
     }
 
     public void drawBullet(Graphics2D g2) {
-        int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
-        int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
+        int screenX = worldX - ap.gameManager.player.worldX + ap.gameManager.player.screenX;
+        int screenY = worldY - ap.gameManager.player.worldY + ap.gameManager.player.screenY;
 
-        if (worldX + ap.tileSize > ap.gameState.player.worldX - ap.gameState.player.screenX
-                && worldX - ap.tileSize < ap.gameState.player.worldX + ap.gameState.player.screenX
-                && worldY + ap.tileSize > ap.gameState.player.worldY - ap.gameState.player.screenY
-                && worldY - ap.tileSize < ap.gameState.player.worldY + ap.gameState.player.screenY) {
+        if (worldX + ap.tileSize > ap.gameManager.player.worldX - ap.gameManager.player.screenX
+                && worldX - ap.tileSize < ap.gameManager.player.worldX + ap.gameManager.player.screenX
+                && worldY + ap.tileSize > ap.gameManager.player.worldY - ap.gameManager.player.screenY
+                && worldY - ap.tileSize < ap.gameManager.player.worldY + ap.gameManager.player.screenY) {
 
             g2.setColor(Color.yellow);
             g2.fillRect(screenX, screenY, 5, 5);

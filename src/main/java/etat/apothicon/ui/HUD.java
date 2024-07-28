@@ -1,4 +1,4 @@
-package etat.apothicon.hud;
+package etat.apothicon.ui;
 
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.object.perk.bottle.Perk;
@@ -27,6 +27,9 @@ public class HUD {
     public Font arial64 = new Font("Arial", Font.BOLD, 64);
     public Font fty12;
     public Font fty16;
+    public Font fty24;
+
+    public Font fty32;
     public Font fty64;
 
 
@@ -36,12 +39,14 @@ public class HUD {
     }
 
     private void setup() {
-        this.currentWeaponMagazine = Integer.toString(ap.gameState.player.loadout.getCurrentWeapon().getMagazine());
-        this.currentWeaponReserve = Integer.toString(ap.gameState.player.loadout.getCurrentWeapon().getReserve());
-        this.perks = ap.gameState.player.loadout.getPerks();
+        this.currentWeaponMagazine = Integer.toString(ap.gameManager.player.loadout.getCurrentWeapon().getMagazine());
+        this.currentWeaponReserve = Integer.toString(ap.gameManager.player.loadout.getCurrentWeapon().getReserve());
+        this.perks = ap.gameManager.player.loadout.getPerks();
         try {
             fty16 = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/fty.ttf")).deriveFont(16.0f);
             fty12 = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/fty.ttf")).deriveFont(12.0f);
+            fty32 = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/fty.ttf")).deriveFont(32.0f);
+            fty24 = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/fty.ttf")).deriveFont(24.0f);
             fty64 = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/fty.ttf")).deriveFont(64.0f);
             gunSplosh = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
             pointSplosh = ImageIO.read(new File("src/main/resources/blood/pointSplosh.png"));
@@ -104,8 +109,8 @@ public class HUD {
                 xCurrentWeaponAmmo,
                 ap.screenHeight - 14);
 
-        g2.drawString(ap.gameState.zoneManager.currentZone.getName(), 10, 30);
-        g2.drawString(Integer.toString(ap.gameState.player.loadout.getHealth()), 10, 100);
+        g2.drawString(ap.gameManager.zoneManager.currentZone.getName(), 10, 30);
+        g2.drawString(Integer.toString(ap.gameManager.player.loadout.getHealth()), 10, 100);
 
 
         int pointTextWidth = (g2.getFontMetrics().stringWidth(points));
@@ -118,7 +123,7 @@ public class HUD {
 
         g2.setFont(fty64);
         g2.setColor(new Color(150, 0, 0));
-        g2.drawString(Integer.toString(ap.gameState.roundManager.getCurrentRound()), 10, ap.screenHeight - 10);
+        g2.drawString(Integer.toString(ap.gameManager.roundManager.getCurrentRound()), 10, ap.screenHeight - 10);
     }
 
 }

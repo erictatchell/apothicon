@@ -25,7 +25,7 @@ import java.util.ArrayList;
 //
 // nested loop, ew!? its gonna be max 1-3 zone rects but still
 // in player, call in update():
-//  for each zone in ap.gameState.zones:
+//  for each zone in ap.gameManager.zones:
 //      for each zoneRect in zone.zoneRects:
 //          if player.solidArea.intersects(zoneRect)
 //              currentZone = zone;
@@ -66,16 +66,16 @@ public class Zone {
             spawn.draw(g2, ap);
         }
         for (Rectangle i : zoneRects) {
-            int screenX = i.x - ap.gameState.player.worldX + ap.gameState.player.screenX;
-            int screenY = i.y - ap.gameState.player.worldY + ap.gameState.player.screenY;
+            int screenX = i.x - ap.gameManager.player.worldX + ap.gameManager.player.screenX;
+            int screenY = i.y - ap.gameManager.player.worldY + ap.gameManager.player.screenY;
             int zoneWidth = i.width * ap.tileSize;
             int zoneHeight = i.height * ap.tileSize;
 
             g2.setColor(new Color(255, 0, 0, 70));
-            if (i.x + zoneWidth > ap.gameState.player.worldX - ap.gameState.player.screenX &&
-                    i.x - zoneWidth < ap.gameState.player.worldX + ap.gameState.player.screenX &&
-                    i.y + zoneHeight > ap.gameState.player.worldY - ap.gameState.player.screenY &&
-                    i.y - zoneHeight < ap.gameState.player.worldY + ap.gameState.player.screenY) {
+            if (i.x + zoneWidth > ap.gameManager.player.worldX - ap.gameManager.player.screenX &&
+                    i.x - zoneWidth < ap.gameManager.player.worldX + ap.gameManager.player.screenX &&
+                    i.y + zoneHeight > ap.gameManager.player.worldY - ap.gameManager.player.screenY &&
+                    i.y - zoneHeight < ap.gameManager.player.worldY + ap.gameManager.player.screenY) {
                 g2.fillRect(screenX, screenY, zoneWidth, zoneHeight);
             }
 

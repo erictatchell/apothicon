@@ -5,6 +5,7 @@ import etat.apothicon.sound.SoundHandler;
 import etat.apothicon.sound.SoundType;
 
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 public class Apothicon extends JPanel implements Runnable {
@@ -22,7 +23,7 @@ public class Apothicon extends JPanel implements Runnable {
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
 
-    public GameManager gameState;
+    public GameManager gameManager;
 
     // TODO: oop-ify these variables
     int FPS = 60;
@@ -45,8 +46,8 @@ public class Apothicon extends JPanel implements Runnable {
 
     public void setup() {
 
-        gameState = new GameManager(this);
-        gameState.setup();
+        gameManager = new GameManager(this);
+        gameManager.setup();
     }
 
 
@@ -108,7 +109,7 @@ public class Apothicon extends JPanel implements Runnable {
     // return jug;
     // }
     public void update() {
-        gameState.update();
+        gameManager.update();
     }
 
     public void playSE(int i, SoundType t) {
@@ -118,10 +119,23 @@ public class Apothicon extends JPanel implements Runnable {
 
     }
 
+    public void close() {
+        App.close();
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-        gameState.draw(g2);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+
+        gameManager.draw(g2);
         g2.dispose();
     }
 }

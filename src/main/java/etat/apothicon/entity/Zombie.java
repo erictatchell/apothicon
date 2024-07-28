@@ -55,7 +55,7 @@ public class Zombie extends Entity {
         hitDelay.schedule(new TimerTask() {
             @Override
             public void run() {
-                ap.gameState.cc.checkPlayer(e);
+                ap.gameManager.cc.checkPlayer(e);
                 if (collisionOn) {
                     e.loadout.health -= 50;
                     e.loadout.healing = false;
@@ -70,8 +70,8 @@ public class Zombie extends Entity {
 
     public void setAction() {
         if (onPath) {
-            int goalCol = (ap.gameState.player.worldX + ap.gameState.player.solidArea.x) / ap.tileSize;
-            int goalRow = (ap.gameState.player.worldY + ap.gameState.player.solidArea.y) / ap.tileSize;
+            int goalCol = (ap.gameManager.player.worldX + ap.gameManager.player.solidArea.x) / ap.tileSize;
+            int goalRow = (ap.gameManager.player.worldY + ap.gameManager.player.solidArea.y) / ap.tileSize;
 
             searchPath(goalCol, goalRow);
         } else {

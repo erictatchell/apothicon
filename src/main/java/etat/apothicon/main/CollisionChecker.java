@@ -26,19 +26,19 @@ public class CollisionChecker {
         e.headSolidArea.y = e.worldY + e.headSolidArea.y;
 
         // get objects solid area position
-        ap.gameState.player.solidArea.x = ap.gameState.player.worldX + ap.gameState.player.solidArea.x;
-        ap.gameState.player.solidArea.y = ap.gameState.player.worldY + ap.gameState.player.solidArea.y;
+        ap.gameManager.player.solidArea.x = ap.gameManager.player.worldX + ap.gameManager.player.solidArea.x;
+        ap.gameManager.player.solidArea.y = ap.gameManager.player.worldY + ap.gameManager.player.solidArea.y;
 
         switch (e.direction) {
             case "up":
                 e.solidArea.y -= e.speed;
                 e.headSolidArea.y -= e.speed;
-                if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
+                if (e.solidArea.intersects(ap.gameManager.player.solidArea)) {
                     if (e instanceof Zombie) {
                         Zombie zombie = (Zombie) e;
                         if (!zombie.hitting) {
 
-                            zombie.dealDamage(ap.gameState.player);
+                            zombie.dealDamage(ap.gameManager.player);
                         }
                     }
                     e.collisionOn = true;
@@ -47,12 +47,12 @@ public class CollisionChecker {
             case "down":
                 e.solidArea.y += e.speed;
                 e.headSolidArea.y += e.speed;
-                if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
+                if (e.solidArea.intersects(ap.gameManager.player.solidArea)) {
                     if (e instanceof Zombie) {
                         Zombie zombie = (Zombie) e;
                         if (!zombie.hitting) {
 
-                            zombie.dealDamage(ap.gameState.player);
+                            zombie.dealDamage(ap.gameManager.player);
                         }
                     }
                     e.collisionOn = true;
@@ -61,12 +61,12 @@ public class CollisionChecker {
             case "left":
                 e.solidArea.x -= e.speed;
                 e.headSolidArea.x -= e.speed;
-                if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
+                if (e.solidArea.intersects(ap.gameManager.player.solidArea)) {
                     if (e instanceof Zombie) {
                         Zombie zombie = (Zombie) e;
                         if (!zombie.hitting) {
 
-                            zombie.dealDamage(ap.gameState.player);
+                            zombie.dealDamage(ap.gameManager.player);
                         }
                     }
                     e.collisionOn = true;
@@ -75,12 +75,12 @@ public class CollisionChecker {
             case "right":
                 e.solidArea.x += e.speed;
                 e.headSolidArea.x += e.speed;
-                if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
+                if (e.solidArea.intersects(ap.gameManager.player.solidArea)) {
                     if (e instanceof Zombie) {
                         Zombie zombie = (Zombie) e;
                         if (!zombie.hitting) {
 
-                            zombie.dealDamage(ap.gameState.player);
+                            zombie.dealDamage(ap.gameManager.player);
                         }
 
                     }
@@ -92,16 +92,16 @@ public class CollisionChecker {
         e.solidArea.y = e.solidAreaDefaultY;
         e.headSolidArea.x = e.headSolidAreaDefaultX;
         e.headSolidArea.y = e.headSolidAreaDefaultY;
-        ap.gameState.player.solidArea.x = ap.gameState.player.solidAreaDefaultX;
-        ap.gameState.player.solidArea.y = ap.gameState.player.solidAreaDefaultY;
+        ap.gameManager.player.solidArea.x = ap.gameManager.player.solidAreaDefaultX;
+        ap.gameManager.player.solidArea.y = ap.gameManager.player.solidAreaDefaultY;
 
     }
 
     public int checkObject(Entity e, boolean player) {
         int index = 999;
 
-        for (int i = 0; i < ap.gameState.obj.length; i++) {
-            if (ap.gameState.obj[i] != null) {
+        for (int i = 0; i < ap.gameManager.obj.length; i++) {
+            if (ap.gameManager.obj[i] != null) {
                 // get entities solid area position
                 e.solidArea.x = e.worldX + e.solidArea.x;
                 e.solidArea.y = e.worldY + e.solidArea.y;
@@ -109,15 +109,15 @@ public class CollisionChecker {
                 e.headSolidArea.y = e.worldY + e.headSolidArea.y;
 
                 // get objects solid area position
-                ap.gameState.obj[i].solidArea.x = ap.gameState.obj[i].worldX + ap.gameState.obj[i].solidArea.x;
-                ap.gameState.obj[i].solidArea.y = ap.gameState.obj[i].worldY + ap.gameState.obj[i].solidArea.y;
+                ap.gameManager.obj[i].solidArea.x = ap.gameManager.obj[i].worldX + ap.gameManager.obj[i].solidArea.x;
+                ap.gameManager.obj[i].solidArea.y = ap.gameManager.obj[i].worldY + ap.gameManager.obj[i].solidArea.y;
 
                 switch (e.direction) {
                     case "up":
                         e.solidArea.y -= e.speed;
                         e.headSolidArea.y -= e.speed;
-                        if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
-                            if (ap.gameState.obj[i].collision) {
+                        if (e.solidArea.intersects(ap.gameManager.obj[i].solidArea)) {
+                            if (ap.gameManager.obj[i].collision) {
                                 e.collisionOn = true;
                             }
                             if (player) {
@@ -128,8 +128,8 @@ public class CollisionChecker {
                     case "down":
                         e.solidArea.y += e.speed;
                         e.headSolidArea.y += e.speed;
-                        if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
-                            if (ap.gameState.obj[i].collision) {
+                        if (e.solidArea.intersects(ap.gameManager.obj[i].solidArea)) {
+                            if (ap.gameManager.obj[i].collision) {
                                 e.collisionOn = true;
                             }
                             if (player) {
@@ -140,8 +140,8 @@ public class CollisionChecker {
                     case "left":
                         e.solidArea.x -= e.speed;
                         e.headSolidArea.y -= e.speed;
-                        if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
-                            if (ap.gameState.obj[i].collision) {
+                        if (e.solidArea.intersects(ap.gameManager.obj[i].solidArea)) {
+                            if (ap.gameManager.obj[i].collision) {
                                 e.collisionOn = true;
                             }
                             if (player) {
@@ -152,8 +152,8 @@ public class CollisionChecker {
                     case "right":
                         e.solidArea.x += e.speed;
                         e.headSolidArea.x += e.speed;
-                        if (e.solidArea.intersects(ap.gameState.obj[i].solidArea)) {
-                            if (ap.gameState.obj[i].collision) {
+                        if (e.solidArea.intersects(ap.gameManager.obj[i].solidArea)) {
+                            if (ap.gameManager.obj[i].collision) {
                                 e.collisionOn = true;
                             }
                             if (player) {
@@ -166,8 +166,8 @@ public class CollisionChecker {
                 e.solidArea.y = e.solidAreaDefaultY;
                 e.headSolidArea.x = e.headSolidAreaDefaultX;
                 e.headSolidArea.y = e.headSolidAreaDefaultY;
-                ap.gameState.obj[i].solidArea.x = ap.gameState.obj[i].solidAreaDefaultX;
-                ap.gameState.obj[i].solidArea.y = ap.gameState.obj[i].solidAreaDefaultY;
+                ap.gameManager.obj[i].solidArea.x = ap.gameManager.obj[i].solidAreaDefaultX;
+                ap.gameManager.obj[i].solidArea.y = ap.gameManager.obj[i].solidAreaDefaultY;
             }
         }
         return index;
@@ -199,30 +199,30 @@ public class CollisionChecker {
             if (upperRight) {
                 eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
                 eRightCol = (eRightWorldX - e.speed) / ap.tileSize;
-                tileNum1 = ap.gameState.tileManager.mapTileNum[eRightCol][eTopRow];
-                if (ap.gameState.tileManager.tile[tileNum1].collision) {
+                tileNum1 = ap.gameManager.tileManager.mapTileNum[eRightCol][eTopRow];
+                if (ap.gameManager.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
                 }
 
             } else if (upperLeft) {
                 eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
                 eLeftCol = (eLeftWorldX + e.speed) / ap.tileSize;
-                tileNum1 = ap.gameState.tileManager.mapTileNum[eLeftCol][eTopRow];
-                if (ap.gameState.tileManager.tile[tileNum1].collision) {
+                tileNum1 = ap.gameManager.tileManager.mapTileNum[eLeftCol][eTopRow];
+                if (ap.gameManager.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
                 }
             } else if (lowerLeft) {
                 eBottomRow = (eBottomWorldY - e.speed) / ap.tileSize;
                 eLeftCol = (eLeftWorldX + e.speed) / ap.tileSize;
-                tileNum1 = ap.gameState.tileManager.mapTileNum[eLeftCol][eBottomRow];
-                if (ap.gameState.tileManager.tile[tileNum1].collision) {
+                tileNum1 = ap.gameManager.tileManager.mapTileNum[eLeftCol][eBottomRow];
+                if (ap.gameManager.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
                 }
             } else if (lowerRight) {
                 eBottomRow = (eBottomWorldY - e.speed) / ap.tileSize;
                 eRightCol = (eRightWorldX - e.speed) / ap.tileSize;
-                tileNum1 = ap.gameState.tileManager.mapTileNum[eRightCol][eBottomRow];
-                if (ap.gameState.tileManager.tile[tileNum1].collision) {
+                tileNum1 = ap.gameManager.tileManager.mapTileNum[eRightCol][eBottomRow];
+                if (ap.gameManager.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
                 }
             }
@@ -243,36 +243,36 @@ public class CollisionChecker {
         int tileNum1, tileNum2;
         if ("up".equals(e.direction)) {
             eTopRow = (eTopWorldY - e.speed) / ap.tileSize;
-            tileNum1 = ap.gameState.tileManager.mapTileNum[eLeftCol][eTopRow];
-            tileNum2 = ap.gameState.tileManager.mapTileNum[eRightCol][eTopRow];
-            if (ap.gameState.tileManager.tile[tileNum1].collision || ap.gameState.tileManager.tile[tileNum2].collision) {
+            tileNum1 = ap.gameManager.tileManager.mapTileNum[eLeftCol][eTopRow];
+            tileNum2 = ap.gameManager.tileManager.mapTileNum[eRightCol][eTopRow];
+            if (ap.gameManager.tileManager.tile[tileNum1].collision || ap.gameManager.tileManager.tile[tileNum2].collision) {
                 e.collisionOn = true;
             }
 
         }
         if ("down".equals(e.direction)) {
             eBottomRow = (eBottomWorldY + e.speed) / ap.tileSize;
-            tileNum1 = ap.gameState.tileManager.mapTileNum[eLeftCol][eBottomRow];
-            tileNum2 = ap.gameState.tileManager.mapTileNum[eRightCol][eBottomRow];
-            if (ap.gameState.tileManager.tile[tileNum1].collision || ap.gameState.tileManager.tile[tileNum2].collision) {
+            tileNum1 = ap.gameManager.tileManager.mapTileNum[eLeftCol][eBottomRow];
+            tileNum2 = ap.gameManager.tileManager.mapTileNum[eRightCol][eBottomRow];
+            if (ap.gameManager.tileManager.tile[tileNum1].collision || ap.gameManager.tileManager.tile[tileNum2].collision) {
                 e.collisionOn = true;
             }
 
         }
         if ("left".equals(e.direction)) {
             eLeftCol = (eLeftWorldX - e.speed) / ap.tileSize;
-            tileNum1 = ap.gameState.tileManager.mapTileNum[eLeftCol][eTopRow];
-            tileNum2 = ap.gameState.tileManager.mapTileNum[eLeftCol][eBottomRow];
-            if (ap.gameState.tileManager.tile[tileNum1].collision || ap.gameState.tileManager.tile[tileNum2].collision) {
+            tileNum1 = ap.gameManager.tileManager.mapTileNum[eLeftCol][eTopRow];
+            tileNum2 = ap.gameManager.tileManager.mapTileNum[eLeftCol][eBottomRow];
+            if (ap.gameManager.tileManager.tile[tileNum1].collision || ap.gameManager.tileManager.tile[tileNum2].collision) {
                 e.collisionOn = true;
             }
 
         }
         if ("right".equals(e.direction)) {
             eRightCol = (eRightWorldX + e.speed) / ap.tileSize;
-            tileNum1 = ap.gameState.tileManager.mapTileNum[eRightCol][eTopRow];
-            tileNum2 = ap.gameState.tileManager.mapTileNum[eRightCol][eBottomRow];
-            if (ap.gameState.tileManager.tile[tileNum1].collision || ap.gameState.tileManager.tile[tileNum2].collision) {
+            tileNum1 = ap.gameManager.tileManager.mapTileNum[eRightCol][eTopRow];
+            tileNum2 = ap.gameManager.tileManager.mapTileNum[eRightCol][eBottomRow];
+            if (ap.gameManager.tileManager.tile[tileNum1].collision || ap.gameManager.tileManager.tile[tileNum2].collision) {
                 e.collisionOn = true;
             }
 

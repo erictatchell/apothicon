@@ -183,13 +183,13 @@ public class TileManager {
 
             int worldX = worldCol * ap.tileSize;
             int worldY = worldRow * ap.tileSize;
-            int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
-            int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
+            int screenX = worldX - ap.gameManager.player.worldX + ap.gameManager.player.screenX;
+            int screenY = worldY - ap.gameManager.player.worldY + ap.gameManager.player.screenY;
 
-            if (worldX + ap.tileSize > ap.gameState.player.worldX - ap.gameState.player.screenX &&
-                    worldX - ap.tileSize < ap.gameState.player.worldX + ap.gameState.player.screenX &&
-                    worldY + ap.tileSize > ap.gameState.player.worldY - ap.gameState.player.screenY &&
-                    worldY - ap.tileSize < ap.gameState.player.worldY + ap.gameState.player.screenY) {
+            if (worldX + ap.tileSize > ap.gameManager.player.worldX - ap.gameManager.player.screenX &&
+                    worldX - ap.tileSize < ap.gameManager.player.worldX + ap.gameManager.player.screenX &&
+                    worldY + ap.tileSize > ap.gameManager.player.worldY - ap.gameManager.player.screenY &&
+                    worldY - ap.tileSize < ap.gameManager.player.worldY + ap.gameManager.player.screenY) {
                 g2.drawImage(tile[tileNum].image, screenX, screenY, ap.tileSize, ap.tileSize, null);
 
             }
@@ -202,11 +202,11 @@ public class TileManager {
         }
         // if (drawPath) {
         //     g2.setColor(new Color(255, 0, 0, 70));
-        //     for (int i = 0; i < ap.gameState.pFinder.pathList.size(); i++) {
+        //     for (int i = 0; i < ap.gameManager.pFinder.pathList.size(); i++) {
         //         int worldX = ap.pFinder.pathList.get(i).col * ap.tileSize;
         //         int worldY = ap.pFinder.pathList.get(i).row * ap.tileSize; 
-        //         int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
-        //         int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
+        //         int screenX = worldX - ap.gameManager.player.worldX + ap.gameManager.player.screenX;
+        //         int screenY = worldY - ap.gameManager.player.worldY + ap.gameManager.player.screenY;
         //         g2.fillRect(screenX, screenY, ap.tileSize, ap.tileSize);
         //     }
         // }

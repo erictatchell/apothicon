@@ -77,14 +77,49 @@ public class Entity {
 
     }
 
+    public BufferedImage drawDirection() {
+        BufferedImage image = null;
+        switch (this.direction) {
+            case "up":
+                if (spriteNum == 1) {
+                    image = up1;
+                    break;
+                }
+                image = up2;
+                break;
+            case "down":
+                if (spriteNum == 1) {
+                    image = down1;
+                    break;
+                }
+                image = down2;
+                break;
+            case "left":
+                if (spriteNum == 1) {
+                    image = left1;
+                    break;
+                }
+                image = left2;
+                break;
+            case "right":
+                if (spriteNum == 1) {
+                    image = right1;
+                    break;
+                }
+                image = right2;
+                break;
+        }
+        return image;
+    }
+
     public void searchPath(int goalCol, int goalRow) {
         int startCol = (worldX + solidArea.x) / ap.tileSize;
         int startRow = (worldY + solidArea.y) / ap.tileSize;
 
-        ap.gameState.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
-        if (ap.gameState.pFinder.search()) {
-            int nextX = ap.gameState.pFinder.pathList.get(0).col * ap.tileSize;
-            int nextY = ap.gameState.pFinder.pathList.get(0).row * ap.tileSize;
+        ap.gameManager.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
+        if (ap.gameManager.pFinder.search()) {
+            int nextX = ap.gameManager.pFinder.pathList.get(0).col * ap.tileSize;
+            int nextY = ap.gameManager.pFinder.pathList.get(0).row * ap.tileSize;
             // get entities solid area
             int eLeftX = worldX + solidArea.x;
             int eRightX = worldX + solidArea.x + solidArea.width;
@@ -144,14 +179,14 @@ public class Entity {
 
     public void checkCollision() {
         collisionOn = false;
-        ap.gameState.cc.checkTile(this);
-        ap.gameState.cc.checkObject(this, false);
-        ap.gameState.cc.checkPlayer(this);
+        ap.gameManager.cc.checkTile(this);
+        ap.gameManager.cc.checkObject(this, false);
+        ap.gameManager.cc.checkPlayer(this);
 
     }
 
     public void die(boolean headshot, int index) {
-        ap.gameState.roundManager.getZombies()[index] = null;
+        ap.gameManager.roundManager.getZombies()[index] = null;
         Random r = new Random();
         int soundIndex = r.nextInt(3) + 1;
         int sound = ImpactSound.KILL1.ordinal();
@@ -165,8 +200,8 @@ public class Entity {
         }
 
         ap.playSE(sound, SoundType.IMPACT);
-        ap.gameState.roundManager.decreaseTotalZombiesOnMap();
-        ap.gameState.roundManager.increaseTotalZombiesKilled();
+        ap.gameManager.roundManager.decreaseTotalZombiesOnMap();
+        ap.gameManager.roundManager.increaseTotalZombiesKilled();
     }
 
     public void update() {
@@ -221,13 +256,13 @@ public class Entity {
     }
 
     public void draw(Graphics2D g2) {
-        int screenX = worldX - ap.gameState.player.worldX + ap.gameState.player.screenX;
-        int screenY = worldY - ap.gameState.player.worldY + ap.gameState.player.screenY;
+        int screenX = worldX - ap.gameManager.player.worldX + ap.gameManager.player.screenX;
+        int screenY = worldY - ap.gameManager.player.worldY + ap.gameManager.player.screenY;
         BufferedImage image = null;
-        if (worldX + ap.tileSize > ap.gameState.player.worldX - ap.gameState.player.screenX &&
-                worldX - ap.tileSize < ap.gameState.player.worldX + ap.gameState.player.screenX &&
-                worldY + ap.tileSize > ap.gameState.player.worldY - ap.gameState.player.screenY &&
-                worldY - ap.tileSize < ap.gameState.player.worldY + ap.gameState.player.screenY) {
+        if (worldX + ap.tileSize > ap.gameManager.player.worldX - ap.gameManager.player.screenX &&
+                worldX - ap.tileSize < ap.gameManager.player.worldX + ap.gameManager.player.screenX &&
+                worldY + ap.tileSize > ap.gameManager.player.worldY - ap.gameManager.player.screenY &&
+                worldY - ap.tileSize < ap.gameManager.player.worldY + ap.gameManager.player.screenY) {
             if (drawingFeedback) {
                 g2.setColor(Color.YELLOW);
                 g2.fillRect(screenX + this.headSolidArea.x, screenY + this.headSolidArea.y, this.headSolidArea.width, this.headSolidArea.height);

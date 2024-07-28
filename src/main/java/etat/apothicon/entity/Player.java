@@ -88,7 +88,7 @@ public class Player extends Entity {
                 && currentWeapon.fireDelayCounter == currentWeapon.fireDelay) {
 
             loadout.fireWeapon();
-            System.out.println("SIZE:" + ap.gameState.bullets.size());
+            System.out.println("SIZE:" + ap.gameManager.bullets.size());
             if (currentWeapon.fireType == FireType.SEMI_AUTO) {
                 // rechamber needed, prevent full auto on semi auto guns
                 currentWeapon.rechamberNeeded = true;
@@ -102,7 +102,7 @@ public class Player extends Entity {
         // inc fire delay
         if (currentWeapon.fireDelayCounter < currentWeapon.fireDelay) {
 
-            currentWeapon.fireDelayCounter += (1 * this.loadout.getFireRateMultiplier());
+            currentWeapon.fireDelayCounter += (int) (this.loadout.getFireRateMultiplier());
 
         }
 
@@ -122,7 +122,7 @@ public class Player extends Entity {
         }
 
 
-        int objIndex = ap.gameState.cc.checkObject(this, true);
+        int objIndex = ap.gameManager.cc.checkObject(this, true);
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
         }
@@ -146,12 +146,12 @@ public class Player extends Entity {
             }
 
             collisionOn = false;
-            ap.gameState.cc.checkTile(this);
+            ap.gameManager.cc.checkTile(this);
             // for non interact pickups (powerups)
             pickUpObject(objIndex);
 
             // zombie collision
-            int zombieIndex = ap.gameState.cc.checkEntity(this, ap.gameState.roundManager.getZombies());
+            int zombieIndex = ap.gameManager.cc.checkEntity(this, ap.gameManager.roundManager.getZombies());
 
             if (!collisionOn) {
                 if (direction == "up") {
@@ -172,10 +172,10 @@ public class Player extends Entity {
                 }
 
             }
-            for (Zone zone : ap.gameState.zoneManager.zones) {
+            for (Zone zone : ap.gameManager.zoneManager.zones) {
                 for (Rectangle zoneRect : zone.zoneRects) {
                     if (Zone.isPlayerInZone(zoneRect, this)) {
-                        ap.gameState.zoneManager.currentZone = zone;
+                        ap.gameManager.zoneManager.currentZone = zone;
                     }
                 }
             }
@@ -197,17 +197,12 @@ public class Player extends Entity {
         this.purchaseString = "Press F to buy " + name + " (" + price + ")";
     }
 
-    // rn, only used to reset. simplify?
-    public void drawPurchaseText(String name) {
-        this.purchaseString = name;
-    }
-
     /**
      * @param index position i
      */
     public void damageZombie(boolean collisionIsHeadshot, int index) {
         if (index != 999) {
-            Entity zombie = ap.gameState.roundManager.getZombies()[index];
+            Entity zombie = ap.gameManager.roundManager.getZombies()[index];
 
             boolean killed = false;
 
@@ -226,9 +221,9 @@ public class Player extends Entity {
 
     public void pickUpObject(int index) {
         if (index != 999) {
-            SuperObject obj = ap.gameState.obj[index];
+            SuperObject obj = ap.gameManager.obj[index];
             switch (obj.type) {
-                case "perk":
+                case "perk" -> {
                     PerkMachine perkMachine = (PerkMachine) obj;
                     boolean isPerkPurchasable = loadout.isPerkPurchasable(perkMachine);
                     if (isPerkPurchasable) {
@@ -243,12 +238,11 @@ public class Player extends Entity {
                         break;
                     }
                     this.purchaseString = null;
-                    break;
-                case "gun":
+                }
+                case "gun" -> {
                     WallBuy wallBuy = (WallBuy) obj;
                     // if the gun is purchased, we're buying ammo for it
                     boolean buyingAmmo = loadout.isGunPurchased(wallBuy);
-
                     if (!buyingAmmo) {
                         if (keyIn.fPressed && loadout.isGunPurchasable(wallBuy)) {
 
@@ -257,15 +251,15 @@ public class Player extends Entity {
                         }
 
                         drawPurchaseText(wallBuy.name, wallBuy.price);
-                        break;
                     } else {
                         int ammoCost = wallBuy.price / 2;
                         if (keyIn.fPressed && loadout.isAmmoPurchasable(ammoCost)) {
+                            ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
                             loadout.purchaseAmmo(wallBuy, ammoCost);
                         }
                         drawPurchaseText("ammo", ammoCost);
-                        break;
                     }
+                }
             }
         } else {
             // reset purchase txt
@@ -290,37 +284,7 @@ public class Player extends Entity {
         g2.setColor(Color.YELLOW);
         Point mousePosition = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(mousePosition, ap);
-        BufferedImage image = null;
-        switch (this.direction) {
-            case "up":
-                if (spriteNum == 1) {
-                    image = up1;
-                    break;
-                }
-                image = up2;
-                break;
-            case "down":
-                if (spriteNum == 1) {
-                    image = down1;
-                    break;
-                }
-                image = down2;
-                break;
-            case "left":
-                if (spriteNum == 1) {
-                    image = left1;
-                    break;
-                }
-                image = left2;
-                break;
-            case "right":
-                if (spriteNum == 1) {
-                    image = right1;
-                    break;
-                }
-                image = right2;
-                break;
-        }
+        BufferedImage image = drawDirection();
         g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
 
         // Display weapon image, flips based on mouse
@@ -333,7 +297,7 @@ public class Player extends Entity {
         }
 
         // decide which player side to display the weapon (left if left, right if right)
-        int offset = 0;
+        int offset;
         if (mouseOnRightSide) {
             offset = ap.tileSize / 2; // 24 default
         } else {
@@ -358,8 +322,8 @@ public class Player extends Entity {
      *
      * @param mousePosition
      * @return an image based on the following: mousePosition > middle = image1
-     *         (left facing barrel) mousePosition < middle = image2 (right facing
-     *         barrel)
+     * (left facing barrel) mousePosition < middle = image2 (right facing
+     * barrel)
      */
     public BufferedImage getImage(Point mousePosition) {
         if (mousePosition.x > ap.screenWidth / 2) {
