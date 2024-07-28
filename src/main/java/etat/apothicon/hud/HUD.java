@@ -3,9 +3,8 @@ package etat.apothicon.hud;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.object.perk.bottle.Perk;
 import etat.apothicon.object.weapon.gun.Gun;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +25,10 @@ public class HUD {
     public Font arial16 = new Font("Arial", Font.BOLD, 16);
     public Font arial12 = new Font("Arial", Font.BOLD, 12);
     public Font arial64 = new Font("Arial", Font.BOLD, 64);
+    public Font fty12;
+    public Font fty16;
+    public Font fty64;
+
 
     public HUD(Apothicon ap) {
         this.ap = ap;
@@ -37,9 +40,12 @@ public class HUD {
         this.currentWeaponReserve = Integer.toString(ap.gameState.player.loadout.getCurrentWeapon().getReserve());
         this.perks = ap.gameState.player.loadout.getPerks();
         try {
+            fty16 = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/fty.ttf")).deriveFont(16.0f);
+            fty12 = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/fty.ttf")).deriveFont(12.0f);
+            fty64 = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/fty.ttf")).deriveFont(64.0f);
             gunSplosh = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
             pointSplosh = ImageIO.read(new File("src/main/resources/blood/pointSplosh.png"));
-        } catch (IOException e) {
+        } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -59,7 +65,7 @@ public class HUD {
             }
         }
         g2.drawImage(pointSplosh,
-                ap.screenWidth - (pointSplosh.getWidth() * 3),  
+                ap.screenWidth - (pointSplosh.getWidth() * 3),
                 ap.screenHeight - (pointSplosh.getHeight() * 6),
                 ap.tileSize * 2,
                 ap.tileSize,
@@ -74,7 +80,7 @@ public class HUD {
 
         // Set color and font for drawing text
         g2.setColor(Color.white);
-        g2.setFont(arial12);
+        g2.setFont(fty16);
 
         // Calculate x-coordinate for right-aligning currentWeaponName
         String ammo = currentWeaponMagazine + " / " + currentWeaponReserve;
@@ -86,7 +92,7 @@ public class HUD {
                 xCurrentWeaponName,
                 ap.screenHeight - 28);
 
-        g2.setFont(arial16);
+        g2.setFont(fty16);
         int ammoTextWidth = (g2.getFontMetrics().stringWidth(ammo));
         int xCurrentWeaponAmmo = ap.screenWidth - ammoTextWidth - 24;
 
@@ -99,6 +105,7 @@ public class HUD {
                 ap.screenHeight - 14);
 
         g2.drawString(ap.gameState.zoneManager.currentZone.getName(), 10, 30);
+        g2.drawString(Integer.toString(ap.gameState.player.loadout.getHealth()), 10, 100);
 
 
         int pointTextWidth = (g2.getFontMetrics().stringWidth(points));
@@ -109,7 +116,7 @@ public class HUD {
                 xPoints,
                 ap.screenHeight - 65);
 
-        g2.setFont(arial64);
+        g2.setFont(fty64);
         g2.setColor(new Color(150, 0, 0));
         g2.drawString(Integer.toString(ap.gameState.roundManager.getCurrentRound()), 10, ap.screenHeight - 10);
     }

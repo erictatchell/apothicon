@@ -3,6 +3,7 @@ package etat.apothicon.main;
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Zombie;
 import etat.apothicon.object.weapon.gun.Bullet;
+
 import java.awt.Rectangle;
 
 public class CollisionChecker {
@@ -14,6 +15,7 @@ public class CollisionChecker {
 
     /**
      * for zombies colliding with player
+     *
      * @param e zombie
      */
     public void checkPlayer(Entity e) {
@@ -32,6 +34,13 @@ public class CollisionChecker {
                 e.solidArea.y -= e.speed;
                 e.headSolidArea.y -= e.speed;
                 if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
+                    if (e instanceof Zombie) {
+                        Zombie zombie = (Zombie) e;
+                        if (!zombie.hitting) {
+
+                            zombie.dealDamage(ap.gameState.player);
+                        }
+                    }
                     e.collisionOn = true;
                 }
                 break;
@@ -39,6 +48,13 @@ public class CollisionChecker {
                 e.solidArea.y += e.speed;
                 e.headSolidArea.y += e.speed;
                 if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
+                    if (e instanceof Zombie) {
+                        Zombie zombie = (Zombie) e;
+                        if (!zombie.hitting) {
+
+                            zombie.dealDamage(ap.gameState.player);
+                        }
+                    }
                     e.collisionOn = true;
                 }
                 break;
@@ -46,6 +62,13 @@ public class CollisionChecker {
                 e.solidArea.x -= e.speed;
                 e.headSolidArea.x -= e.speed;
                 if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
+                    if (e instanceof Zombie) {
+                        Zombie zombie = (Zombie) e;
+                        if (!zombie.hitting) {
+
+                            zombie.dealDamage(ap.gameState.player);
+                        }
+                    }
                     e.collisionOn = true;
                 }
                 break;
@@ -53,6 +76,14 @@ public class CollisionChecker {
                 e.solidArea.x += e.speed;
                 e.headSolidArea.x += e.speed;
                 if (e.solidArea.intersects(ap.gameState.player.solidArea)) {
+                    if (e instanceof Zombie) {
+                        Zombie zombie = (Zombie) e;
+                        if (!zombie.hitting) {
+
+                            zombie.dealDamage(ap.gameState.player);
+                        }
+
+                    }
                     e.collisionOn = true;
                 }
                 break;
@@ -187,8 +218,7 @@ public class CollisionChecker {
                 if (ap.gameState.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
                 }
-            }
-            else if (lowerRight) {
+            } else if (lowerRight) {
                 eBottomRow = (eBottomWorldY - e.speed) / ap.tileSize;
                 eRightCol = (eRightWorldX - e.speed) / ap.tileSize;
                 tileNum1 = ap.gameState.tileManager.mapTileNum[eRightCol][eBottomRow];

@@ -12,7 +12,9 @@ import etat.apothicon.round.ZoneManager;
 import etat.apothicon.tile.Tile;
 import etat.apothicon.tile.TileManager;
 
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 
@@ -23,6 +25,8 @@ public class GameState {
     public ArrayList<Bullet> bullets;
     public SuperObject obj[];
     public HUD hud;
+
+    Font bo4Font = null;
     public ZoneManager zoneManager;
     public RoundManager roundManager;
     public TileManager tileManager;
@@ -36,6 +40,14 @@ public class GameState {
 
     public void setup() {
 
+        try {
+
+            bo4Font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/fty.ttf")).deriveFont(84.0f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (FontFormatException e) {
+            throw new RuntimeException(e);
+        }
         tileManager = new TileManager(ap);
         player = new Player(ap, ap.keyIn, ap.mouseIn);
         bullets = new ArrayList<>();
@@ -53,6 +65,9 @@ public class GameState {
 
     public void update() {
         player.update();
+        if (player.loadout.getHealth() <= 0) {
+            player = null;
+        }
 
         hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
         for (Entity zombie : roundManager.getZombies()) {
@@ -75,8 +90,18 @@ public class GameState {
         }
     }
 
+    public void drawMenu(Graphics2D g2) {
+        g2.setColor(new Color(150, 0, 0));
+        g2.fillRect(0,0,ap.screenWidth,ap.screenHeight);
+
+        g2.setFont(bo4Font);
+        g2.setColor(Color.WHITE);
+        g2.drawString("Apothicon", ap.screenWidth / 2, ap.screenHeight / 2);
+    }
 
     public void draw(Graphics2D g2) {
+
+//        drawMenu(g2);
         tileManager.draw(g2);
         for (Zone zone : zoneManager.zones) {
             zone.draw(g2, ap);

@@ -113,7 +113,13 @@ public class Player extends Entity {
             keyIn.switchWpnPressed = false;
         }
 
+        // health regen
+        if (loadout.health < loadout.defaultHealth) {
+            if (!loadout.healing) {
 
+                loadout.heal();
+            }
+        }
 
 
         int objIndex = ap.gameState.cc.checkObject(this, true);

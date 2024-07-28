@@ -20,13 +20,15 @@ import etat.apothicon.sound.InteractSound;
 import etat.apothicon.sound.SoundType;
 
 import java.util.ArrayList;
-import javax.swing.Timer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Loadout {
 
     private Player player;
     private Apothicon ap;
-    private Timer loadoutTimer;
+    protected Timer loadoutTimer;
+    protected boolean healing;
 
     // i hate this, but its faster than anything else i can think of :)
     public boolean hasDoubleTap;
@@ -46,13 +48,12 @@ public class Loadout {
     private float reloadRateMultiplier;
     private float damageMultiplier;
     private float fireRateMultiplier;
-    private int defaultHealth;
-    private int health;
+    protected int defaultHealth;
+    protected int health;
 
     public Loadout(Player player, Apothicon ap) {
         this.player = player;
         this.ap = ap;
-        this.loadoutTimer = new Timer(currentWeaponIdx, null);
 
         init();
     }
@@ -308,4 +309,22 @@ public class Loadout {
         }
     }
 
+    // kms
+    // update 20 min later i made it super clean. i like living now
+    public void heal() {
+        healing = true;
+        loadoutTimer = new Timer();
+        loadoutTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (healing) {
+                    health++;
+                }
+                if (health >= defaultHealth) {
+                    healing = false;
+                    loadoutTimer.cancel();
+                }
+            }
+        }, 4000, 50);
+    }
 }

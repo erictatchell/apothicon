@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
@@ -15,6 +17,8 @@ public class Zombie extends Entity {
     public final int screenX;
     public final int screenY;
     Random random = new Random();
+    private Timer hitDelay;
+    public boolean hitting;
     public Zombie(Apothicon ap) {
         super(ap);
         direction = "down";
@@ -27,8 +31,6 @@ public class Zombie extends Entity {
         solidArea.height = 30;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-
-
 
         setZombieImage();
         screenX = ap.screenWidth / 2 - (ap.tileSize / 2);
@@ -46,7 +48,25 @@ public class Zombie extends Entity {
         right1 = setup("zombie/z1_right1.png");
         right2 = setup("zombie/z1_right2.png");
     }
-    
+
+    public void dealDamage(Player e) {
+        hitting = true;
+        hitDelay = new Timer();
+        hitDelay.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ap.gameState.cc.checkPlayer(e);
+                if (collisionOn) {
+                    e.loadout.health -= 50;
+                    e.loadout.healing = false;
+                    e.loadout.loadoutTimer.cancel();
+                }
+
+                hitting = false;
+
+            }
+        }, 500);
+    }
 
     public void setAction() {
         if (onPath) {
