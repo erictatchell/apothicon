@@ -65,12 +65,13 @@ public class HUD {
     }
 
     public void draw(Graphics2D _g2) {
-        Graphics2D g2 = MediaManager.antialias(_g2);
         for (Perk perk : perks) {
             if (perk != null) {
-                perk.draw(g2);
+                perk.draw(_g2);
             }
         }
+
+        Graphics2D g2 = MediaManager.antialias(_g2);
         g2.drawImage(pointSplosh,
                 ap.screenWidth - (pointSplosh.getWidth() * 3),
                 ap.screenHeight - (pointSplosh.getHeight() * 6),

@@ -10,6 +10,8 @@ import etat.apothicon.round.RoundManager;
 import etat.apothicon.round.Zone;
 import etat.apothicon.round.ZoneManager;
 import etat.apothicon.tile.TileManager;
+import etat.apothicon.ui.menu.DeathMenu;
+import etat.apothicon.ui.menu.MainMenu;
 import etat.apothicon.ui.menu.Menu;
 
 import java.awt.*;
@@ -17,14 +19,15 @@ import java.util.ArrayList;
 
 public class GameManager {
     public GameState gameState;
+    public boolean dead = false;
     final Object spawnLock = new Object();
     public Apothicon ap;
     public Player player;
     public ArrayList<Bullet> bullets;
     public SuperObject obj[];
     public HUD hud;
-    public Menu menu;
-
+    public MainMenu mainMenu;
+    public DeathMenu deathMenu;
     public ZoneManager zoneManager;
     public RoundManager roundManager;
     public TileManager tileManager;
@@ -38,8 +41,9 @@ public class GameManager {
 
     public void setup() {
 
-        gameState = GameState.MENU;
-        menu = new Menu(this, ap.mouseIn, ap.keyIn);
+        gameState = GameState.MAIN_MENU;
+        mainMenu = new MainMenu(this, ap.mouseIn, ap.keyIn);
+        deathMenu = new DeathMenu(this, ap.mouseIn, ap.keyIn);
 
         tileManager = new TileManager(ap);
         player = new Player(ap, ap.keyIn, ap.mouseIn);
@@ -59,26 +63,31 @@ public class GameManager {
     public void update() {
         switch (gameState) {
             case PLAYING -> {
-                player.update();
-                hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
+                if (!dead) {
+                    player.update();
+                    hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
+
+                    roundManager.update(zoneManager.currentZone);
+                    for (int i = 0; i < bullets.size(); i++) {
+                        Bullet bullet = bullets.get(i);
+                        if (bullet != null) {
+                            if (bullet.alive) {
+                                bullet.update();
+                            } else {
+                                bullets.remove(bullet);
+                            }
+                        }
+                    }
+                } else {
+                    deathMenu.update();
+                }
                 for (Entity zombie : roundManager.getZombies()) {
                     if (zombie != null) {
                         zombie.update();
                     }
                 }
-                roundManager.update(zoneManager.currentZone);
-                for (int i = 0; i < bullets.size(); i++) {
-                    Bullet bullet = bullets.get(i);
-                    if (bullet != null) {
-                        if (bullet.alive) {
-                            bullet.update();
-                        } else {
-                            bullets.remove(bullet);
-                        }
-                    }
-                }
             }
-            case MENU -> menu.update();
+            case MAIN_MENU -> mainMenu.update();
         }
 
     }
@@ -87,23 +96,27 @@ public class GameManager {
         gameState = GameState.PLAYING;
     }
 
-    public void endGame() {
+    public void resetGame() {
+        dead = false;
         player.loadout.reset();
+        player.reset();
         roundManager.reset();
         // reset doors, map progression etc
 
     }
 
+    public void quitToMainMenu() {
+        resetGame();
+        gameState = GameState.MAIN_MENU;
+    }
+
 
     public void draw(Graphics2D g2) {
         switch (gameState) {
-            case MENU:
-                menu.draw(g2);
-                break;
-            case PLAYING:
-                if (player.loadout.getHealth() <= 0) {
-                    endGame();
-                }
+            case DEATH_MENU -> deathMenu.draw(g2);
+            case MAIN_MENU -> mainMenu.draw(g2);
+            case PLAYING -> {
+
                 tileManager.draw(g2);
                 for (Zone zone : zoneManager.zones) {
                     zone.draw(g2, ap);
@@ -121,12 +134,18 @@ public class GameManager {
                 for (Entity zombie : roundManager.getZombies()) {
                     if (zombie != null) {
                         zombie.draw(g2);
+                        if (dead) zombie.onPath = false;
                     }
                 }
-                player.draw(g2);
-                hud.draw(g2);
-                break;
+                if (player.loadout.getHealth() <= 0) {
+                    dead = true;
+                    deathMenu.draw(g2);
+                } else {
 
+                    player.draw(g2);
+                    hud.draw(g2);
+                }
+            }
         }
     }
 }

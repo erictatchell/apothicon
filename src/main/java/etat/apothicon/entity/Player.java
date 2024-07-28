@@ -31,6 +31,9 @@ public class Player extends Entity {
     public ArrayList<Bullet> bullets = new ArrayList<>();
 
     private String purchaseString = null;
+
+
+
     public final int screenX;
     public final int screenY;
     // for player perks. gross
@@ -196,6 +199,10 @@ public class Player extends Entity {
     // onscreen "Press F to buy ..."
     public void drawPurchaseText(String name, int price) {
         this.purchaseString = "Press F to buy " + name + " (" + price + ")";
+    }
+
+    public void reset() {
+        setDefaultValues();
     }
 
     /**
@@ -395,5 +402,7 @@ public class Player extends Entity {
     public void setSlotX(int slotX) {
         this.slotX = slotX;
     }
-
+    public void setPerkOffset(int perkOffset) {
+        this.perkOffset = perkOffset;
+    }
 }

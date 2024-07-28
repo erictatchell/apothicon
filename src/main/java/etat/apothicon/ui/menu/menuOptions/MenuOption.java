@@ -1,11 +1,13 @@
-package etat.apothicon.ui.menu;
+package etat.apothicon.ui.menu.menuOptions;
 
 import etat.apothicon.main.Drawable;
+import etat.apothicon.ui.menu.Clickable;
+import etat.apothicon.ui.menu.Menu;
 
 import java.awt.*;
 
 public class MenuOption implements Clickable, Drawable {
-    protected Menu menu;
+    public Menu menu;
     protected String text;
     protected boolean hovered;
     public int x, y;
