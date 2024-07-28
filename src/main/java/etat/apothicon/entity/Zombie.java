@@ -65,7 +65,7 @@ public class Zombie extends Entity {
                 hitting = false;
 
             }
-        }, 500);
+        }, 300);
     }
 
     public void setAction() {

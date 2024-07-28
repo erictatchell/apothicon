@@ -3,7 +3,6 @@ package etat.apothicon.main;
 
 import etat.apothicon.sound.SoundHandler;
 import etat.apothicon.sound.SoundType;
-import etat.apothicon.tile.TileManager;
 
 import java.awt.*;
 import javax.swing.*;
@@ -23,7 +22,7 @@ public class Apothicon extends JPanel implements Runnable {
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
 
-    public GameState gameState;
+    public GameManager gameState;
 
     // TODO: oop-ify these variables
     int FPS = 60;
@@ -46,7 +45,7 @@ public class Apothicon extends JPanel implements Runnable {
 
     public void setup() {
 
-        gameState = new GameState(this);
+        gameState = new GameManager(this);
         gameState.setup();
     }
 

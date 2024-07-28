@@ -9,16 +9,15 @@ import etat.apothicon.object.weapon.gun.Bullet;
 import etat.apothicon.round.RoundManager;
 import etat.apothicon.round.Zone;
 import etat.apothicon.round.ZoneManager;
-import etat.apothicon.tile.Tile;
 import etat.apothicon.tile.TileManager;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
 
-public class GameState {
+public class GameManager {
+    public int currentGameState =
     final Object spawnLock = new Object();
     public Apothicon ap;
     public Player player;
@@ -34,7 +33,7 @@ public class GameState {
     public AssetSetter aSetter;
     public PathFinder pFinder;
 
-    public GameState(Apothicon ap) {
+    public GameManager(Apothicon ap) {
         this.ap = ap;
     }
 
@@ -88,6 +87,10 @@ public class GameState {
                 }
             }
         }
+    }
+
+    public void startGame() {
+        playing = true;
     }
 
     public void drawMenu(Graphics2D g2) {
