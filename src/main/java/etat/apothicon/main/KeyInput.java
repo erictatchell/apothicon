@@ -11,6 +11,7 @@ public class KeyInput implements KeyListener {
     public boolean leftPressed;
     public boolean rightPressed;
     public boolean switchWpnPressed;
+    public boolean enterPressed;
     public boolean reloadPressed;
     public boolean _2Pressed;
     public boolean _3Pressed;
@@ -24,6 +25,9 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+        if (code == KeyEvent.VK_ENTER) {
+            enterPressed = true;
+        }
         if (code == KeyEvent.VK_F) {
             fPressed = true;
         }
@@ -51,6 +55,9 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
+        if (code == KeyEvent.VK_ENTER) {
+            enterPressed = false;
+        }
         if (code == KeyEvent.VK_R) {
             reloadPressed = false;
         }

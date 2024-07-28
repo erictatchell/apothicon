@@ -2,6 +2,7 @@ package etat.apothicon.entity;
 
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.main.KeyInput;
+import etat.apothicon.main.MediaManager;
 import etat.apothicon.main.MouseInput;
 import etat.apothicon.object.weapon.gun.Gun;
 import etat.apothicon.round.Zone;
@@ -290,7 +291,7 @@ public class Player extends Entity {
         // Display weapon image, flips based on mouse
         int angle = calculateAngle();
         // omg kms
-        BufferedImage weaponImage = ImageManager.createFlipped(getImage(mousePosition));
+        BufferedImage weaponImage = MediaManager.createFlipped(getImage(mousePosition));
         boolean mouseOnRightSide = mousePosition.x > ap.screenWidth / 2;
         if (mouseOnRightSide) {
             angle -= 180;

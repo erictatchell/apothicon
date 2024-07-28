@@ -29,8 +29,6 @@ public class Loadout {
     private Apothicon ap;
     protected Timer loadoutTimer;
     protected boolean healing;
-
-    // i hate this, but its faster than anything else i can think of :)
     public boolean hasDoubleTap;
     public boolean hasSpeedCola;
     public boolean hasJuggernog;
@@ -74,6 +72,15 @@ public class Loadout {
         this.guns.add(m1911);
         this.currentWeaponIdx = 0;
 
+        hasDoubleTap = false;
+        hasJuggernog = false;
+        hasMuleKick = false;
+        hasSpeedCola = false;
+        hasQuickRevive = false;
+    }
+
+    public void reset() {
+        init();
     }
 
     public boolean isAmmoPurchasable(int price) {

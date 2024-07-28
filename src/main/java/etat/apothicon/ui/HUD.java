@@ -1,5 +1,6 @@
 package etat.apothicon.ui;
 
+import etat.apothicon.main.MediaManager;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.object.perk.bottle.Perk;
 import etat.apothicon.object.weapon.gun.Gun;
@@ -63,7 +64,8 @@ public class HUD {
         this.perks = perks;
     }
 
-    public void draw(Graphics2D g2) {
+    public void draw(Graphics2D _g2) {
+        Graphics2D g2 = MediaManager.antialias(_g2);
         for (Perk perk : perks) {
             if (perk != null) {
                 perk.draw(g2);
@@ -124,6 +126,8 @@ public class HUD {
         g2.setFont(fty64);
         g2.setColor(new Color(150, 0, 0));
         g2.drawString(Integer.toString(ap.gameManager.roundManager.getCurrentRound()), 10, ap.screenHeight - 10);
+
+        g2.dispose();
     }
 
 }

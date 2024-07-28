@@ -11,6 +11,6 @@ public class PlayMenuOption extends MenuOption {
 
     @Override
     public void action() {
-        menu.gm.gameState = GameState.PLAYING;
+        menu.gm.startGame();
     }
 }

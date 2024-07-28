@@ -58,7 +58,7 @@ public class GameManager {
 
     public void update() {
         switch (gameState) {
-            case PLAYING:
+            case PLAYING -> {
                 player.update();
                 hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
                 for (Entity zombie : roundManager.getZombies()) {
@@ -77,15 +77,21 @@ public class GameManager {
                         }
                     }
                 }
-                break;
-            case MENU:
-                menu.update();
+            }
+            case MENU -> menu.update();
         }
 
     }
 
     public void startGame() {
         gameState = GameState.PLAYING;
+    }
+
+    public void endGame() {
+        player.loadout.reset();
+        roundManager.reset();
+        // reset doors, map progression etc
+
     }
 
 
@@ -95,6 +101,9 @@ public class GameManager {
                 menu.draw(g2);
                 break;
             case PLAYING:
+                if (player.loadout.getHealth() <= 0) {
+                    endGame();
+                }
                 tileManager.draw(g2);
                 for (Zone zone : zoneManager.zones) {
                     zone.draw(g2, ap);
