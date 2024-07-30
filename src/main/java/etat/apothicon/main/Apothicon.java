@@ -9,7 +9,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 public class Apothicon extends JPanel implements Runnable {
-
     public final int originalTileSize = 16;
     public final int scale = 3;
     public final int maxScreenCol = 18;
@@ -42,6 +41,10 @@ public class Apothicon extends JPanel implements Runnable {
         this.addKeyListener(keyIn);
         this.addMouseListener(mouseIn);
         this.setFocusable(true);
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage("src/main/resources/crosshair/default.png");
+        Cursor c = toolkit.createCustomCursor(image , new Point(8, 8), "img");
+        this.setCursor (c);
     }
 
     public void setup() {

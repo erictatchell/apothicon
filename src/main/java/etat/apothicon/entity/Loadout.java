@@ -16,8 +16,6 @@ import etat.apothicon.object.weapon.gun.MP40_Gun;
 import etat.apothicon.object.weapon.gun.Olympia_Gun;
 import etat.apothicon.object.weapon.gun.Stakeout_Gun;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
-import etat.apothicon.sound.InteractSound;
-import etat.apothicon.sound.SoundType;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -54,6 +52,30 @@ public class Loadout {
         this.ap = ap;
 
         init();
+    }
+
+    public void getDebugLoadout() {
+        this.perkLimit = 4;
+        this.revives = 0;
+        this.reloadRateMultiplier = 1.0f;
+        this.damageMultiplier = 1.0f;
+        this.fireRateMultiplier = 1.0f;
+        this.defaultHealth = 150000;
+        this.health = 150000;
+        this.points = 50000;
+        this.maxGunNum = 2;
+        this.guns = new ArrayList<>();
+        this.perks = new ArrayList<>();
+        MP40_Gun mp40 = new MP40_Gun(this.player);
+        this.guns.add(mp40);
+        this.currentWeaponIdx = 0;
+
+        hasDoubleTap = false;
+        hasJuggernog = false;
+        hasMuleKick = false;
+        hasSpeedCola = false;
+        hasQuickRevive = false;
+
     }
 
     private void init() {
@@ -103,20 +125,25 @@ public class Loadout {
         return this.points >= gun.price;
     }
 
-    public boolean isPerkPurchasable(PerkMachine perk) {
+    public boolean alreadyHasPerk(PerkMachine perk) {
         int n = this.perks.size();
         if (n >= 8) {
-            return false;
-        } // max perks
+            return true;
+        }
 
         String purchasingName = perk.name;
         for (int i = 0; i < n; i++) {
             if (purchasingName.equals(this.perks.get(i).getName())) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
+
+    public boolean canAffordPerk(PerkMachine perk) {
+        return points >= perk.price;
+    }
+
 
     public void addPoints(boolean kill, boolean headshot) {
         this.points += 10;
@@ -130,12 +157,6 @@ public class Loadout {
 
     public void fireWeapon() {
         this.guns.get(currentWeaponIdx).fire();
-    }
-
-    public int rechamberWeapon(int shotCount) {
-        shotCount = this.guns.get(currentWeaponIdx).fireDelay;
-        getCurrentWeapon().rechamber();
-        return shotCount;
     }
 
     public void purchaseAmmo(SuperObject object, int price) {

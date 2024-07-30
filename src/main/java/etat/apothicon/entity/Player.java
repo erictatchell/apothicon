@@ -33,7 +33,6 @@ public class Player extends Entity {
     private String purchaseString = null;
 
 
-
     public final int screenX;
     public final int screenY;
     // for player perks. gross
@@ -89,10 +88,9 @@ public class Player extends Entity {
 
         // if we want to shoot, don't need to rechamber, and the delay is up
         if (!currentWeapon.rechamberNeeded && mouseIn.leftMousePressed
-                && currentWeapon.fireDelayCounter == currentWeapon.fireDelay) {
+                && currentWeapon.fireDelayCounter >= currentWeapon.fireDelay) {
 
             loadout.fireWeapon();
-            System.out.println("SIZE:" + ap.gameManager.bullets.size());
             if (currentWeapon.fireType == FireType.SEMI_AUTO) {
                 // rechamber needed, prevent full auto on semi auto guns
                 currentWeapon.rechamberNeeded = true;
@@ -106,7 +104,7 @@ public class Player extends Entity {
         // inc fire delay
         if (currentWeapon.fireDelayCounter < currentWeapon.fireDelay) {
 
-            currentWeapon.fireDelayCounter += (int) (this.loadout.getFireRateMultiplier());
+            currentWeapon.fireDelayCounter += this.loadout.getFireRateMultiplier();
 
         }
 
@@ -233,19 +231,18 @@ public class Player extends Entity {
             switch (obj.type) {
                 case "perk" -> {
                     PerkMachine perkMachine = (PerkMachine) obj;
-                    boolean isPerkPurchasable = loadout.isPerkPurchasable(perkMachine);
-                    if (isPerkPurchasable) {
-                        if (keyIn.fPressed) {
-
-                            ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
-                            loadout.purchasePerk(perkMachine);
-                            break;
-                        }
-
-                        drawPurchaseText(perkMachine.name, perkMachine.price);
+                    boolean alreadyHasPerk = loadout.alreadyHasPerk(perkMachine);
+                    boolean canAffordPerk = loadout.canAffordPerk(perkMachine);
+                    if (alreadyHasPerk) {
+                        this.purchaseString = null;
                         break;
                     }
-                    this.purchaseString = null;
+                    drawPurchaseText(perkMachine.name, perkMachine.price);
+
+                    if (canAffordPerk && keyIn.fPressed) {
+                        ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
+                        loadout.purchasePerk(perkMachine);
+                    }
                 }
                 case "gun" -> {
                     WallBuy wallBuy = (WallBuy) obj;
@@ -273,6 +270,7 @@ public class Player extends Entity {
             // reset purchase txt
             this.purchaseString = null;
         }
+
     }
 
     public void drawPerkIcons(Graphics2D g2) {
@@ -402,6 +400,7 @@ public class Player extends Entity {
     public void setSlotX(int slotX) {
         this.slotX = slotX;
     }
+
     public void setPerkOffset(int perkOffset) {
         this.perkOffset = perkOffset;
     }

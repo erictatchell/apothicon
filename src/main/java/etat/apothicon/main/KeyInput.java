@@ -17,6 +17,7 @@ public class KeyInput implements KeyListener {
     public boolean _3Pressed;
     public boolean downPressed;
     public boolean fPressed;
+    public boolean debugPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -25,6 +26,9 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+        if (code == KeyEvent.VK_DELETE) {
+            debugPressed = true;
+        }
         if (code == KeyEvent.VK_ENTER) {
             enterPressed = true;
         }

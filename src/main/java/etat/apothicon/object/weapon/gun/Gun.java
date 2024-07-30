@@ -35,12 +35,12 @@ public class Gun {
     public WallBuy wallBuy;
     public float fireRate;
     public FireType fireType;
-    public int fireDelayCounter;
+    public float fireDelayCounter;
     public float reloadRate;
     public Timer reloadTimer;
     float range;
     public boolean rechamberNeeded = false;
-    public int fireDelay;
+    public float fireDelay;
 
     /**
      * gun structure
@@ -71,7 +71,7 @@ public class Gun {
         this.fireSound = fireSound;
         this.reloadSound = reloadSound;
         this.fireRate = fireRate;
-        this.fireDelay = (int) ((int) 10 * fireRate);
+        this.fireDelay = 10 * fireRate;
         this.reloadRate = reloadRate;
         this.range = range;
 
@@ -133,15 +133,6 @@ public class Gun {
     public void sendBullet() {
 
         int dir = owner.calculateAngle();
-        int dirDistanceX = 0;
-        int dirDistanceY = 0;
-        boolean upperRight = (dir <= 0 && dir >= -90);
-        boolean upperLeft = (dir <= -90 && dir >= -180);
-        boolean lowerRight = (dir >= 0 && dir <= 90);
-        boolean lowerLeft = (dir >= 90 && dir <= 180);
-        if (upperRight || lowerRight) {
-            dirDistanceX = this.owner.ap.tileSize;
-        }
         Bullet bullet1 = new Bullet(owner.ap);
         bullet1.set(owner.worldX + 24, owner.worldY + this.owner.ap.tileSize / 2, dir, true, owner, this);
 

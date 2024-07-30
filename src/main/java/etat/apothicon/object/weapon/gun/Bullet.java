@@ -40,33 +40,39 @@ public class Bullet extends Entity {
         this.gun = gun;
     }
 
+    public int generateDeathSound() {
+        int sound = ImpactSound.HIT1.ordinal();
+        int rn = r.nextInt(6) + 1;
+        switch (rn) {
+            case 1:
+                break;
+            case 2:
+                sound = ImpactSound.HIT2.ordinal();
+                break;
+            case 3:
+                sound = ImpactSound.HIT3.ordinal();
+                break;
+            case 4:
+                sound = ImpactSound.HIT4.ordinal();
+                break;
+            case 5:
+                sound = ImpactSound.HIT5.ordinal();
+                break;
+            case 6:
+                sound = ImpactSound.HIT6.ordinal();
+                break;
+        }
+        return sound;
+    }
+
+
     public void update() {
         if (user == this.ap.gameManager.player) {
             int zombieIndex = ap.gameManager.cc.bullet_checkEntity(this, ap.gameManager.roundManager.getZombies());
             if (zombieIndex != 999) {
                 ap.gameManager.player.damageZombie(collisionIsHeadshot, zombieIndex);
-                int sound = ImpactSound.HIT1.ordinal();
-                int rn = r.nextInt(6) + 1;
-                switch (rn) {
-                    case 1:
-                        break;
-                    case 2:
-                        sound = ImpactSound.HIT2.ordinal();
-                        break;
-                    case 3:
-                        sound = ImpactSound.HIT3.ordinal();
-                        break;
-                    case 4:
-                        sound = ImpactSound.HIT4.ordinal();
-                        break;
-                    case 5:
-                        sound = ImpactSound.HIT5.ordinal();
-                        break;
-                    case 6:
-                        sound = ImpactSound.HIT6.ordinal();
-                        break;
-                }
-                ap.playSE(sound, SoundType.IMPACT);
+
+                ap.playSE(generateDeathSound(), SoundType.IMPACT);
 
                 alive = false;
 
@@ -75,8 +81,8 @@ public class Bullet extends Entity {
             }
         }
 
-        worldX += speed * Math.cos(Math.toRadians(directionAngle));
-        worldY += speed * Math.sin(Math.toRadians(directionAngle));
+        worldX += (int) (speed * Math.cos(Math.toRadians(directionAngle)));
+        worldY += (int) (speed * Math.sin(Math.toRadians(directionAngle)));
         ap.gameManager.cc.bullet_checkTile(this);
         if (this.collisionOn) {
             ap.playSE(ImpactSound.WALL_COLLISION.ordinal(), SoundType.IMPACT);
@@ -84,7 +90,6 @@ public class Bullet extends Entity {
             System.gc();
         }
 
-        System.out.println(directionAngle);
         spriteCounter++;
         if (spriteCounter > 120) {
             alive = false;
@@ -105,7 +110,7 @@ public class Bullet extends Entity {
             g2.fillRect(screenX, screenY, 5, 5);
 
         }
-    /**/}
+    }
 
     public boolean checkCollision(Entity entity) {
         return solidArea.intersects(entity.solidArea);
