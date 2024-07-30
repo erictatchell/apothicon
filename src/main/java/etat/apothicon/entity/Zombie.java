@@ -61,7 +61,9 @@ public class Zombie extends Entity {
                 if (collisionOn) {
                     e.loadout.health -= 50;
                     e.loadout.healing = false;
-                    e.loadout.loadoutTimer.cancel();
+                    if (e.loadout.loadoutTimer != null) {
+                        e.loadout.loadoutTimer.cancel();
+                    }
                 }
 
                 hitting = false;
