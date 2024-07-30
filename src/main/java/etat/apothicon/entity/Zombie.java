@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import javax.imageio.ImageIO;
 
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.round.RoundManager;
 
 public class Zombie extends Entity {
     Apothicon ap;
@@ -24,6 +25,7 @@ public class Zombie extends Entity {
         direction = "down";
         speed = random.nextInt(2) + 1;
         this.ap = ap;
+        this.health = defaultHealth;
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
@@ -66,6 +68,14 @@ public class Zombie extends Entity {
 
             }
         }, 300);
+    }
+
+    public static void increaseDefaultHealth(int round) {
+        if (round < 10) {
+            defaultHealth+= 100;
+        }
+        else defaultHealth *= 1.1f;
+
     }
 
     public void setAction() {

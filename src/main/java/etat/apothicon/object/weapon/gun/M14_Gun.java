@@ -13,7 +13,7 @@ public class M14_Gun extends Gun {
     public M14_Gun(Player player) {
         super(player,
                 "M14",
-                60,
+                140,
                 8,
                 92,
                 1.0f,
@@ -21,7 +21,7 @@ public class M14_Gun extends Gun {
                 GunSound.M14_FIRE,
                 GunSound.M14_RELOAD,
                 1,
-                1.0f,
+                1.5f,
                 "src/main/resources/guns/m14-1.png");
 
         setImage2();

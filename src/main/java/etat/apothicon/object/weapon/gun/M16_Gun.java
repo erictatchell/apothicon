@@ -13,7 +13,7 @@ public class M16_Gun extends Gun {
     public M16_Gun(Player player) {
         super(player,
                 "M16",
-                20,
+                50,
                 30,
                 180,
                 1.0f,

@@ -22,7 +22,8 @@ public class Entity {
     public int worldX;
     public int worldY;
     public int speed = 20;
-    public int health = 100;
+    public float health = 150.0f;
+    public static float defaultHealth = 150.0f;
 
     public BufferedImage up1, up2, left1, left2, right1, right2, down1, down2;
     public String direction;

@@ -13,7 +13,7 @@ public class MP40_Gun extends Gun {
     public MP40_Gun(Player player) {
         super(player,
                 "MP40",
-                40,
+                75,
                 32,
                 192,
                 0.8f,

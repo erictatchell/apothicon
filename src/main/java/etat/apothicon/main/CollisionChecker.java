@@ -33,59 +33,22 @@ public class CollisionChecker {
             case "up":
                 e.solidArea.y -= e.speed;
                 e.headSolidArea.y -= e.speed;
-                if (e.solidArea.intersects(ap.gameManager.player.solidArea)) {
-                    if (e instanceof Zombie) {
-                        Zombie zombie = (Zombie) e;
-                        if (!zombie.hitting) {
-
-                            zombie.dealDamage(ap.gameManager.player);
-                        }
-                    }
-                    e.collisionOn = true;
-                }
+                handleSwing(e);
                 break;
             case "down":
                 e.solidArea.y += e.speed;
                 e.headSolidArea.y += e.speed;
-                if (e.solidArea.intersects(ap.gameManager.player.solidArea)) {
-                    if (e instanceof Zombie) {
-                        Zombie zombie = (Zombie) e;
-                        if (!zombie.hitting) {
-
-                            zombie.dealDamage(ap.gameManager.player);
-                        }
-                    }
-                    e.collisionOn = true;
-                }
+                handleSwing(e);
                 break;
             case "left":
                 e.solidArea.x -= e.speed;
                 e.headSolidArea.x -= e.speed;
-                if (e.solidArea.intersects(ap.gameManager.player.solidArea)) {
-                    if (e instanceof Zombie) {
-                        Zombie zombie = (Zombie) e;
-                        if (!zombie.hitting) {
-
-                            zombie.dealDamage(ap.gameManager.player);
-                        }
-                    }
-                    e.collisionOn = true;
-                }
+                handleSwing(e);
                 break;
             case "right":
                 e.solidArea.x += e.speed;
                 e.headSolidArea.x += e.speed;
-                if (e.solidArea.intersects(ap.gameManager.player.solidArea)) {
-                    if (e instanceof Zombie) {
-                        Zombie zombie = (Zombie) e;
-                        if (!zombie.hitting) {
-
-                            zombie.dealDamage(ap.gameManager.player);
-                        }
-
-                    }
-                    e.collisionOn = true;
-                }
+                handleSwing(e);
                 break;
         }
         e.solidArea.x = e.solidAreaDefaultX;
@@ -95,6 +58,19 @@ public class CollisionChecker {
         ap.gameManager.player.solidArea.x = ap.gameManager.player.solidAreaDefaultX;
         ap.gameManager.player.solidArea.y = ap.gameManager.player.solidAreaDefaultY;
 
+    }
+
+    private void handleSwing(Entity e) {
+        if (e.solidArea.intersects(ap.gameManager.player.solidArea)) {
+            if (e instanceof Zombie) {
+                Zombie zombie = (Zombie) e;
+                if (!zombie.hitting) {
+
+                    zombie.dealDamage(ap.gameManager.player);
+                }
+            }
+            e.collisionOn = true;
+        }
     }
 
     public int checkObject(Entity e, boolean player) {

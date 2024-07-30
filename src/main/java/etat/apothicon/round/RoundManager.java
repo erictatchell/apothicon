@@ -45,6 +45,7 @@ public class RoundManager {
         totalZombiesSpawnedForThisRound = 0;
         maxHorde = 24;
         maxTotalZombiesForThisRound = 5;
+        Zombie.defaultHealth = 150.0f;
         zombies = new Entity[maxTotalZombiesForThisRound];
     }
 
@@ -86,12 +87,11 @@ public class RoundManager {
                 totalZombiesKilled = 0;
                 totalZombiesSpawnedForThisRound = 0;
                 maxTotalZombiesForThisRound += 5;
+                Zombie.increaseDefaultHealth(currentRound);
                 zombies = new Entity[maxTotalZombiesForThisRound];
-
                 changingRound = false;
             }
         }, 10000);
-
 
     }
 
