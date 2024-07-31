@@ -41,10 +41,7 @@ public class Apothicon extends JPanel implements Runnable {
         this.addKeyListener(keyIn);
         this.addMouseListener(mouseIn);
         this.setFocusable(true);
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image image = toolkit.getImage("src/main/resources/crosshair/default.png");
-        Cursor c = toolkit.createCustomCursor(image , new Point(8, 8), "img");
-        this.setCursor (c);
+
     }
 
     public void setup() {
@@ -116,10 +113,7 @@ public class Apothicon extends JPanel implements Runnable {
     }
 
     public void playSE(int i, SoundType t) {
-        SoundHandler.consolidate();
         SoundHandler.play(i, t);
-//        sound.play();
-
     }
 
     public void close() {

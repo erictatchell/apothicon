@@ -93,6 +93,10 @@ public class GameManager {
     }
 
     public void startGame() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage("src/main/resources/crosshair/default.png");
+        Cursor c = toolkit.createCustomCursor(image , new Point(8, 8), "img");
+        ap.setCursor (c);
         gameState = GameState.PLAYING;
     }
 

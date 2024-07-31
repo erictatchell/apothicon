@@ -79,7 +79,7 @@ public class RoundManager {
 
 
     private void startNewRound() {
-        ap.playSE(RoundChangeMusic.DEFAULT.ordinal(), SoundType.ROUND_CHANGE);
+        ap.playSE(RoundChangeMusic.JULY_30_CUSTOM.ordinal(), SoundType.ROUND_CHANGE);
         roundDelay = new Timer();
         roundDelay.schedule(new TimerTask() {
             public void run() {
@@ -91,7 +91,7 @@ public class RoundManager {
                 zombies = new Entity[maxTotalZombiesForThisRound];
                 changingRound = false;
             }
-        }, 10000);
+        }, 5000);
 
     }
 

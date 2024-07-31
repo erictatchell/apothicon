@@ -49,7 +49,10 @@ public class Menu {
 
 
         // potential todo is move the fonts to a separet file instead of accessing via hud
-        g2.setFont(gm.hud.fty16);
+        if (gm.hud != null) {
+
+            g2.setFont(gm.hud.fty16);
+        }
         for (int i = 0; i < options.length; i++) {
             if (options[i] != null) {
                 options[i].draw(g2);
