@@ -44,6 +44,7 @@ public class Entity {
     public boolean collisionOn = false;
     public boolean collisionIsHeadshot = false;
     public int actionLockCounter = 0;
+    public int pathfindingDelay = 0;
 
     public Entity(Apothicon ap) {
 
@@ -206,7 +207,11 @@ public class Entity {
     }
 
     public void update() {
-        setAction();
+        pathfindingDelay++;
+        if (pathfindingDelay == 12) {
+            setAction();
+            pathfindingDelay = 0;
+        }
         checkCollision();
         if (!collisionOn) {
             if (direction == "up") {
