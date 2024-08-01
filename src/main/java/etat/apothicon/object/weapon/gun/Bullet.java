@@ -81,10 +81,15 @@ public class Bullet extends Entity {
         }
     }
 
+
     public void update() {
         if (user == this.ap.gameManager.player) {
             int zombieIndex = ap.gameManager.cc.bullet_checkEntity(this, ap.gameManager.roundManager.getZombies());
+
+            // if we hit a zombie
             if (zombieIndex != 999) {
+
+                // if the zombie is not already hit by this bullet
                 boolean zombieIsHit = hitZombiesTable.get(zombieIndex) != null;
                 if (!zombieIsHit && checkPenetration()) {
                     ap.gameManager.player.damageZombie(collisionIsHeadshot, zombieIndex);
