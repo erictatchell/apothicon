@@ -44,6 +44,7 @@ public class Entity {
     public boolean collisionOn = false;
     public boolean collisionIsHeadshot = false;
     public int actionLockCounter = 0;
+    public int pathfindingDelay = 0;
 
     public Entity(Apothicon ap) {
 
@@ -186,6 +187,7 @@ public class Entity {
 
     }
 
+
     public void die(boolean headshot, int index) {
         ap.gameManager.roundManager.getZombies()[index] = null;
         Random r = new Random();
@@ -206,7 +208,13 @@ public class Entity {
     }
 
     public void update() {
-        setAction();
+
+        // 12 frame delay between new pathfind
+        pathfindingDelay++;
+        if (pathfindingDelay == 12) {
+            setAction();
+            pathfindingDelay = 0;
+        }
         checkCollision();
         if (!collisionOn) {
             if (direction == "up") {

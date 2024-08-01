@@ -63,7 +63,7 @@ public class GameManager {
     public void update() {
         switch (gameState) {
             case PLAYING -> {
-                if (!dead) {
+                if (!player.dead) {
                     player.update();
                     hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
 
@@ -79,6 +79,7 @@ public class GameManager {
                         }
                     }
                 } else {
+                    dead = true;
                     deathMenu.update();
                 }
                 for (Entity zombie : roundManager.getZombies()) {
@@ -102,6 +103,7 @@ public class GameManager {
 
     public void resetGame() {
         dead = false;
+        player.dead = false;
         player.loadout.reset();
         player.reset();
         roundManager.reset();
@@ -141,11 +143,9 @@ public class GameManager {
                         if (dead) zombie.onPath = false;
                     }
                 }
-                if (player.loadout.getHealth() <= 0) {
-                    dead = true;
+                if (dead) {
                     deathMenu.draw(g2);
                 } else {
-
                     player.draw(g2);
                     hud.draw(g2);
                 }

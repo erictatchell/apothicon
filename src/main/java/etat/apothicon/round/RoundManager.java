@@ -72,7 +72,7 @@ public class RoundManager {
     }
 
     private void spawnZombie(ZombieSpawn spawn) {
-        spawn.handleAddZombieToMap(this, ap);
+        spawn.addZombieToMap(this, ap);
         totalZombiesSpawnedForThisRound++;
         totalZombiesOnMap++;
     }
@@ -93,6 +93,15 @@ public class RoundManager {
             }
         }, 5000);
 
+    }
+
+    public void togglePathfinding(boolean option) {
+        for (Entity zombie : zombies ) {
+            if (zombie != null) {
+
+                zombie.onPath = option;
+            }
+        }
     }
 
 
