@@ -76,7 +76,7 @@ public class Gun {
         this.reloadRate = reloadRate;
         this.range = range;
 
-        this.penetration = 1;
+        this.penetration = 2;
         this.fireDelay = 10 * fireRate;
         try {
             this.image = ImageIO.read(new File(imagePath));

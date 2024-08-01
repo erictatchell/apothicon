@@ -24,6 +24,7 @@ public class Bullet extends Entity {
     private ArrayList<Integer> hitZombiesArray;
     private int penetrations;
     Random r = new Random();
+
     public Bullet(Apothicon ap, Gun gun) {
 
         super(ap);
@@ -74,6 +75,7 @@ public class Bullet extends Entity {
         } else {
             ap.gameManager.bullets.remove(this);
             alive = false;
+            hitZombiesTable.clear();
             System.gc();
             return false;
         }
@@ -83,15 +85,10 @@ public class Bullet extends Entity {
         if (user == this.ap.gameManager.player) {
             int zombieIndex = ap.gameManager.cc.bullet_checkEntity(this, ap.gameManager.roundManager.getZombies());
             if (zombieIndex != 999) {
-
-                if (hitZombiesTable.get(zombieIndex) == null || hitZombiesTable.get(zombieIndex) != 1) {
-
-                    if (checkPenetration()) {
-                        ap.gameManager.player.damageZombie(collisionIsHeadshot, zombieIndex);
-
-                        hitZombiesTable.put(zombieIndex, 1);
-                    }
-
+                boolean zombieIsHit = hitZombiesTable.get(zombieIndex) != null;
+                if (!zombieIsHit && checkPenetration()) {
+                    ap.gameManager.player.damageZombie(collisionIsHeadshot, zombieIndex);
+                    hitZombiesTable.put(zombieIndex, 1);
                 }
 
                 ap.playSE(generateDeathSound(), SoundType.IMPACT);
