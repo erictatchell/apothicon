@@ -125,14 +125,14 @@ public class GameManager {
                 for (Zone zone : zoneManager.zones) {
                     zone.draw(g2, ap);
                 }
-                for (int i = 0; i < bullets.size(); i++) {
-                    if (bullets.get(i) != null) {
-                        bullets.get(i).drawBullet(g2);
+                for (Bullet bullet : bullets) {
+                    if (bullet != null) {
+                        bullet.drawBullet(g2);
                     }
                 }
-                for (int i = 0; i < obj.length; i++) {
-                    if (obj[i] != null) {
-                        obj[i].draw(g2, ap);
+                for (SuperObject superObject : obj) {
+                    if (superObject != null) {
+                        superObject.draw(g2, ap);
                     }
                 }
                 for (Entity zombie : roundManager.getZombies()) {
