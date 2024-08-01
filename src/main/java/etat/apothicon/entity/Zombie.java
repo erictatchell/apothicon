@@ -58,7 +58,7 @@ public class Zombie extends Entity {
             @Override
             public void run() {
                 ap.gameManager.cc.checkPlayer(e);
-                if (collisionOn) {
+                if (collisionOn && !e.inLastStand) {
                     e.loadout.health -= 50;
                     e.loadout.healing = false;
                     if (e.loadout.loadoutTimer != null) {
