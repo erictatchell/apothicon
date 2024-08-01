@@ -19,6 +19,8 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.SwingUtilities;
 
 public class Player extends Entity {
@@ -38,6 +40,9 @@ public class Player extends Entity {
     // for player perks. gross
     private int perkOffset = 16;
     private int slotX = 16;
+    public boolean dead = false;
+    protected boolean inLastStand = false;
+
 
     public Player(Apothicon ap, KeyInput keyIn, MouseInput mouseIn) {
         super(ap);
@@ -81,7 +86,35 @@ public class Player extends Entity {
         this.direction = "down";
     }
 
+    public void enterLastStand() {
+        ap.gameManager.roundManager.togglePathfinding(false);
+        speed = 1;
+
+        inLastStand = true;
+        Timer reviveTimer = new Timer();
+        reviveTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ap.gameManager.roundManager.togglePathfinding(true);
+                loadout.handleRevive();
+                speed = 4;
+                inLastStand = false;
+            }
+        }, 8000);
+    }
+
     public void update() {
+        // last stand if player has quick revive
+        if (!inLastStand && loadout.health <= 0 && loadout.hasQuickRevive) {
+            System.out.println("here");
+            enterLastStand();
+        }
+        else if (!inLastStand && loadout.health <= 0) {
+            System.out.println("dead");
+            dead = true;
+
+        }
+
         // for perk placement
         this.slotX = perkOffset;
         Gun currentWeapon = loadout.getCurrentWeapon();

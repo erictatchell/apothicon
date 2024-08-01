@@ -307,6 +307,30 @@ public class Loadout {
         }
     }
 
+    // Sets relevant default values for loadout
+    public void handleRevive() {
+        revives = 0;
+        player.setSlotX(16);
+        player.setPerkOffset(16);
+        perks = new ArrayList<>();
+        hasJuggernog = false;
+        hasDoubleTap = false;
+        hasMuleKick = false;
+        hasQuickRevive = false;
+        hasSpeedCola = false;
+        maxGunNum = 2;
+
+        // remove mule kick gun
+        if (guns.size() > 2) {
+            guns.remove(2);
+        }
+        defaultHealth = 150;
+        health = 150;
+        fireRateMultiplier = 1.0f;
+        reloadRateMultiplier = 1.0f;
+
+    }
+
     /**
      * wall weapon purchase
      *

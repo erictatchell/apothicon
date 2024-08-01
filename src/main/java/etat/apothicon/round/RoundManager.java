@@ -95,6 +95,15 @@ public class RoundManager {
 
     }
 
+    public void togglePathfinding(boolean option) {
+        for (Entity zombie : zombies ) {
+            if (zombie != null) {
+
+                zombie.onPath = option;
+            }
+        }
+    }
+
 
     public int getCurrentRound() {
         return currentRound;

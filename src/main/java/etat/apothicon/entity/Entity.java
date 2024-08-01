@@ -187,6 +187,7 @@ public class Entity {
 
     }
 
+
     public void die(boolean headshot, int index) {
         ap.gameManager.roundManager.getZombies()[index] = null;
         Random r = new Random();
@@ -207,6 +208,8 @@ public class Entity {
     }
 
     public void update() {
+
+        // 12 frame delay between new pathfind
         pathfindingDelay++;
         if (pathfindingDelay == 12) {
             setAction();
