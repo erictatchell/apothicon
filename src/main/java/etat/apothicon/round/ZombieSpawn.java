@@ -33,20 +33,19 @@ public class ZombieSpawn {
         }
     }
 
-    public void handleAddZombieToMap(RoundManager rm, Apothicon ap) {
+    public void addZombieToMap(RoundManager rm, Apothicon ap) {
         spawning = true;
-        addZombieToMap(rm, ap);
-
+        ap.gameManager.aSetter.setZombie(worldX, worldY, rm.getTotalZombiesSpawnedForThisRound());
         spawnDelay = new Timer();
         spawnDelay.schedule(new TimerTask() {
             public void run() {
                 spawning = false;
             }
-        }, random.nextInt(3000) + 500);
+        }, (random.nextInt(3000) + getMinimumSpawnDelay(rm)));
     }
 
-    private void addZombieToMap(RoundManager rm, Apothicon ap) {
-        ap.gameManager.aSetter.setZombie(worldX, worldY, rm.getTotalZombiesSpawnedForThisRound());
+    public int getMinimumSpawnDelay(RoundManager rm) {
+        return 500 - (rm.getCurrentRound() * 10);
     }
 
     public void draw(Graphics2D g2, Apothicon ap) {

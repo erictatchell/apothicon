@@ -72,7 +72,7 @@ public class RoundManager {
     }
 
     private void spawnZombie(ZombieSpawn spawn) {
-        spawn.handleAddZombieToMap(this, ap);
+        spawn.addZombieToMap(this, ap);
         totalZombiesSpawnedForThisRound++;
         totalZombiesOnMap++;
     }
