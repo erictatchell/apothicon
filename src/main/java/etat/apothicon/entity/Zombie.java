@@ -23,7 +23,9 @@ public class Zombie extends Entity {
     public Zombie(Apothicon ap) {
         super(ap);
         direction = "down";
-        speed = random.nextInt(2) + 1;
+        speed = calculateZombieSpeed(ap.gameManager.roundManager.getCurrentRound(),
+                ap.gameManager.roundManager.getTotalZombiesOnMap(),
+                ap.gameManager.roundManager.getTotalZombiesSpawnedForThisRound());
         this.ap = ap;
         this.health = defaultHealth;
         solidArea = new Rectangle();
@@ -49,6 +51,19 @@ public class Zombie extends Entity {
         left2 = setup("zombie/z1_left2.png");
         right1 = setup("zombie/z1_right1.png");
         right2 = setup("zombie/z1_right2.png");
+    }
+
+    public int calculateZombieSpeed(int round, int zombiesOnMap, int totalZombiesSpawned) {
+        if (round <= 4) {
+            return 1;
+
+        }
+        else if (round <= 8) {
+            return random.nextInt(2) + 1;
+        }
+        else {
+            return random.nextInt(3) + 1;
+        }
     }
 
     public void dealDamage(Player e) {

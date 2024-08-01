@@ -9,6 +9,8 @@ import etat.apothicon.sound.SoundType;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Bullet extends Entity {
@@ -17,10 +19,17 @@ public class Bullet extends Entity {
     Entity user;
     public Rectangle zombieSolidArea = new Rectangle();
 
+    int hitZombie = 999;
+    private HashMap<Integer, Integer> hitZombiesTable;
+    private ArrayList<Integer> hitZombiesArray;
+    private int penetrations;
     Random r = new Random();
-    public Bullet(Apothicon ap) {
+    public Bullet(Apothicon ap, Gun gun) {
 
         super(ap);
+        this.gun = gun;
+        hitZombiesTable = new HashMap<>();
+        penetrations = gun.penetration;
         solidArea.x = 15;
         solidArea.y = 15;
         solidArea.width = 1;
@@ -31,70 +40,83 @@ public class Bullet extends Entity {
         zombieSolidArea.height = 15;
     }
 
-    public void set(int worldX, int worldY, int direction, boolean alive, Entity user, Gun gun) {
+    public void set(int worldX, int worldY, int direction, boolean alive, Entity user) {
         this.worldX = worldX;
         this.worldY = worldY;
         this.directionAngle = direction;
         this.alive = alive;
         this.user = user;
-        this.gun = gun;
     }
 
     public int generateDeathSound() {
         int sound = ImpactSound.HIT1.ordinal();
         int rn = r.nextInt(6) + 1;
         switch (rn) {
-            case 1:
-                break;
-            case 2:
-                sound = ImpactSound.HIT2.ordinal();
-                break;
-            case 3:
-                sound = ImpactSound.HIT3.ordinal();
-                break;
-            case 4:
-                sound = ImpactSound.HIT4.ordinal();
-                break;
-            case 5:
-                sound = ImpactSound.HIT5.ordinal();
-                break;
-            case 6:
-                sound = ImpactSound.HIT6.ordinal();
-                break;
+            case 1 -> {
+            }
+            case 2 -> sound = ImpactSound.HIT2.ordinal();
+            case 3 -> sound = ImpactSound.HIT3.ordinal();
+            case 4 -> sound = ImpactSound.HIT4.ordinal();
+            case 5 -> sound = ImpactSound.HIT5.ordinal();
+            case 6 -> sound = ImpactSound.HIT6.ordinal();
         }
         return sound;
     }
 
+    /**
+     * @return true if bullet can pass thorugh, false if it is destroyed
+     */
+    public boolean checkPenetration() {
+        if (penetrations > 0) {
+            penetrations--;
+
+            return true;
+        } else {
+            ap.gameManager.bullets.remove(this);
+            alive = false;
+            System.gc();
+            return false;
+        }
+    }
 
     public void update() {
         if (user == this.ap.gameManager.player) {
             int zombieIndex = ap.gameManager.cc.bullet_checkEntity(this, ap.gameManager.roundManager.getZombies());
             if (zombieIndex != 999) {
-                ap.gameManager.player.damageZombie(collisionIsHeadshot, zombieIndex);
+
+                if (hitZombiesTable.get(zombieIndex) == null || hitZombiesTable.get(zombieIndex) != 1) {
+
+                    if (checkPenetration()) {
+                        ap.gameManager.player.damageZombie(collisionIsHeadshot, zombieIndex);
+
+                        hitZombiesTable.put(zombieIndex, 1);
+                    }
+
+                }
 
                 ap.playSE(generateDeathSound(), SoundType.IMPACT);
 
-                alive = false;
-
-                ap.gameManager.bullets.remove(this);
-                System.gc();
             }
         }
 
-        worldX += (int) (speed * Math.cos(Math.toRadians(directionAngle)));
-        worldY += (int) (speed * Math.sin(Math.toRadians(directionAngle)));
-        ap.gameManager.cc.bullet_checkTile(this);
-        if (this.collisionOn) {
-            ap.playSE(ImpactSound.WALL_COLLISION.ordinal(), SoundType.IMPACT);
-            ap.gameManager.bullets.remove(this);
-            System.gc();
+        if (alive) {
+            worldX += (int) (speed * Math.cos(Math.toRadians(directionAngle)));
+            worldY += (int) (speed * Math.sin(Math.toRadians(directionAngle)));
+            ap.gameManager.cc.bullet_checkTile(this);
+            if (this.collisionIsWall) {
+                System.out.println("hello");
+                ap.playSE(ImpactSound.WALL_COLLISION.ordinal(), SoundType.IMPACT);
+                ap.gameManager.bullets.remove(this);
+                System.gc();
+            }
+
+            spriteCounter++;
+            if (spriteCounter > 120) {
+                alive = false;
+                spriteCounter = 0;
+            }
         }
 
-        spriteCounter++;
-        if (spriteCounter > 120) {
-            alive = false;
-            spriteCounter = 0;
-        }
     }
 
     public void drawBullet(Graphics2D g2) {

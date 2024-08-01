@@ -42,6 +42,7 @@ public class Entity {
     public Rectangle headSolidArea = new Rectangle();
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
+    public boolean collisionIsWall = false;
     public boolean collisionIsHeadshot = false;
     public int actionLockCounter = 0;
     public int pathfindingDelay = 0;

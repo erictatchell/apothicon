@@ -178,6 +178,7 @@ public class CollisionChecker {
                 tileNum1 = ap.gameManager.tileManager.mapTileNum[eRightCol][eTopRow];
                 if (ap.gameManager.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
+                    e.collisionIsWall = true;
                 }
 
             } else if (upperLeft) {
@@ -186,6 +187,7 @@ public class CollisionChecker {
                 tileNum1 = ap.gameManager.tileManager.mapTileNum[eLeftCol][eTopRow];
                 if (ap.gameManager.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
+                    e.collisionIsWall = true;
                 }
             } else if (lowerLeft) {
                 eBottomRow = (eBottomWorldY - e.speed) / ap.tileSize;
@@ -193,6 +195,7 @@ public class CollisionChecker {
                 tileNum1 = ap.gameManager.tileManager.mapTileNum[eLeftCol][eBottomRow];
                 if (ap.gameManager.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
+                    e.collisionIsWall = true;
                 }
             } else if (lowerRight) {
                 eBottomRow = (eBottomWorldY - e.speed) / ap.tileSize;
@@ -200,6 +203,7 @@ public class CollisionChecker {
                 tileNum1 = ap.gameManager.tileManager.mapTileNum[eRightCol][eBottomRow];
                 if (ap.gameManager.tileManager.tile[tileNum1].collision) {
                     e.collisionOn = true;
+                    e.collisionIsWall = true;
                 }
             }
         }

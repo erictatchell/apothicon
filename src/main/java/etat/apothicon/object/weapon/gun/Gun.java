@@ -32,6 +32,7 @@ public class Gun {
     public int magazine;
     public int reserve;
     public int defaultReserve;
+    public int penetration;
     public WallBuy wallBuy;
     public float fireRate;
     public FireType fireType;
@@ -63,6 +64,7 @@ public class Gun {
         this.owner = owner;
         this.name = name;
         this.damage = damage;
+
         this.defaultAmmoPerMagazine = defaultAmmoPerMagazine;
         this.magazine = defaultAmmoPerMagazine;
         this.reserve = reserve;
@@ -71,10 +73,11 @@ public class Gun {
         this.fireSound = fireSound;
         this.reloadSound = reloadSound;
         this.fireRate = fireRate;
-        this.fireDelay = 10 * fireRate;
         this.reloadRate = reloadRate;
         this.range = range;
 
+        this.penetration = 1;
+        this.fireDelay = 10 * fireRate;
         try {
             this.image = ImageIO.read(new File(imagePath));
         } catch (IOException e) {
@@ -133,15 +136,15 @@ public class Gun {
     public void sendBullet() {
 
         int dir = owner.calculateAngle();
-        Bullet bullet1 = new Bullet(owner.ap);
-        bullet1.set(owner.worldX + 24, owner.worldY + this.owner.ap.tileSize / 2, dir, true, owner, this);
+        Bullet bullet1 = new Bullet(owner.ap, this);
+        bullet1.set(owner.worldX + 24, owner.worldY + this.owner.ap.tileSize / 2, dir, true, owner);
 
         owner.ap.gameManager.bullets.add(bullet1);
 
         if (this.owner.loadout.hasDoubleTap) {
 
-            Bullet bullet2 = new Bullet(owner.ap);
-            bullet2.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner, this);
+            Bullet bullet2 = new Bullet(owner.ap, this);
+            bullet2.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner);
 
             owner.ap.gameManager.bullets.add(bullet2);
         }
