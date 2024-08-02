@@ -19,15 +19,17 @@ public class DeathMenu extends Menu {
 
     public void draw(Graphics2D _g2) {
         Graphics2D g2 = MediaManager.antialias(_g2);
-        g2.setColor(new Color(150, 0, 0, 80));
-        g2.fillRect(0, 0, gm.ap.screenWidth / 2, gm.ap.screenHeight);
+        g2.setColor(new Color(150, 0, 0, 100));
+        g2.fillRect(0, 0, gm.ap.screenWidth , gm.ap.screenHeight);
 
         g2.setFont(gm.hud.fty64);
         g2.setColor(Color.WHITE);
-        g2.drawString("game over", 10, gm.ap.screenHeight / 2);
+        g2.drawString("game over", getXForCenteredText(g2, "game over"), gm.ap.screenHeight / 2);
         g2.setFont(gm.hud.fty32);
-        g2.drawString("you survived " + gm.roundManager.getCurrentRound() + " rounds", 10, gm.ap.screenHeight / 2 + 40);
+        String survived = "you survived " + gm.roundManager.getCurrentRound() + " rounds";
+        g2.drawString(survived, getXForCenteredText(g2, survived), gm.ap.screenHeight / 2 + 40);
         super.draw(g2);
+
     }
 
 }

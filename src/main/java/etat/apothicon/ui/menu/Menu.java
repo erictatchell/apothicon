@@ -44,6 +44,11 @@ public class Menu {
         }
     }
 
+    public int getXForCenteredText(Graphics2D g2, String text) {
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return gm.ap.screenWidth / 2 - length / 2;
+    }
+
     public void draw(Graphics2D _g2) {
         Graphics2D g2 = MediaManager.antialias(_g2);
 

@@ -140,6 +140,7 @@ public class Gun {
         bullet1.set(owner.worldX + 24, owner.worldY + this.owner.ap.tileSize / 2, dir, true, owner);
 
         owner.ap.gameManager.bullets.add(bullet1);
+        owner.statistics.addShotFired();
 
         if (this.owner.loadout.hasDoubleTap) {
 

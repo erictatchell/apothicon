@@ -11,9 +11,8 @@ import java.awt.*;
 public class MainMenu extends Menu {
     public MainMenu(GameManager gm, MouseInput mouseIn, KeyInput keyIn) {
         super(gm, mouseIn, keyIn);
-        this.options[0] = new Play_MenuOption(this, "Play", gm.ap.screenWidth / 2 - 200, gm.ap.screenHeight / 2);
-        this.options[1] = new Exit_MenuOption(this, "Exit", gm.ap.screenWidth / 2 - 200, gm.ap.screenHeight / 2 - 50);
-
+        this.options[0] = new Play_MenuOption(this, "Play", 0, gm.ap.screenHeight / 2);
+        this.options[1] = new Exit_MenuOption(this, "Exit",0, gm.ap.screenHeight / 2 + 50);
     }
 
     public void draw(Graphics2D g2) {
@@ -23,7 +22,7 @@ public class MainMenu extends Menu {
             g2.setFont(gm.hud.fty64);
         }
         g2.setColor(Color.WHITE);
-        g2.drawString("Apothicon", gm.ap.screenWidth / 2, gm.ap.screenHeight / 2);
+        g2.drawString("Apothicon", getXForCenteredText(g2, "Apothicon"), gm.ap.screenHeight / 4);
         super.draw(g2);
     }
 }

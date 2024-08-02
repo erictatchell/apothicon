@@ -146,13 +146,18 @@ public class Loadout {
 
 
     public void addPoints(boolean kill, boolean headshot) {
+        int total = 0;
         this.points += 10;
+        total+= 10;
         if (kill) {
             this.points += 50;
+            total+=50;
             if (headshot) {
                 this.points += 50;
+                total+= 50;
             }
         }
+        player.statistics.addPoints(total);
     }
 
     public void fireWeapon() {
@@ -167,7 +172,7 @@ public class Loadout {
 
             current.reserve = current.defaultReserve;
             current.magazine = current.defaultAmmoPerMagazine;
-            this.points -= price;
+            spendPoints(price);
         }
     }
 
@@ -188,7 +193,7 @@ public class Loadout {
         }
         this.guns.add(gun);
 
-        this.points -= gun.getPrice();
+        spendPoints(gun.getPrice());
         this.currentWeaponIdx = this.guns.size() - 1;
     }
 
@@ -213,6 +218,7 @@ public class Loadout {
     }
 
     public void spendPoints(int p) {
+        player.statistics.addSpentPoints(p);
         this.points -= p;
     }
 

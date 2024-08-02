@@ -1,9 +1,6 @@
 package etat.apothicon.entity;
 
-import etat.apothicon.main.Apothicon;
-import etat.apothicon.main.KeyInput;
-import etat.apothicon.main.MediaManager;
-import etat.apothicon.main.MouseInput;
+import etat.apothicon.main.*;
 import etat.apothicon.object.weapon.gun.Gun;
 import etat.apothicon.round.Zone;
 import etat.apothicon.object.SuperObject;
@@ -34,6 +31,7 @@ public class Player extends Entity {
 
     private String purchaseString = null;
 
+    public Statistics statistics;
 
     public final int screenX;
     public final int screenY;
@@ -51,6 +49,7 @@ public class Player extends Entity {
         this.mouseIn = mouseIn;
         this.loadout = new Loadout(this, this.ap);
         this.bullets = new ArrayList<>();
+        this.statistics = new Statistics(this);
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
@@ -78,6 +77,7 @@ public class Player extends Entity {
 
 
     public void setDefaultValues() {
+        statistics.reset();
         this.worldX = ap.tileSize * 29;
         this.worldY = ap.tileSize * 43;
         this.slotX = 16;
@@ -97,6 +97,7 @@ public class Player extends Entity {
             public void run() {
                 ap.gameManager.roundManager.togglePathfinding(true);
                 loadout.handleRevive();
+                statistics.addDowns();
                 speed = 4;
                 inLastStand = false;
             }
@@ -106,11 +107,10 @@ public class Player extends Entity {
     public void update() {
         // last stand if player has quick revive
         if (!inLastStand && loadout.health <= 0 && loadout.hasQuickRevive) {
-            System.out.println("here");
             enterLastStand();
         }
         else if (!inLastStand && loadout.health <= 0) {
-            System.out.println("dead");
+            statistics.addDowns();
             dead = true;
 
         }
@@ -252,6 +252,7 @@ public class Player extends Entity {
             zombie.takeDamage(collisionIsHeadshot, damage);
             if (zombie.health <= 0) {
                 zombie.die(collisionIsHeadshot, index);
+                statistics.addKill(collisionIsHeadshot);
                 killed = true;
             }
             loadout.addPoints(killed, collisionIsHeadshot);

@@ -11,7 +11,7 @@ public class Stakeout_Gun extends Gun {
     public Stakeout_Gun(Player player) {
         super(player,
                 "Stakeout",
-                80,
+                500,
                 8,
                 32,
                 5.0f,

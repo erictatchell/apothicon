@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class MenuOption implements Clickable, Drawable {
     public Menu menu;
-    protected String text;
+    public String text;
     protected boolean hovered;
     public int x, y;
     public MenuOption(Menu menu, String text, int x, int y) {
@@ -31,6 +31,7 @@ public class MenuOption implements Clickable, Drawable {
         if (menu.gm.hud != null) {
             g2.setFont(menu.gm.hud.fty32);
         }
+        x = menu.getXForCenteredText(g2, text);
         if (hovered) {
             g2.setColor(new Color(255, 40, 40));
         } else g2.setColor(Color.WHITE);
