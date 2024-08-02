@@ -30,6 +30,7 @@ public class Statistics {
     }
     public void addKill(boolean headshot) {
         kills++;
+        System.out.println(kills);
         if (headshot) {
             headshots++;
         }
