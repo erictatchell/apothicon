@@ -247,7 +247,7 @@ public class Player extends Entity {
 
             int damage = (int) (loadout.getCurrentWeapon().getDamage() * loadout.getDamageMultiplier());
             if (collisionIsHeadshot) {
-                damage *= 2.0f; // TODO make this value gun dependent?
+                damage *= 1.5f; // TODO make this value gun dependent?
             }
             zombie.takeDamage(collisionIsHeadshot, damage);
             if (zombie.health <= 0) {

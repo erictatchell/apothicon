@@ -2,6 +2,8 @@ package etat.apothicon.main;
 
 import etat.apothicon.entity.Player;
 
+import java.awt.*;
+
 public class Statistics {
     private Player player;
     private int kills;
@@ -44,6 +46,39 @@ public class Statistics {
     public void addShotFired() {
         shotsFired++;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public int getHeadshots() {
+        return headshots;
+    }
+
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    public int getPointsSpent() {
+        return pointsSpent;
+    }
+
+    public int getPerksBought() {
+        return perksBought;
+    }
+
+    public int getShotsFired() {
+        return shotsFired;
+    }
+
+    public int getDowns() {
+        return downs;
+    }
+
     public void reset() {
        kills = 0;
        headshots = 0;
@@ -52,4 +87,6 @@ public class Statistics {
        shotsFired = 0;
        totalPoints = 0;
     }
+
+
 }
