@@ -1,6 +1,7 @@
 package etat.apothicon.ui.menu.menuOptions;
 
 import etat.apothicon.main.Drawable;
+import etat.apothicon.ui.FontManager;
 import etat.apothicon.ui.menu.Clickable;
 import etat.apothicon.ui.menu.Menu;
 
@@ -29,7 +30,7 @@ public class MenuOption implements Clickable, Drawable {
     @Override
     public void draw(Graphics2D g2) {
         if (menu.gm.hud != null) {
-            g2.setFont(menu.gm.hud.fty32);
+            g2.setFont(FontManager.fty32);
         }
         x = menu.getXForCenteredText(g2, text);
         if (hovered) {

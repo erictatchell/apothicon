@@ -6,8 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import etat.apothicon.entity.Player;
-import etat.apothicon.main.Apothicon;
-import etat.apothicon.sound.GunSound;
+import etat.apothicon.utility.sound.GunSound;
 
 public class M1911_Gun extends Gun {
     public M1911_Gun(Player player) {

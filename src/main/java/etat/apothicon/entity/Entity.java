@@ -1,12 +1,10 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.main.Apothicon;
-import etat.apothicon.sound.ImpactSound;
-import etat.apothicon.sound.SoundType;
+import etat.apothicon.utility.sound.ImpactSound;
+import etat.apothicon.utility.sound.SoundType;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

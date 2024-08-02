@@ -1,7 +1,7 @@
 package etat.apothicon.object.weapon.gun;
 
 import etat.apothicon.entity.Player;
-import etat.apothicon.sound.GunSound;
+import etat.apothicon.utility.sound.GunSound;
 
 import java.io.File;
 import java.io.IOException;

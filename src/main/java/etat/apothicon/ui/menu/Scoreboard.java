@@ -2,7 +2,8 @@ package etat.apothicon.ui.menu;
 
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.GameManager;
-import etat.apothicon.main.Statistics;
+import etat.apothicon.entity.Statistics;
+import etat.apothicon.ui.FontManager;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class Scoreboard {
 
     public void drawScoreboard(Graphics2D g2) {
         // Set the font and color for the scoreboard
-        g2.setFont(gm.hud.fty16);
+        g2.setFont(FontManager.fty16);
         g2.setColor(Color.WHITE);
 
         // Define the x coordinates for each column

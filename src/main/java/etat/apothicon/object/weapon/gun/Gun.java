@@ -2,8 +2,8 @@ package etat.apothicon.object.weapon.gun;
 
 import etat.apothicon.entity.Player;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
-import etat.apothicon.sound.GunSound;
-import etat.apothicon.sound.SoundType;
+import etat.apothicon.utility.sound.GunSound;
+import etat.apothicon.utility.sound.SoundType;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

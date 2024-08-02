@@ -1,6 +1,5 @@
 package etat.apothicon.object.perk.bottle;
 
-import etat.apothicon.entity.Drinkable;
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
 import java.io.File;

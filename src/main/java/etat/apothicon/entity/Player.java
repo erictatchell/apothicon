@@ -9,8 +9,9 @@ import etat.apothicon.object.perk.machine.PerkMachine;
 import etat.apothicon.object.weapon.gun.Bullet;
 import etat.apothicon.object.weapon.gun.FireType;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
-import etat.apothicon.sound.InteractSound;
-import etat.apothicon.sound.SoundType;
+import etat.apothicon.utility.sound.InteractSound;
+import etat.apothicon.utility.sound.SoundType;
+import etat.apothicon.utility.MediaManager;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

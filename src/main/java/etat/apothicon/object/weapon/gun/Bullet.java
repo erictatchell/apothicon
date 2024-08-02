@@ -2,9 +2,8 @@ package etat.apothicon.object.weapon.gun;
 
 import etat.apothicon.entity.Entity;
 import etat.apothicon.main.Apothicon;
-import etat.apothicon.sound.GunSound;
-import etat.apothicon.sound.ImpactSound;
-import etat.apothicon.sound.SoundType;
+import etat.apothicon.utility.sound.ImpactSound;
+import etat.apothicon.utility.sound.SoundType;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

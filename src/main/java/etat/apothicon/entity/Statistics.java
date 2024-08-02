@@ -1,4 +1,4 @@
-package etat.apothicon.main;
+package etat.apothicon.entity;
 
 import etat.apothicon.entity.Player;
 

@@ -1,6 +1,7 @@
 package etat.apothicon.ui.menu;
 
-import etat.apothicon.main.MediaManager;
+import etat.apothicon.ui.FontManager;
+import etat.apothicon.utility.MediaManager;
 import etat.apothicon.main.GameManager;
 import etat.apothicon.main.KeyInput;
 import etat.apothicon.main.MouseInput;
@@ -56,7 +57,7 @@ public class Menu {
         // potential todo is move the fonts to a separet file instead of accessing via hud
         if (gm.hud != null) {
 
-            g2.setFont(gm.hud.fty16);
+            g2.setFont(FontManager.fty16);
         }
         for (int i = 0; i < options.length; i++) {
             if (options[i] != null) {

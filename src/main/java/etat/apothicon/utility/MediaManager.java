@@ -1,4 +1,4 @@
-package etat.apothicon.main;
+package etat.apothicon.utility;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

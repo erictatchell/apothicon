@@ -1,4 +1,4 @@
-package etat.apothicon.sound;
+package etat.apothicon.utility.sound;
 
 public enum ImpactSound {
     WALL_COLLISION,

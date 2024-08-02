@@ -3,8 +3,8 @@ package etat.apothicon.round;
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Zombie;
 import etat.apothicon.main.Apothicon;
-import etat.apothicon.sound.RoundChangeMusic;
-import etat.apothicon.sound.SoundType;
+import etat.apothicon.utility.sound.RoundChangeMusic;
+import etat.apothicon.utility.sound.SoundType;
 
 import java.util.Random;
 import java.util.Timer;

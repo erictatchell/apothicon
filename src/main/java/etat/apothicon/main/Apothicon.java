@@ -1,11 +1,11 @@
 
 package etat.apothicon.main;
 
-import etat.apothicon.sound.SoundHandler;
-import etat.apothicon.sound.SoundType;
+import etat.apothicon.ui.FontManager;
+import etat.apothicon.utility.sound.SoundHandler;
+import etat.apothicon.utility.sound.SoundType;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 public class Apothicon extends JPanel implements Runnable {
@@ -48,6 +48,7 @@ public class Apothicon extends JPanel implements Runnable {
 
         gameManager = new GameManager(this);
         gameManager.setup();
+        FontManager.loadFonts();
     }
 
 

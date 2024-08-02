@@ -1,4 +1,4 @@
-package etat.apothicon.sound;
+package etat.apothicon.utility.sound;
 
 import java.net.URL;
 import java.util.Vector;

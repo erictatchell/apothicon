@@ -3,6 +3,7 @@ package etat.apothicon.main;
 import etat.apothicon.ai.PathFinder;
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
+import etat.apothicon.ui.FontManager;
 import etat.apothicon.ui.HUD;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.weapon.gun.Bullet;
@@ -12,7 +13,7 @@ import etat.apothicon.round.ZoneManager;
 import etat.apothicon.tile.TileManager;
 import etat.apothicon.ui.menu.DeathMenu;
 import etat.apothicon.ui.menu.MainMenu;
-import etat.apothicon.ui.menu.Menu;
+import etat.apothicon.utility.GameState;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,13 +35,13 @@ public class GameManager {
     public CollisionChecker cc;
     public AssetSetter aSetter;
     public PathFinder pFinder;
+    private FontManager fontManager;
 
     public GameManager(Apothicon ap) {
         this.ap = ap;
     }
 
     public void setup() {
-
         gameState = GameState.MAIN_MENU;
         mainMenu = new MainMenu(this, ap.mouseIn, ap.keyIn);
 
