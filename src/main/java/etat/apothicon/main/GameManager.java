@@ -43,7 +43,6 @@ public class GameManager {
 
         gameState = GameState.MAIN_MENU;
         mainMenu = new MainMenu(this, ap.mouseIn, ap.keyIn);
-        deathMenu = new DeathMenu(this, ap.mouseIn, ap.keyIn);
 
         tileManager = new TileManager(ap);
         player = new Player(ap, ap.keyIn, ap.mouseIn);
@@ -57,6 +56,8 @@ public class GameManager {
         pFinder = new PathFinder(ap);
         aSetter.setObject();
 
+
+        deathMenu = new DeathMenu(this, ap.mouseIn, ap.keyIn);
     }
 
 
