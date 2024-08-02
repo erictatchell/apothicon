@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="apothicon.main:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/apothicon_main_jar</output-path>
-    <root id="archive" name="apothicon.main.jar">
-      <element id="module-output" name="apothicon.main" />
-    </root>
-  </artifact>
-</component>
