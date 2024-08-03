@@ -170,11 +170,6 @@ public class Entity {
                     direction = "right";
                 }
             }
-            // int nextCol = ap.pFinder.pathList.get(0).col;
-            // int nextRow = ap.pFinder.pathList.get(0).row;
-            // if (nextCol == goalCol && nextRow == goalRow) {
-            // onPath = false;
-            // }
         }
     }
 
@@ -257,10 +252,6 @@ public class Entity {
                 drawingFeedback = false;
             }
         }, 100);
-    }
-
-    private void drawFeedback(int screenX, int screenY, Graphics2D g2) {
-
     }
 
     public void draw(Graphics2D g2) {

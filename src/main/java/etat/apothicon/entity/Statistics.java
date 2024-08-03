@@ -5,7 +5,7 @@ import etat.apothicon.entity.Player;
 import java.awt.*;
 
 public class Statistics {
-    private Player player;
+    private final Player player;
     private int kills;
     private int headshots;
     private int totalPoints;
