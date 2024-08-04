@@ -25,10 +25,9 @@ public class Player extends Entity {
 
     KeyInput keyIn;
     MouseInput mouseIn;
-    public Apothicon ap;
+    public final Apothicon ap;
 
     public Loadout loadout;
-    public ArrayList<Bullet> bullets = new ArrayList<>();
 
     private String purchaseString = null;
 
@@ -49,7 +48,6 @@ public class Player extends Entity {
         this.keyIn = keyIn;
         this.mouseIn = mouseIn;
         this.loadout = new Loadout(this, this.ap);
-        this.bullets = new ArrayList<>();
         this.statistics = new Statistics(this);
         solidArea = new Rectangle();
         solidArea.x = 8;
@@ -162,6 +160,7 @@ public class Player extends Entity {
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
         }
+
 
         if (keyIn.reloadPressed) {
             currentWeapon.handleReload();

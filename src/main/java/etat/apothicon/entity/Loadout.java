@@ -24,7 +24,7 @@ import java.util.TimerTask;
 public class Loadout {
 
     private Player player;
-    private Apothicon ap;
+    private final Apothicon ap;
     protected Timer loadoutTimer;
     protected boolean healing;
     public boolean hasDoubleTap;
