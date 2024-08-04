@@ -34,7 +34,8 @@ public class ZoneManager {
         rightCave.worldY = 30 * ap.tileSize;
         rightCave.zoneRects.add(new Rectangle(rightCave.worldX, rightCave.worldY, 9, 7)); // bigger area
         rightCave.zoneRects.add(new Rectangle(45 * ap.tileSize, 37 * ap.tileSize, 3, 9)); // hallway
-        rightCave.spawns.add(new ZombieSpawn(spawn, "door-barrier.png", 48* ap.tileSize, 41 * ap.tileSize));
+        rightCave.spawns.add(new ZombieSpawn(rightCave, "door-barrier.png", 48* ap.tileSize, 41 * ap.tileSize));
+        rightCave.spawns.add(new ZombieSpawn(rightCave, "door-barrier.png", 48* ap.tileSize, 31 * ap.tileSize));
 
         this.zones.add(rightCave);
         this.zones.add(spawn);
