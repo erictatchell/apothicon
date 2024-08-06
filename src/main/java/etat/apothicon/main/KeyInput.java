@@ -59,6 +59,9 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
+        if (code == KeyEvent.VK_DELETE) {
+            debugPressed = false;
+        }
         if (code == KeyEvent.VK_ENTER) {
             enterPressed = false;
         }

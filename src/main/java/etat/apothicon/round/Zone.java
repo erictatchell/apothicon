@@ -65,6 +65,8 @@ public class Zone {
         for (ZombieSpawn spawn : spawns) {
             spawn.draw(g2, ap);
         }
+    }
+    public void drawZoneBounds(Graphics2D g2, Apothicon ap) {
         for (Rectangle i : zoneRects) {
             int screenX = i.x - ap.gameManager.player.worldX + ap.gameManager.player.screenX;
             int screenY = i.y - ap.gameManager.player.worldY + ap.gameManager.player.screenY;

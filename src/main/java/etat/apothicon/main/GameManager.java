@@ -127,6 +127,10 @@ public class GameManager {
 
                 tileManager.draw(g2);
                 for (Zone zone : zoneManager.zones) {
+                    if (ap.keyIn.debugPressed) {
+                        zone.drawZoneBounds(g2, ap);
+                    }
+
                     zone.draw(g2, ap);
                 }
                 for (Bullet bullet : bullets) {
