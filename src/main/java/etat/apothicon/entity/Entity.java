@@ -1,6 +1,9 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.object.Drop;
+import etat.apothicon.object.DropType;
+import etat.apothicon.object.Drop_Instakill;
 import etat.apothicon.utility.sound.ImpactSound;
 import etat.apothicon.utility.sound.SoundType;
 
@@ -197,6 +200,13 @@ public class Entity {
         }
 
         ap.playSE(sound, SoundType.IMPACT);
+
+        int chance = r.nextInt(100) + 1;
+        if (chance <= 10) {
+            // todo: decide which drop is spawned (random chance?)
+            ap.gameManager.aSetter.spawnDrop(worldX, worldY);
+        }
+
         ap.gameManager.roundManager.decreaseTotalZombiesOnMap();
         ap.gameManager.roundManager.increaseTotalZombiesKilled();
     }

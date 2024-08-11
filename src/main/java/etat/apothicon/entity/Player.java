@@ -1,6 +1,7 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.main.*;
+import etat.apothicon.object.Drop;
 import etat.apothicon.object.weapon.gun.Gun;
 import etat.apothicon.round.Zone;
 import etat.apothicon.object.SuperObject;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.SwingUtilities;
@@ -157,6 +159,9 @@ public class Player extends Entity {
 
 
         int objIndex = ap.gameManager.cc.checkObject(this, true);
+        // for non interact pickups (powerups)
+        pickUpObject(objIndex);
+
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
         }
@@ -182,8 +187,6 @@ public class Player extends Entity {
 
             collisionOn = false;
             ap.gameManager.cc.checkTile(this);
-            // for non interact pickups (powerups)
-            pickUpObject(objIndex);
 
             // zombie collision
             int zombieIndex = ap.gameManager.cc.checkEntity(this, ap.gameManager.roundManager.getZombies());
@@ -214,7 +217,7 @@ public class Player extends Entity {
                     }
                 }
             }
-            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
+//            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
             spriteCounter++;
             if (spriteCounter > 12) { // 12 frames
                 if (spriteNum == 1) {
@@ -244,6 +247,12 @@ public class Player extends Entity {
             Entity zombie = ap.gameManager.roundManager.getZombies()[index];
 
             boolean killed = false;
+            // instakill
+            if (loadout.getDamageMultiplier() == -1.0f) {
+                zombie.die(collisionIsHeadshot, index);
+                statistics.addKill(collisionIsHeadshot);
+                killed = true;
+            }
 
             int damage = (int) (loadout.getCurrentWeapon().getDamage() * loadout.getDamageMultiplier());
             if (collisionIsHeadshot) {
@@ -263,6 +272,10 @@ public class Player extends Entity {
         if (index != 999) {
             SuperObject obj = ap.gameManager.obj[index];
             switch (obj.type) {
+                case "drop" -> {
+                    Drop drop = (Drop) obj;
+                    drop.activate();
+                }
                 case "perk" -> {
                     PerkMachine perkMachine = (PerkMachine) obj;
                     boolean alreadyHasPerk = loadout.alreadyHasPerk(perkMachine);
