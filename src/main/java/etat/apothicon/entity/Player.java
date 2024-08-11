@@ -274,6 +274,7 @@ public class Player extends Entity {
             switch (obj.type) {
                 case "drop" -> {
                     Drop drop = (Drop) obj;
+                    drop.objIndex = index;
                     drop.activate();
                 }
                 case "perk" -> {
@@ -341,7 +342,7 @@ public class Player extends Entity {
         g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
 
         // Display weapon image, flips based on mouse
-        int angle = calculateAngle();
+        int angle = MediaManager.calculateAngle(ap);
         // omg kms
         BufferedImage weaponImage = MediaManager.createFlipped(getImage(mousePosition));
         boolean mouseOnRightSide = mousePosition.x > ap.screenWidth / 2;
@@ -356,7 +357,8 @@ public class Player extends Entity {
         } else {
             offset = -(ap.tileSize / 2);
         }
-        g2.drawImage(rotateImageByDegrees(weaponImage, angle), screenX + offset, screenY,
+        g2.drawImage(MediaManager.rotateImageByDegrees(weaponImage, angle), screenX + offset, screenY,
+
                 ap.tileSize, ap.tileSize, null);
 
         if (this.purchaseString != null) {
@@ -385,51 +387,7 @@ public class Player extends Entity {
         return loadout.getCurrentWeapon().image2;
     }
 
-    /**
-     * Calculates the angle between mousePosition.x and centerscreen (player)
-     *
-     * @return angle in degrees
-     */
-    public int calculateAngle() {
-        Point mousePosition = MouseInfo.getPointerInfo().getLocation();
-        SwingUtilities.convertPointFromScreen(mousePosition, ap);
-        int centerX = ap.screenWidth / 2;
-        int centerY = ap.screenHeight / 2;
 
-        int deltaX = mousePosition.x - centerX;
-        int deltaY = mousePosition.y - centerY;
-
-        // atan2 for / 0 error
-        double angleInRadians = Math.atan2(deltaY, deltaX);
-
-        return (int) Math.toDegrees(angleInRadians);
-    }
-
-    // Credit:
-    // https://stackoverflow.com/questions/37758061/rotate-a-buffered-image-in-java
-    public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
-        double rads = Math.toRadians(angle);
-        double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
-        int w = img.getWidth();
-        int h = img.getHeight();
-        int newWidth = (int) Math.floor(w * cos + h * sin);
-        int newHeight = (int) Math.floor(h * cos + w * sin);
-
-        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = rotated.createGraphics();
-        AffineTransform at = new AffineTransform();
-        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
-
-        int x = w / 2;
-        int y = h / 2;
-
-        at.rotate(rads, x, y);
-        g2d.setTransform(at);
-        g2d.drawImage(img, 0, 0, null);
-        g2d.dispose();
-
-        return rotated;
-    }
 
     public void resetPerkOffset() {
         this.perkOffset = 0;

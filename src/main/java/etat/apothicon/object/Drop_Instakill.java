@@ -9,10 +9,10 @@ import java.io.IOException;
 
 public class Drop_Instakill extends Drop {
     private float defaultDamageMultiplier;
-    public Drop_Instakill(int worldX, int worldY, Apothicon ap, DropType type) {
-        super(worldX, worldY, ap, type);
+    public Drop_Instakill(int objIndex, int worldX, int worldY, Apothicon ap, DropType type) {
+        super(objIndex, worldX, worldY, ap, type);
         try {
-            image = ImageIO.read(new File("src/main/resources/guns/mtar.png"));
+            image = ImageIO.read(new File("src/main/resources/drops/instakill.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -20,10 +20,6 @@ public class Drop_Instakill extends Drop {
 
     @Override
     public void activate() {
-        // when coop is implemented
-//        for (Player player : ap.gameManager.players) {
-//            player.loadout.setDamageMultiplier(-1.0f);
-//        }
         if (!ap.gameManager.dropManager.instaKillActive) {
             defaultDamageMultiplier = ap.gameManager.player.loadout.getDamageMultiplier();
             ap.gameManager.player.loadout.setDamageMultiplier(-1.0f);
@@ -36,5 +32,6 @@ public class Drop_Instakill extends Drop {
     public void deactivate() {
         super.deactivate();
         ap.gameManager.player.loadout.setDamageMultiplier(defaultDamageMultiplier);
+        ap.gameManager.dropManager.instaKillActive = false;
     }
 }

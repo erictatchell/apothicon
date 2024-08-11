@@ -1,22 +1,43 @@
 package etat.apothicon.object;
 
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.utility.MediaManager;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImagingOpException;
+import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Drop extends SuperObject {
     public DropType dropType;
+    public int objIndex;
     public Apothicon ap;
     public Timer expireTimer;
+    private int auraCounter;
+    private int angle;
+    public int flashRate;
+    private int flashCounter;
 
-    /** Spawned also means drawable */
+    public BufferedImage auraImage;
+
+    /**
+     * Spawned also means drawable
+     */
     public boolean spawned = true;
-
+    public boolean visible = false;
+    public boolean flashing = false;
     public boolean active = false;
 
-    public Drop(int worldX, int worldY, Apothicon ap, DropType dropType) {
+    public Drop(int objIndex, int worldX, int worldY, Apothicon ap, DropType dropType) {
+        this.objIndex = objIndex;
+        this.auraCounter = 0;
+        this.flashCounter = 0;
+        visible = true;
+        this.angle = 0;
         this.ap = ap;
         this.type = "drop";
         this.dropType = dropType;
@@ -26,6 +47,13 @@ public class Drop extends SuperObject {
         solidArea.y = 0;
         solidArea.width = 30;
         solidArea.height = 30;
+
+        try {
+            auraImage = ImageIO.read(new File("src/main/resources/drops/aura.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
     }
 
 
@@ -48,6 +76,27 @@ public class Drop extends SuperObject {
         // play sound for drop expiration
     }
 
+    public void flash() {
+        flashCounter++;
+        if (flashCounter > flashRate) {
+            visible = !visible;
+            flashCounter = 0;
+        }
+    }
+
+    public int calculateAuraAngle() {
+        auraCounter++;
+        if (auraCounter > 3) {
+            angle += 2;
+            if (angle >= 360) {
+                angle = 0;
+            }
+            auraCounter = 0;
+
+        }
+        return angle;
+    }
+
     @Override
     public void draw(Graphics2D g2, Apothicon ap) {
         int screenX = worldX - ap.gameManager.player.worldX + ap.gameManager.player.screenX;
@@ -58,8 +107,13 @@ public class Drop extends SuperObject {
                 worldY + ap.tileSize > ap.gameManager.player.worldY - ap.gameManager.player.screenY &&
                 worldY - ap.tileSize < ap.gameManager.player.worldY + ap.gameManager.player.screenY &&
                 spawned) {
-            g2.setColor(Color.RED);
-            g2.fillRect(screenX, screenY, ap.tileSize, ap.tileSize);
+            if (flashing) {
+                flash();
+            }
+            if (visible) {
+                g2.drawImage(MediaManager.rotateImageByDegrees(this.auraImage, calculateAuraAngle()), screenX, screenY, ap.tileSize, ap.tileSize, null);
+                g2.drawImage(this.image, screenX, screenY, ap.tileSize, ap.tileSize, null);
+            }
 
         }
     }
