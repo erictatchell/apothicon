@@ -1,6 +1,7 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.main.*;
+import etat.apothicon.object.Drop;
 import etat.apothicon.object.weapon.gun.Gun;
 import etat.apothicon.round.Zone;
 import etat.apothicon.object.SuperObject;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.SwingUtilities;
@@ -157,6 +159,9 @@ public class Player extends Entity {
 
 
         int objIndex = ap.gameManager.cc.checkObject(this, true);
+        // for non interact pickups (powerups)
+        pickUpObject(objIndex);
+
         if (keyIn.fPressed) {
             pickUpObject(objIndex);
         }
@@ -182,8 +187,6 @@ public class Player extends Entity {
 
             collisionOn = false;
             ap.gameManager.cc.checkTile(this);
-            // for non interact pickups (powerups)
-            pickUpObject(objIndex);
 
             // zombie collision
             int zombieIndex = ap.gameManager.cc.checkEntity(this, ap.gameManager.roundManager.getZombies());
@@ -214,7 +217,7 @@ public class Player extends Entity {
                     }
                 }
             }
-            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
+//            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
             spriteCounter++;
             if (spriteCounter > 12) { // 12 frames
                 if (spriteNum == 1) {
@@ -244,6 +247,12 @@ public class Player extends Entity {
             Entity zombie = ap.gameManager.roundManager.getZombies()[index];
 
             boolean killed = false;
+            // instakill
+            if (loadout.getDamageMultiplier() == -1.0f) {
+                zombie.die(collisionIsHeadshot, index);
+                statistics.addKill(collisionIsHeadshot);
+                killed = true;
+            }
 
             int damage = (int) (loadout.getCurrentWeapon().getDamage() * loadout.getDamageMultiplier());
             if (collisionIsHeadshot) {
@@ -263,6 +272,11 @@ public class Player extends Entity {
         if (index != 999) {
             SuperObject obj = ap.gameManager.obj[index];
             switch (obj.type) {
+                case "drop" -> {
+                    Drop drop = (Drop) obj;
+                    drop.objIndex = index;
+                    drop.activate();
+                }
                 case "perk" -> {
                     PerkMachine perkMachine = (PerkMachine) obj;
                     boolean alreadyHasPerk = loadout.alreadyHasPerk(perkMachine);
@@ -328,7 +342,7 @@ public class Player extends Entity {
         g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
 
         // Display weapon image, flips based on mouse
-        int angle = calculateAngle();
+        int angle = MediaManager.calculateAngle(ap);
         // omg kms
         BufferedImage weaponImage = MediaManager.createFlipped(getImage(mousePosition));
         boolean mouseOnRightSide = mousePosition.x > ap.screenWidth / 2;
@@ -343,7 +357,8 @@ public class Player extends Entity {
         } else {
             offset = -(ap.tileSize / 2);
         }
-        g2.drawImage(rotateImageByDegrees(weaponImage, angle), screenX + offset, screenY,
+        g2.drawImage(MediaManager.rotateImageByDegrees(weaponImage, angle), screenX + offset, screenY,
+
                 ap.tileSize, ap.tileSize, null);
 
         if (this.purchaseString != null) {
@@ -372,51 +387,7 @@ public class Player extends Entity {
         return MediaManager.horizontalFlip(loadout.getCurrentWeapon().image);
     }
 
-    /**
-     * Calculates the angle between mousePosition.x and centerscreen (player)
-     *
-     * @return angle in degrees
-     */
-    public int calculateAngle() {
-        Point mousePosition = MouseInfo.getPointerInfo().getLocation();
-        SwingUtilities.convertPointFromScreen(mousePosition, ap);
-        int centerX = ap.screenWidth / 2;
-        int centerY = ap.screenHeight / 2;
 
-        int deltaX = mousePosition.x - centerX;
-        int deltaY = mousePosition.y - centerY;
-
-        // atan2 for / 0 error
-        double angleInRadians = Math.atan2(deltaY, deltaX);
-
-        return (int) Math.toDegrees(angleInRadians);
-    }
-
-    // Credit:
-    // https://stackoverflow.com/questions/37758061/rotate-a-buffered-image-in-java
-    public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
-        double rads = Math.toRadians(angle);
-        double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
-        int w = img.getWidth();
-        int h = img.getHeight();
-        int newWidth = (int) Math.floor(w * cos + h * sin);
-        int newHeight = (int) Math.floor(h * cos + w * sin);
-
-        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = rotated.createGraphics();
-        AffineTransform at = new AffineTransform();
-        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
-
-        int x = w / 2;
-        int y = h / 2;
-
-        at.rotate(rads, x, y);
-        g2d.setTransform(at);
-        g2d.drawImage(img, 0, 0, null);
-        g2d.dispose();
-
-        return rotated;
-    }
 
     public void resetPerkOffset() {
         this.perkOffset = 0;

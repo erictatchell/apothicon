@@ -3,6 +3,8 @@ package etat.apothicon.main;
 import etat.apothicon.ai.PathFinder;
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
+import etat.apothicon.object.Drop;
+import etat.apothicon.object.DropManager;
 import etat.apothicon.ui.FontManager;
 import etat.apothicon.ui.HUD;
 import etat.apothicon.object.SuperObject;
@@ -25,13 +27,15 @@ public class GameManager {
     public Apothicon ap;
     public Player player;
     public ArrayList<Bullet> bullets;
-    public SuperObject obj[];
+    public SuperObject[] obj;
     public HUD hud;
     public MainMenu mainMenu;
     public DeathMenu deathMenu;
+    public ArrayList<Drop> drops;
     public ZoneManager zoneManager;
     public RoundManager roundManager;
     public TileManager tileManager;
+    public DropManager dropManager;
     public CollisionChecker cc;
     public AssetSetter aSetter;
     public PathFinder pFinder;
@@ -44,20 +48,19 @@ public class GameManager {
     public void setup() {
         gameState = GameState.MAIN_MENU;
         mainMenu = new MainMenu(this, ap.mouseIn, ap.keyIn);
-
         tileManager = new TileManager(ap);
+        dropManager = new DropManager(ap);
         player = new Player(ap, ap.keyIn, ap.mouseIn);
         bullets = new ArrayList<>();
-        obj = new SuperObject[10];
+        obj = new SuperObject[30];
         zoneManager = new ZoneManager(ap);
         roundManager = new RoundManager(ap);
+        drops = new ArrayList<>();
         hud = new HUD(ap);
         cc = new CollisionChecker(ap);
         aSetter = new AssetSetter(ap);
         pFinder = new PathFinder(ap);
         aSetter.setObject();
-
-
         deathMenu = new DeathMenu(this, ap.mouseIn, ap.keyIn);
     }
 
@@ -133,6 +136,8 @@ public class GameManager {
 
                     zone.draw(g2, ap);
                 }
+
+                dropManager.draw(g2);
                 for (Bullet bullet : bullets) {
                     if (bullet != null) {
                         bullet.drawBullet(g2);
@@ -154,6 +159,7 @@ public class GameManager {
                 } else {
                     player.draw(g2);
                     hud.draw(g2);
+
                 }
             }
         }

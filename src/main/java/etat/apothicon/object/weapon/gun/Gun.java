@@ -2,6 +2,7 @@ package etat.apothicon.object.weapon.gun;
 
 import etat.apothicon.entity.Player;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
+import etat.apothicon.utility.MediaManager;
 import etat.apothicon.utility.sound.GunSound;
 import etat.apothicon.utility.sound.SoundType;
 
@@ -135,7 +136,7 @@ public class Gun {
 
     public void sendBullet() {
 
-        int dir = owner.calculateAngle();
+        int dir = MediaManager.calculateAngle(owner.ap);
         Bullet bullet1 = new Bullet(owner.ap, this);
         bullet1.set(owner.worldX + 24, owner.worldY + this.owner.ap.tileSize / 2, dir, true, owner);
 
