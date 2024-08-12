@@ -3,21 +3,27 @@ package etat.apothicon.utility.sound;
 
 public enum GunSound {
     M1911_FIRE,
+    M1911_UPGRADED_FIRE,
     M1911_RELOAD,
 
     OLYMPIA_FIRE,
+    OLYMPIA_UPGRADED_FIRE,
     OLYMPIA_RELOAD,
 
     M14_FIRE,
+    M14_UPGRADED_FIRE,
     M14_RELOAD,
 
     MP40_FIRE,
+    MP40_UPGRADED_FIRE,
     MP40_RELOAD,
 
     STAKEOUT_FIRE,
+    STAKEOUT_UPGRADED_FIRE,
     STAKEOUT_RELOAD,
 
     M16_FIRE,
+    M16_UPGRADED_FIRE,
     M16_RELOAD,
 
     AUG_FIRE,
@@ -43,6 +49,4 @@ public enum GunSound {
 
     GLOCK_FIRE,
     GLOCK_RELOAD,
-
-    MP40_UPGRADED_FIRE,
 }

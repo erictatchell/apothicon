@@ -16,12 +16,19 @@ public class M1911_Gun extends Gun {
                 8,
                 32,
                 1.0f,
+                1,
+                1.0f,
+                "src/main/resources/guns/m1911.png",
                 FireType.SEMI_AUTO,
                 GunSound.M1911_FIRE,
                 GunSound.M1911_RELOAD,
-                1,
-                1.0f,
-                "src/main/resources/guns/m1911.png");
+                "Abel & Aubrey",
+                "src/main/resources/guns/m1911-pap.png",
+                400,
+                50,
+                6,
+                GunSound.M1911_UPGRADED_FIRE
+                );
     }
 
 }

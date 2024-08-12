@@ -12,8 +12,11 @@ public class InfernalMachine extends SuperObject {
         this.name = "infernal_machine";
     }
 
-    public Gun upgrade(Player player, Gun gun) {
-        return null;
+    public void upgrade(Gun gun) {
+        if (gun.upgradeTier < 3) {
+            gun.upgrade();
+            gun.upgradeTier++;
+        }
     }
 
 }

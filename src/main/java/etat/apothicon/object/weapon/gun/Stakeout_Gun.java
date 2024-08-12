@@ -15,12 +15,19 @@ public class Stakeout_Gun extends Gun {
                 8,
                 32,
                 5.0f,
+                1,
+                2.0f,
+                "src/main/resources/guns/stakeout.png",
                 FireType.SEMI_AUTO,
                 GunSound.STAKEOUT_FIRE,
                 GunSound.STAKEOUT_RELOAD,
-                1,
-                2.0f,
-                "src/main/resources/guns/stakeout.png");
+                "Apprehension",
+                "src/main/resources/guns/stakeout-pap.png",
+                1000,
+                10,
+                70,
+                GunSound.STAKEOUT_UPGRADED_FIRE
+        );
     }
 
 

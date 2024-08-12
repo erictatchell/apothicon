@@ -8,6 +8,16 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class MediaManager {
+    public static BufferedImage horizontalFlip(BufferedImage img) {
+        int w = img.getWidth();
+        int h = img.getHeight();
+        BufferedImage flippedImage = new BufferedImage(w, h, img.getType());
+        Graphics2D g = flippedImage.createGraphics();
+        g.drawImage(img, 0, 0, w, h, w, 0, 0, h, null);
+        g.dispose();
+        return flippedImage;
+    }
+
     /**
      * Calculates the angle between mousePosition.x and centerscreen (player)
      *

@@ -16,20 +16,17 @@ public class MP40_Gun extends Gun {
                 32,
                 192,
                 0.8f,
+                1,
+                1.5f,
+                "src/main/resources/guns/mp40.png",
                 FireType.AUTO,
                 GunSound.MP40_FIRE,
                 GunSound.MP40_RELOAD,
-                1,
-                1.5f,
-                "src/main/resources/guns/mp40.png");
+                "Mortality Provider 4000",
+                "src/main/resources/guns/mp40-pap.png",
+                150,
+                384,
+                64,
+                GunSound.MP40_UPGRADED_FIRE);
     }
-
-    public void upgrade() {
-        name = "Mortality Provider 4000";
-        damage = 150;
-        reserve = 384;
-        fireSound = GunSound.MP40_UPGRADED_FIRE;
-    }
-
-
 }

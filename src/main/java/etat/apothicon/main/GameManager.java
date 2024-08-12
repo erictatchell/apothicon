@@ -5,6 +5,7 @@ import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
 import etat.apothicon.object.Drop;
 import etat.apothicon.object.DropManager;
+import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.ui.FontManager;
 import etat.apothicon.ui.HUD;
 import etat.apothicon.object.SuperObject;
@@ -32,6 +33,7 @@ public class GameManager {
     public MainMenu mainMenu;
     public DeathMenu deathMenu;
     public ArrayList<Drop> drops;
+    public InfernalMachine infernalMachine;
     public ZoneManager zoneManager;
     public RoundManager roundManager;
     public TileManager tileManager;
@@ -53,6 +55,7 @@ public class GameManager {
         player = new Player(ap, ap.keyIn, ap.mouseIn);
         bullets = new ArrayList<>();
         obj = new SuperObject[30];
+        infernalMachine = new InfernalMachine();
         zoneManager = new ZoneManager(ap);
         roundManager = new RoundManager(ap);
         drops = new ArrayList<>();
@@ -132,6 +135,7 @@ public class GameManager {
                 for (Zone zone : zoneManager.zones) {
                     if (ap.keyIn.debugPressed) {
                         zone.drawZoneBounds(g2, ap);
+                        infernalMachine.upgrade(player.loadout.getCurrentWeapon());
                     }
 
                     zone.draw(g2, ap);
