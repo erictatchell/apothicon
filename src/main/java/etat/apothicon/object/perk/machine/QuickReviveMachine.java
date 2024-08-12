@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 public class QuickReviveMachine extends PerkMachine {
     public QuickReviveMachine() {
 
-        this.name = "Quick Revive";
+        this.name = "quick_revive";
         this.price = 500;
         try {
             image = ImageIO.read(new File("src/main/resources/tiles/qr-stonewall.png"));

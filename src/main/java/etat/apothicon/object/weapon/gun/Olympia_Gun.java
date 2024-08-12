@@ -22,14 +22,7 @@ public class Olympia_Gun extends Gun {
                 1,
                 4.0f,
                 "src/main/resources/guns/olympia.png");
-        setImage2();
     }
 
-    public void setImage2() {
-        try {
-            this.image2 = ImageIO.read(new File("src/main/resources/guns/olympia-2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

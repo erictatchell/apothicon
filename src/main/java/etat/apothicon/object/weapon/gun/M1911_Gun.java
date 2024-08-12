@@ -22,14 +22,6 @@ public class M1911_Gun extends Gun {
                 1,
                 1.0f,
                 "src/main/resources/guns/m1911.png");
-        setImage2();
     }
 
-    public void setImage2() {
-        try {
-            this.image2 = ImageIO.read(new File("src/main/resources/guns/m1911-2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

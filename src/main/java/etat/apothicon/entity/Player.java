@@ -369,7 +369,7 @@ public class Player extends Entity {
         if (mousePosition.x > ap.screenWidth / 2) {
             return loadout.getCurrentWeapon().image;
         }
-        return loadout.getCurrentWeapon().image2;
+        return MediaManager.horizontalFlip(loadout.getCurrentWeapon().image);
     }
 
     /**

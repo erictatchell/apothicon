@@ -21,14 +21,7 @@ public class Stakeout_Gun extends Gun {
                 1,
                 2.0f,
                 "src/main/resources/guns/stakeout.png");
-        setImage2();
     }
 
-    public void setImage2() {
-        try {
-            this.image2 = ImageIO.read(new File("src/main/resources/guns/stakeout-2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

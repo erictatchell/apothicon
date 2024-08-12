@@ -52,12 +52,6 @@ public class AssetSetter {
 
     }
 
-//    public void setZombie() {
-//        ap.gameManager.roundManager.getZombies()[0] = new Zombie(ap);
-//        ap.gameManager.roundManager.getZombies()[0].worldX = 32 * ap.tileSize;
-//        ap.gameManager.roundManager.getZombies()[0].worldY = 43 * ap.tileSize;
-//    }
-
     public void setZombie(int worldX, int worldY, int zombieIndex) {
         ap.gameManager.roundManager.getZombies()[zombieIndex] = new Zombie(ap);
 

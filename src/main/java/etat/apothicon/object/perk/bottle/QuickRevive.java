@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class QuickRevive extends Perk implements Drinkable {
     public QuickRevive(Player player, Apothicon ap) {
-        super("Quick Revive", player, ap);
+        super("quick_revive", player, ap);
         render();
     }
 

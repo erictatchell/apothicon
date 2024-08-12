@@ -19,12 +19,12 @@ public class Drop extends SuperObject {
         spawned = true;
 
         // drops despawn after 25 sec
-        expireTimer = new Timer().schedule(new TimerTask() {
-            public void run() {
-                ap.gameManager.drops.remove(this);
-                System.gc();
-            }
-        }, 25000);
+//        expireTimer = new Timer().schedule(new TimerTask() {
+//            public void run() {
+//                ap.gameManager.drops.remove(this);
+//                System.gc();
+//            }
+//        }, 25000);
     }
 
 }

@@ -23,14 +23,5 @@ public class M14_Gun extends Gun {
                 1.5f,
                 "src/main/resources/guns/m14-1.png");
 
-        setImage2();
-    }
-
-    public void setImage2() {
-        try {
-            this.image2 = ImageIO.read(new File("src/main/resources/guns/m14-2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

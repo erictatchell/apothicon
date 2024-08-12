@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 public class DoubleTap extends Perk implements Drinkable {
     public DoubleTap(Player player, Apothicon ap) {
 
-        super("Double Tap 2.0", player, ap);
+        super("double_tap", player, ap);
         render();
     }
 

@@ -44,4 +44,5 @@ public enum GunSound {
     GLOCK_FIRE,
     GLOCK_RELOAD,
 
+    MP40_UPGRADED_FIRE,
 }

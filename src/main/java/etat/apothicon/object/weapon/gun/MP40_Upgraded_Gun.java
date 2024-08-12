@@ -1,15 +1,10 @@
 package etat.apothicon.object.weapon.gun;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import etat.apothicon.entity.Player;
 import etat.apothicon.utility.sound.GunSound;
 
-public class MP40_Gun extends Gun {
-    public MP40_Gun(Player player) {
+public class MP40_Upgraded_Gun extends Gun {
+    public MP40_Upgraded_Gun(Player player) {
         super(player,
                 "MP40",
                 75,
@@ -22,14 +17,10 @@ public class MP40_Gun extends Gun {
                 1,
                 1.5f,
                 "src/main/resources/guns/mp40.png");
+        this.reserve = 384;
+        this.defaultReserve = 384;
+        this.defaultAmmoPerMagazine = 64;
+        this.damage = 150;
     }
-
-    public void upgrade() {
-        name = "Mortality Provider 4000";
-        damage = 150;
-        reserve = 384;
-        fireSound = GunSound.MP40_UPGRADED_FIRE;
-    }
-
 
 }

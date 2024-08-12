@@ -285,30 +285,30 @@ public class Loadout {
      */
     public void purchasePerk(SuperObject object) {
         switch (object.name) {
-            case "Juggernog":
+            case "juggernog":
                 Juggernog jug = new Juggernog(player, ap);
                 jug.activateFor(player);
-                player.drawPurchaseText(object.name, 2000);
+                player.drawPurchaseText(object.name, 2500);
                 break;
-            case "Double Tap 2.0":
+            case "double_tap":
                 DoubleTap dt = new DoubleTap(player, ap);
                 dt.activateFor(player);
                 player.drawPurchaseText(object.name, 2000);
                 break;
-            case "Speed Cola":
+            case "speed_cola":
                 SpeedCola sc = new SpeedCola(player, ap);
                 sc.activateFor(player);
-                player.drawPurchaseText(object.name, 2000);
+                player.drawPurchaseText(object.name, 3000);
                 break;
-            case "Quick Revive":
+            case "quick_revive":
                 QuickRevive qr = new QuickRevive(player, ap);
                 qr.activateFor(player);
-                player.drawPurchaseText(object.name, 2000);
+                player.drawPurchaseText(object.name, 500);
                 break;
-            case "Mule Kick":
+            case "mule_kick":
                 MuleKick mk = new MuleKick(player, ap);
                 mk.activateFor(player);
-                player.drawPurchaseText(object.name, 2000);
+                player.drawPurchaseText(object.name, 4000);
                 break;
         }
     }

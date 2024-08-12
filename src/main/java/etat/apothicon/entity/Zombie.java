@@ -84,7 +84,7 @@ public class Zombie extends Entity {
                 hitting = false;
 
             }
-        }, 300);
+        }, 100);
     }
 
     public static void increaseDefaultHealth(int round) {
