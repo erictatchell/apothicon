@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class Juggernog extends Perk implements Drinkable {
     public Juggernog(Player player, Apothicon ap) {
-        super("Juggernog", player, ap);
+        super("juggernog", player, ap);
         render();
     }
 

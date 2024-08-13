@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 public class MuleKick extends Perk implements Drinkable {
     public MuleKick(Player player, Apothicon ap) {
 
-        super("Mule Kick", player, ap);
+        super("mule_kick", player, ap);
         render();
     }
 

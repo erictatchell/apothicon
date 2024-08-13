@@ -54,7 +54,7 @@ public class GameManager {
         dropManager = new DropManager(ap);
         player = new Player(ap, ap.keyIn, ap.mouseIn);
         bullets = new ArrayList<>();
-        obj = new SuperObject[30];
+        obj = new SuperObject[100];
         infernalMachine = new InfernalMachine();
         zoneManager = new ZoneManager(ap);
         roundManager = new RoundManager(ap);

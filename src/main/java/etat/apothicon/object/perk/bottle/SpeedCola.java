@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class SpeedCola extends Perk implements Drinkable {
     public SpeedCola(Player player, Apothicon ap) {
-        super("Speed Cola", player, ap);
+        super("speed_cola", player, ap);
         render();
     }
 
