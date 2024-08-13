@@ -68,15 +68,20 @@ public class SoundHandler implements Runnable {
     @Override
     public void run() {
         gunSounds[0] = getClass().getClassLoader().getResource("sound/m1911-fire.wav");
-        gunSounds[1] = getClass().getClassLoader().getResource("sound/m1911-reload.wav");
-        gunSounds[2] = getClass().getClassLoader().getResource("sound/olympia-fire.wav");
-        gunSounds[3] = getClass().getClassLoader().getResource("sound/olympia-reload.wav");
-        gunSounds[4] = getClass().getClassLoader().getResource("sound/m14-fire.wav");
-        gunSounds[5] = getClass().getClassLoader().getResource("sound/m14-reload.wav");
-        gunSounds[6] = getClass().getClassLoader().getResource("sound/mp40-fire.wav");
-        gunSounds[7] = getClass().getClassLoader().getResource("sound/mp40-reload.wav");
-        gunSounds[8] = getClass().getClassLoader().getResource("sound/stakeout-fire.wav");
-        gunSounds[9] = getClass().getClassLoader().getResource("sound/stakeout-reload.wav");
+        gunSounds[1] = getClass().getClassLoader().getResource("sound/m1911-pap-fire.wav");
+        gunSounds[2] = getClass().getClassLoader().getResource("sound/m1911-reload.wav");
+        gunSounds[3] = getClass().getClassLoader().getResource("sound/olympia-fire.wav");
+        gunSounds[4] = getClass().getClassLoader().getResource("sound/olympia-pap-fire.wav");
+        gunSounds[5] = getClass().getClassLoader().getResource("sound/olympia-reload.wav");
+        gunSounds[6] = getClass().getClassLoader().getResource("sound/m14-fire.wav");
+        gunSounds[7] = getClass().getClassLoader().getResource("sound/m14-pap-fire.wav");
+        gunSounds[8] = getClass().getClassLoader().getResource("sound/m14-reload.wav");
+        gunSounds[9] = getClass().getClassLoader().getResource("sound/mp40-fire.wav");
+        gunSounds[10] = getClass().getClassLoader().getResource("sound/mp40-pap-fire.wav");
+        gunSounds[11] = getClass().getClassLoader().getResource("sound/mp40-reload.wav");
+        gunSounds[12] = getClass().getClassLoader().getResource("sound/stakeout-fire.wav");
+        gunSounds[13] = getClass().getClassLoader().getResource("sound/stakeout-pap-fire.wav");
+        gunSounds[14] = getClass().getClassLoader().getResource("sound/stakeout-reload.wav");
 
         impactSounds[0] = getClass().getClassLoader().getResource("sound/collision.wav");
         impactSounds[1] = getClass().getClassLoader().getResource("sound/kill1.wav");

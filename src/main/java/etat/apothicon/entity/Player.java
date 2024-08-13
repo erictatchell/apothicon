@@ -2,6 +2,7 @@ package etat.apothicon.entity;
 
 import etat.apothicon.main.*;
 import etat.apothicon.object.Drop;
+import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.object.weapon.gun.Gun;
 import etat.apothicon.round.Zone;
 import etat.apothicon.object.SuperObject;
@@ -217,7 +218,7 @@ public class Player extends Entity {
                     }
                 }
             }
-//            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
+            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
             spriteCounter++;
             if (spriteCounter > 12) { // 12 frames
                 if (spriteNum == 1) {
@@ -276,6 +277,19 @@ public class Player extends Entity {
                     Drop drop = (Drop) obj;
                     drop.objIndex = index;
                     drop.activate();
+                }
+                case "pap" -> {
+                    InfernalMachine machine = (InfernalMachine) obj;
+                    int price = machine.getPrice(loadout.getCurrentWeapon());
+                    if (loadout.getCurrentWeapon().upgradeTier != 3) {
+                        drawPurchaseText("Upgrade Tier " + machine.getNextTier(loadout.getCurrentWeapon()),
+                                machine.getPrice(loadout.getCurrentWeapon()));
+                    }
+                    if (keyIn.fPressed && loadout.canAfford(price)) {
+                        ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
+                        loadout.purchaseUpgrade(machine, price);
+                        keyIn.fPressed = false;
+                    }
                 }
                 case "perk" -> {
                     PerkMachine perkMachine = (PerkMachine) obj;
@@ -361,14 +375,8 @@ public class Player extends Entity {
 
                 ap.tileSize, ap.tileSize, null);
 
-        if (this.purchaseString != null) {
-            g2.setColor(Color.white);
-            Font font = new Font("Arial", Font.BOLD, 16);
-            g2.setFont(font);
-
-            g2.drawString(purchaseString, ap.screenWidth / 2, ap.screenHeight / 2);
-
-        }
+        MediaManager.antialias(g2);
+        ap.gameManager.hud.drawPurchaseText(g2, this.purchaseString);
 
     }
 

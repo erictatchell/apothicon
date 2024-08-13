@@ -129,8 +129,16 @@ public class Bullet extends Entity {
                 && worldY + ap.tileSize > ap.gameManager.player.worldY - ap.gameManager.player.screenY
                 && worldY - ap.tileSize < ap.gameManager.player.worldY + ap.gameManager.player.screenY) {
 
-            g2.setColor(Color.yellow);
-            g2.fillRect(screenX, screenY, 5, 5);
+            if (gun.upgradeTier > 0) {
+                int ran = r.nextInt(2) + 1;
+                switch (ran) {
+                    case 1 -> g2.setColor(new Color(100, 0, 255));
+                    case 2 -> g2.setColor(new Color(255, 0, 50));
+                }
+            } else {
+                g2.setColor(Color.YELLOW);
+            }
+            g2.fillRect(screenX, screenY, 7, 7);
 
         }
     }

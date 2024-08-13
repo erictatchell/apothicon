@@ -1,6 +1,7 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.bottle.DoubleTap;
 import etat.apothicon.object.perk.bottle.Juggernog;
@@ -86,7 +87,7 @@ public class Loadout {
         this.fireRateMultiplier = 1.0f;
         this.defaultHealth = 150;
         this.health = 150;
-        this.points = 500;
+        this.points = 50000;
         this.maxGunNum = 2;
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
@@ -139,7 +140,9 @@ public class Loadout {
         }
         return false;
     }
-
+    public boolean canAfford(int price) {
+        return points >= price;
+    }
     public boolean canAffordPerk(PerkMachine perk) {
         return points >= perk.price;
     }
@@ -384,5 +387,10 @@ public class Loadout {
                 }
             }
         }, 4000, 50);
+    }
+
+    public void purchaseUpgrade(InfernalMachine machine, int price) {
+        spendPoints(price);
+        machine.upgrade(getCurrentWeapon());
     }
 }
