@@ -129,33 +129,32 @@ public class Gun {
     }
 
     public void handleReload() {
-        if (!reloading && reserve > 0) {
+
+        int ammoToBeReloaded = this.defaultAmmoPerMagazine - this.magazine;
+        if (ammoToBeReloaded > 0 && !reloading && reserve > 0) {
             this.reloading = true;
-            owner.ap.playSE(this.reloadSound.ordinal(), SoundType.GUN);
             this.reloadTimer = new Timer();
             this.delay = (int) (1000 * this.owner.loadout.getReloadRate() * this.reloadRate);
+
+            owner.ap.playSE(reloadSound.ordinal(), SoundType.GUN);
             reloadTimer.schedule(
                     new java.util.TimerTask() {
                         @Override
                         public void run() {
-                            reload();
+                            reload(ammoToBeReloaded);
                         }
                     },
                     this.delay);
-
         }
     }
 
-    public void reload() {
-        int ammoToBeReloaded = this.defaultAmmoPerMagazine - this.magazine;
-        if (this.reserve > 0 && ammoToBeReloaded > 0) {
-            if (this.reserve > ammoToBeReloaded) {
-                this.reserve -= ammoToBeReloaded;
-                this.magazine += ammoToBeReloaded;
-            } else {
-                this.magazine += this.reserve;
-                this.reserve = 0;
-            }
+    public void reload(int ammoToBeReloaded) {
+        if (this.reserve > ammoToBeReloaded) {
+            this.reserve -= ammoToBeReloaded;
+            this.magazine += ammoToBeReloaded;
+        } else {
+            this.magazine += this.reserve;
+            this.reserve = 0;
         }
         this.reloading = false;
     }
@@ -191,12 +190,13 @@ public class Gun {
         if (magazine == 0) {
 
             handleReload();
+
         }
     }
 
     public void upgrade() {
         this.name = upgradedName;
-        this.damage = upgradedDamage;
+        this.damage = upgradeTier == 0 ? upgradedDamage : upgradeTier * upgradedDamage;
         this.defaultAmmoPerMagazine = upgradedDefaultAmmoPerMagazine;
         this.magazine = upgradedDefaultAmmoPerMagazine;
         this.defaultReserve = upgradedDefaultReserve;
