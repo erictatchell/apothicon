@@ -34,14 +34,14 @@ public class Perk {
     public void setIcon(BufferedImage icon) {
         this.icon = icon;
     }
+    public void setUses(int uses) {
+        this.uses = uses;
+    }
 
     public int getUses() {
         return uses;
     }
 
-    public void setUses(int uses) {
-        this.uses = uses;
-    }
 
     public String getName() {
         return this.name;

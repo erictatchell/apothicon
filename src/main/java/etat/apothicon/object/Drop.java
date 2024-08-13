@@ -38,6 +38,7 @@ public class Drop extends SuperObject {
         this.flashCounter = 0;
         visible = true;
         this.angle = 0;
+        this.expireTimer = new Timer();
         this.ap = ap;
         this.type = "drop";
         this.dropType = dropType;

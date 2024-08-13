@@ -266,25 +266,32 @@ public class CollisionChecker {
         int futureY = e.worldY + (int) (e.speed * Math.sin(Math.toRadians(e.directionAngle)));
 
         for (int i = 0; i < target.length; i++) {
-            if (target[i] != null) {
-                // Get entities' solid area positions
-                Rectangle eSolidArea = new Rectangle(futureX + e.zombieSolidArea.x, futureY + e.zombieSolidArea.y,
-                        e.zombieSolidArea.width, e.zombieSolidArea.height);
-                Rectangle targetSolidArea = new Rectangle(target[i].worldX + target[i].solidArea.x,
-                        target[i].worldY + target[i].solidArea.y, target[i].solidArea.width,
-                        target[i].solidArea.height);
-                Rectangle targetHeadSolidArea = new Rectangle(target[i].worldX + target[i].headSolidArea.x,
-                        target[i].worldY + target[i].headSolidArea.y, target[i].headSolidArea.width,
-                        target[i].headSolidArea.height);
+            if (target[i] == null) {
+                continue;
+            }
+            // Get entities' solid area positions
+            e.eSolidArea.x = futureX + e.zombieSolidArea.x;
+            e.eSolidArea.y = futureY + e.zombieSolidArea.y;
+            e.eSolidArea.width = e.zombieSolidArea.width;
+            e.eSolidArea.height = e.zombieSolidArea.height;
 
-                if (eSolidArea.intersects(targetSolidArea)) {
-                    if (eSolidArea.intersects(targetHeadSolidArea)) {
-                        e.collisionIsHeadshot = true;
-                    }
-                    e.collisionOn = true;
-                    index = i;
-                    break; // Exit the loop as soon as a collision is detected
+            e.targetSolidArea.x = target[i].worldX + target[i].solidArea.x;
+            e.targetSolidArea.y = target[i].worldY + target[i].solidArea.y;
+            e.targetSolidArea.width = target[i].solidArea.width;
+            e.targetSolidArea.height = target[i].solidArea.height;
+
+            e.targetHeadSolidArea.x = target[i].worldX + target[i].headSolidArea.x;
+            e.targetHeadSolidArea.y = target[i].worldY + target[i].headSolidArea.y;
+            e.targetHeadSolidArea.width = target[i].headSolidArea.width;
+            e.targetHeadSolidArea.height = target[i].headSolidArea.height;
+
+            if (e.eSolidArea.intersects(e.targetSolidArea)) {
+                if (e.eSolidArea.intersects(e.targetHeadSolidArea)) {
+                    e.collisionIsHeadshot = true;
                 }
+                e.collisionOn = true;
+                index = i;
+                break; // Exit the loop as soon as a collision is detected
             }
         }
         return index;

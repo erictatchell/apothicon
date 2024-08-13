@@ -364,6 +364,7 @@ public class Player extends Entity {
             angle -= 180;
         }
 
+
         // decide which player side to display the weapon (left if left, right if right)
         int offset;
         if (mouseOnRightSide) {

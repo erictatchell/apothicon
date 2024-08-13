@@ -16,9 +16,11 @@ import etat.apothicon.round.RoundManager;
 public class Zombie extends Entity {
     Apothicon ap;
     public final int screenX;
+
     public final int screenY;
     Random random = new Random();
     private Timer hitDelay;
+
     public boolean hitting;
     public Zombie(Apothicon ap) {
         super(ap);

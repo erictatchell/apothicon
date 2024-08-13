@@ -17,7 +17,10 @@ public class Bullet extends Entity {
     Gun gun;
     Entity user;
     public Rectangle zombieSolidArea = new Rectangle();
-
+    public Rectangle targetSolidArea;
+    public Rectangle targetHeadSolidArea;
+    // future solid area for collision checking
+    public Rectangle eSolidArea;
     int hitZombie = 999;
     private HashMap<Integer, Integer> hitZombiesTable;
     private ArrayList<Integer> hitZombiesArray;
@@ -30,6 +33,9 @@ public class Bullet extends Entity {
         this.gun = gun;
         hitZombiesTable = new HashMap<>();
         penetrations = gun.penetration;
+        eSolidArea = new Rectangle();
+        targetSolidArea = new Rectangle();
+        targetHeadSolidArea = new Rectangle();
         solidArea.x = 15;
         solidArea.y = 15;
         solidArea.width = 1;
@@ -138,7 +144,7 @@ public class Bullet extends Entity {
             } else {
                 g2.setColor(Color.YELLOW);
             }
-            g2.fillRect(screenX, screenY, 7, 7);
+            g2.fillRect(screenX, screenY, 5, 5);
 
         }
     }
