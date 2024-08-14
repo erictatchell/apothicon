@@ -4,6 +4,7 @@ import etat.apothicon.entity.Zombie;
 import etat.apothicon.object.Drop;
 import etat.apothicon.object.DropType;
 import etat.apothicon.object.Drop_Instakill;
+import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.object.perk.machine.DoubleTapMachine;
 import etat.apothicon.object.perk.machine.JuggernogMachine;
 import etat.apothicon.object.perk.machine.MuleKickMachine;
@@ -53,6 +54,9 @@ public class AssetSetter {
         ap.gameManager.obj[i] = new Olympia_WallBuy();
         ap.gameManager.obj[i].worldY = 41 * ap.tileSize;
         ap.gameManager.obj[i++].worldX = 40 * ap.tileSize;
+        ap.gameManager.obj[i] = new InfernalMachine();
+        ap.gameManager.obj[i].worldX = 7 * ap.tileSize;
+        ap.gameManager.obj[i++].worldY = 2 * ap.tileSize;
 
     }
 

@@ -15,20 +15,20 @@ public class Stakeout_Gun extends Gun {
                 8,
                 32,
                 5.0f,
+                1,
+                2.0f,
+                "src/main/resources/guns/stakeout.png",
                 FireType.SEMI_AUTO,
                 GunSound.STAKEOUT_FIRE,
                 GunSound.STAKEOUT_RELOAD,
-                1,
-                2.0f,
-                "src/main/resources/guns/stakeout.png");
-        setImage2();
+                "Apprehension",
+                "src/main/resources/guns/stakeout-pap.png",
+                1000,
+                10,
+                70,
+                GunSound.STAKEOUT_UPGRADED_FIRE
+        );
     }
 
-    public void setImage2() {
-        try {
-            this.image2 = ImageIO.read(new File("src/main/resources/guns/stakeout-2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

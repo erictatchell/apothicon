@@ -5,6 +5,7 @@ import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
 import etat.apothicon.object.Drop;
 import etat.apothicon.object.DropManager;
+import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.ui.FontManager;
 import etat.apothicon.ui.HUD;
 import etat.apothicon.object.SuperObject;
@@ -32,6 +33,7 @@ public class GameManager {
     public MainMenu mainMenu;
     public DeathMenu deathMenu;
     public ArrayList<Drop> drops;
+    public InfernalMachine infernalMachine;
     public ZoneManager zoneManager;
     public RoundManager roundManager;
     public TileManager tileManager;
@@ -52,7 +54,8 @@ public class GameManager {
         dropManager = new DropManager(ap);
         player = new Player(ap, ap.keyIn, ap.mouseIn);
         bullets = new ArrayList<>();
-        obj = new SuperObject[30];
+        obj = new SuperObject[100];
+        infernalMachine = new InfernalMachine();
         zoneManager = new ZoneManager(ap);
         roundManager = new RoundManager(ap);
         drops = new ArrayList<>();
@@ -68,9 +71,9 @@ public class GameManager {
     public void update() {
         switch (gameState) {
             case PLAYING -> {
-                if (!player.dead) {
+                if (!player.isDead()) {
                     player.update();
-                    hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
+                    hud.updateHUD(player.getLoadout().getCurrentWeapon(), player.getLoadout().getPoints(), player.getLoadout().getPerks());
 
                     roundManager.update(zoneManager.currentZone);
                     for (int i = 0; i < bullets.size(); i++) {
@@ -108,8 +111,8 @@ public class GameManager {
 
     public void resetGame() {
         dead = false;
-        player.dead = false;
-        player.loadout.reset();
+        player.setDead(false);
+        player.getLoadout().reset();
         player.reset();
         roundManager.reset();
         // reset doors, map progression etc
@@ -132,6 +135,7 @@ public class GameManager {
                 for (Zone zone : zoneManager.zones) {
                     if (ap.keyIn.debugPressed) {
                         zone.drawZoneBounds(g2, ap);
+                        infernalMachine.upgrade(player.getLoadout().getCurrentWeapon());
                     }
 
                     zone.draw(g2, ap);

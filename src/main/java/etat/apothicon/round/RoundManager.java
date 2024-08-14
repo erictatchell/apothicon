@@ -28,7 +28,6 @@ public class RoundManager {
 
     public RoundManager(Apothicon ap) {
         this.ap = ap;
-
         this.setup();
 
     }
@@ -61,7 +60,7 @@ public class RoundManager {
                 || (totalZombiesKilled == maxTotalZombiesForThisRound);
         if (allowedToSpawn) {
             ZombieSpawn spawn = currentZone.spawns.get(r);
-            if (!spawn.spawning) {
+            if (!spawn.isSpawning()) {
                 spawnZombie(spawn);
             }
 

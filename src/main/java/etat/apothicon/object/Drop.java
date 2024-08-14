@@ -41,6 +41,7 @@ public class Drop extends SuperObject {
         this.flashCounter = 0;
         visible = true;
         this.angle = 0;
+        this.expireTimer = new Timer();
         this.ap = ap;
         this.type = "drop";
         this.dropType = dropType;
@@ -110,13 +111,13 @@ public class Drop extends SuperObject {
                 worldY + ap.tileSize > ap.gameManager.player.worldY - ap.gameManager.player.screenY &&
                 worldY - ap.tileSize < ap.gameManager.player.worldY + ap.gameManager.player.screenY &&
                 spawned) {
-            if (flashing) {
-                flash();
-            }
-            if (visible) {
-                g2.drawImage(MediaManager.rotateImageByDegrees(this.auraImage, calculateAuraAngle()), screenX, screenY, ap.tileSize, ap.tileSize, null);
-                g2.drawImage(this.image, screenX, screenY, ap.tileSize, ap.tileSize, null);
-            }
+//            if (flashing) {
+//                flash();
+//            }
+//            if (visible) {
+//                g2.drawImage(MediaManager.rotateImageByDegrees(this.auraImage, calculateAuraAngle()), screenX, screenY, ap.tileSize, ap.tileSize, null);
+//                g2.drawImage(this.image, screenX, screenY, ap.tileSize, ap.tileSize, null);
+//            }
 
         }
     }

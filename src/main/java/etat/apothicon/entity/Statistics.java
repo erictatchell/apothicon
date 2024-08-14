@@ -18,7 +18,7 @@ public class Statistics {
         this.player = player;
         this.kills = 0;
         this.headshots = 0;
-        this.totalPoints = player.loadout.getPoints();
+        this.totalPoints = player.getLoadout().getPoints();
         this.pointsSpent = 0;
         this.perksBought = 0;
         this.shotsFired = 0;

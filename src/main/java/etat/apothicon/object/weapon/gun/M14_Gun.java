@@ -16,21 +16,19 @@ public class M14_Gun extends Gun {
                 8,
                 92,
                 1.0f,
+                1,
+                1.5f,
+                "src/main/resources/guns/m14-1.png",
                 FireType.SEMI_AUTO,
                 GunSound.M14_FIRE,
                 GunSound.M14_RELOAD,
-                1,
-                1.5f,
-                "src/main/resources/guns/m14-1.png");
+                "Ember",
+                "src/main/resources/guns/m14-pap.png",
+                300,
+                144,
+                12,
+                GunSound.M14_UPGRADED_FIRE
+        );
 
-        setImage2();
-    }
-
-    public void setImage2() {
-        try {
-            this.image2 = ImageIO.read(new File("src/main/resources/guns/m14-2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

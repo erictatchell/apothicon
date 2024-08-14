@@ -16,20 +16,18 @@ public class Olympia_Gun extends Gun {
                 2,
                 32,
                 3.0f,
+                1,
+                4.0f,
+                "src/main/resources/guns/olympia.png",
                 FireType.SEMI_AUTO,
                 GunSound.OLYMPIA_FIRE,
                 GunSound.OLYMPIA_RELOAD,
-                1,
-                4.0f,
-                "src/main/resources/guns/olympia.png");
-        setImage2();
-    }
-
-    public void setImage2() {
-        try {
-            this.image2 = ImageIO.read(new File("src/main/resources/guns/olympia-2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                "Crete 725",
+                "src/main/resources/guns/olympia-pap.png",
+                1000,
+                50,
+                2,
+                GunSound.OLYMPIA_UPGRADED_FIRE
+        );
     }
 }

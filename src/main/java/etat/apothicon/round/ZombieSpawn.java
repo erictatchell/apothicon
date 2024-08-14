@@ -12,15 +12,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ZombieSpawn {
-    public int worldX, worldY;
+    private int worldX, worldY;
     private Zone parentZone;
-    public boolean spawning;
-
+    private boolean spawning;
     private Timer spawnDelay;
-    private RoundManager roundManager;
     private BufferedImage image;
     private Random random = new Random();
-
 
     public ZombieSpawn(Zone parent, String imagePath, int worldX, int worldY) {
         this.parentZone = parent;
@@ -59,5 +56,28 @@ public class ZombieSpawn {
             g2.drawImage(this.image, screenX, screenY, ap.tileSize, ap.tileSize, null);
 
         }
+    }
+    public int getWorldX() {
+        return worldX;
+    }
+
+    public void setWorldX(int worldX) {
+        this.worldX = worldX;
+    }
+
+    public int getWorldY() {
+        return worldY;
+    }
+
+    public void setWorldY(int worldY) {
+        this.worldY = worldY;
+    }
+
+    public boolean isSpawning() {
+        return spawning;
+    }
+
+    public void setSpawning(boolean spawning) {
+        this.spawning = spawning;
     }
 }

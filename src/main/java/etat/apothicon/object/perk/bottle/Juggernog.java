@@ -1,5 +1,6 @@
 package etat.apothicon.object.perk.bottle;
 
+import etat.apothicon.entity.Loadout;
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
 import java.io.File;
@@ -8,7 +9,7 @@ import javax.imageio.ImageIO;
 
 public class Juggernog extends Perk implements Drinkable {
     public Juggernog(Player player, Apothicon ap) {
-        super("Juggernog", player, ap);
+        super("juggernog", player, ap);
         render();
     }
 
@@ -22,10 +23,11 @@ public class Juggernog extends Perk implements Drinkable {
 
     @Override
     public void activateFor(Player customer) {
-        customer.loadout.setHealth(250);
-        customer.loadout.setDefaultHealth(250);
-        customer.loadout.addPerk(this);
-        customer.loadout.spendPoints(2500);
-        customer.loadout.hasJuggernog = true;
+        Loadout customerLoadout = customer.getLoadout();
+        customerLoadout.setHealth(250);
+        customerLoadout.setDefaultHealth(250);
+        customerLoadout.addPerk(this);
+        customerLoadout.spendPoints(2500);
+        customerLoadout.hasJuggernog = true;
     }
 }

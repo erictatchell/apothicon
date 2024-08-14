@@ -16,21 +16,24 @@ import javax.imageio.ImageIO;
 public class Gun {
 
     String name;
+    String upgradedName;
     public BufferedImage image;
+    public String upgradedImagePath;
     Player owner;
-
-    // for when mousex goes over the middle, prevents upside down images
-    public BufferedImage image2;
-
     public GunSound fireSound;
+    public GunSound upgradedFireSound;
     public GunSound reloadSound;
+    public int upgradeTier;
 
     int damage;
+    public int upgradedDamage;
     boolean reloading = false;
     int delay;
     public int bullet;
     public int defaultAmmoPerMagazine;
+    public int upgradedDefaultAmmoPerMagazine;
     public int magazine;
+    public int upgradedDefaultReserve;
     public int reserve;
     public int defaultReserve;
     public int penetration;
@@ -57,15 +60,31 @@ public class Gun {
      * @param reloadRate
      * @param imagePath
      */
-    public Gun(Player owner, String name, int damage, int defaultAmmoPerMagazine, int reserve, float fireRate,
-            FireType fireType,
-            GunSound fireSound,
-            GunSound reloadSound,
-            int range, float reloadRate, String imagePath) {
+    public Gun(Player owner,
+               String name,
+               int damage,
+               int defaultAmmoPerMagazine,
+               int reserve,
+               float fireRate,
+               int range,
+               float reloadRate,
+
+               String imagePath,
+               FireType fireType,
+               GunSound fireSound,
+               GunSound reloadSound,
+
+               // when upgraded
+               String upgradedName,
+               String upgradedImagePath,
+               int upgradedDamage,
+               int upgradedDefaultReserve,
+               int upgradedDefaultAmmoPerMagazine,
+               GunSound upgradedFireSound
+    ) {
         this.owner = owner;
         this.name = name;
         this.damage = damage;
-
         this.defaultAmmoPerMagazine = defaultAmmoPerMagazine;
         this.magazine = defaultAmmoPerMagazine;
         this.reserve = reserve;
@@ -76,9 +95,16 @@ public class Gun {
         this.fireRate = fireRate;
         this.reloadRate = reloadRate;
         this.range = range;
-
         this.penetration = 2;
         this.fireDelay = 10 * fireRate;
+
+        this.upgradedDamage = upgradedDamage;
+        this.upgradedFireSound = upgradedFireSound;
+        this.upgradedName = upgradedName;
+        this.upgradedDefaultAmmoPerMagazine = upgradedDefaultAmmoPerMagazine;
+        this.upgradedDefaultReserve = upgradedDefaultReserve;
+        this.upgradedImagePath = upgradedImagePath;
+
         try {
             this.image = ImageIO.read(new File(imagePath));
         } catch (IOException e) {
@@ -103,33 +129,32 @@ public class Gun {
     }
 
     public void handleReload() {
-        if (!reloading && reserve > 0) {
+
+        int ammoToBeReloaded = this.defaultAmmoPerMagazine - this.magazine;
+        if (ammoToBeReloaded > 0 && !reloading && reserve > 0) {
             this.reloading = true;
-            owner.ap.playSE(this.reloadSound.ordinal(), SoundType.GUN);
             this.reloadTimer = new Timer();
-            this.delay = (int) (1000 * this.owner.loadout.getReloadRate() * this.reloadRate);
+            this.delay = (int) (1000 * this.owner.getLoadout().getReloadRate() * this.reloadRate);
+
+            owner.ap.playSE(reloadSound.ordinal(), SoundType.GUN);
             reloadTimer.schedule(
                     new java.util.TimerTask() {
                         @Override
                         public void run() {
-                            reload();
+                            reload(ammoToBeReloaded);
                         }
                     },
                     this.delay);
-
         }
     }
 
-    public void reload() {
-        int ammoToBeReloaded = this.defaultAmmoPerMagazine - this.magazine;
-        if (this.reserve > 0 && ammoToBeReloaded > 0) {
-            if (this.reserve > ammoToBeReloaded) {
-                this.reserve -= ammoToBeReloaded;
-                this.magazine += ammoToBeReloaded;
-            } else {
-                this.magazine += this.reserve;
-                this.reserve = 0;
-            }
+    public void reload(int ammoToBeReloaded) {
+        if (this.reserve > ammoToBeReloaded) {
+            this.reserve -= ammoToBeReloaded;
+            this.magazine += ammoToBeReloaded;
+        } else {
+            this.magazine += this.reserve;
+            this.reserve = 0;
         }
         this.reloading = false;
     }
@@ -141,9 +166,9 @@ public class Gun {
         bullet1.set(owner.worldX + 24, owner.worldY + this.owner.ap.tileSize / 2, dir, true, owner);
 
         owner.ap.gameManager.bullets.add(bullet1);
-        owner.statistics.addShotFired();
+        owner.getStatistics().addShotFired();
 
-        if (this.owner.loadout.hasDoubleTap) {
+        if (this.owner.getLoadout().hasDoubleTap) {
 
             Bullet bullet2 = new Bullet(owner.ap, this);
             bullet2.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner);
@@ -165,6 +190,22 @@ public class Gun {
         if (magazine == 0) {
 
             handleReload();
+
+        }
+    }
+
+    public void upgrade() {
+        this.name = upgradedName;
+        this.damage = upgradeTier == 0 ? upgradedDamage : upgradeTier * upgradedDamage;
+        this.defaultAmmoPerMagazine = upgradedDefaultAmmoPerMagazine;
+        this.magazine = upgradedDefaultAmmoPerMagazine;
+        this.defaultReserve = upgradedDefaultReserve;
+        this.reserve = upgradedDefaultReserve;
+        this.fireSound = upgradedFireSound;
+        try {
+            this.image = ImageIO.read(new File(upgradedImagePath));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

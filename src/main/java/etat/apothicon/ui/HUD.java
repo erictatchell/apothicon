@@ -32,9 +32,9 @@ public class HUD {
     }
 
     private void setup() {
-        this.currentWeaponMagazine = Integer.toString(ap.gameManager.player.loadout.getCurrentWeapon().getMagazine());
-        this.currentWeaponReserve = Integer.toString(ap.gameManager.player.loadout.getCurrentWeapon().getReserve());
-        this.perks = ap.gameManager.player.loadout.getPerks();
+        this.currentWeaponMagazine = Integer.toString(ap.gameManager.player.getLoadout().getCurrentWeapon().getMagazine());
+        this.currentWeaponReserve = Integer.toString(ap.gameManager.player.getLoadout().getCurrentWeapon().getReserve());
+        this.perks = ap.gameManager.player.getLoadout().getPerks();
         try {
             gunSplosh = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
             pointSplosh = ImageIO.read(new File("src/main/resources/blood/pointSplosh.png"));
@@ -113,7 +113,7 @@ public class HUD {
                 ap.screenHeight - 14);
 
         g2.drawString(ap.gameManager.zoneManager.currentZone.getName(), 10, 30);
-        g2.drawString(Integer.toString(ap.gameManager.player.loadout.getHealth()), 10, 100);
+        g2.drawString(Integer.toString(ap.gameManager.player.getLoadout().getHealth()), 10, 100);
 
 
         int pointTextWidth = (g2.getFontMetrics().stringWidth(points));
@@ -130,5 +130,47 @@ public class HUD {
 
         g2.dispose();
     }
+    public int getXForCenteredText(Graphics2D g2, String text) {
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return ap.screenWidth / 2 - length / 2;
+    }
+
+    // chatgpt helped with translucent black rectangle
+    public void drawPurchaseText(Graphics2D g2, String purchaseString) {
+        if (purchaseString != null) {
+            // Set the font and get the font metrics
+            g2.setFont(FontManager.fty24);
+            FontMetrics fm = g2.getFontMetrics();
+
+            // Calculate the position for the text
+            int x = getXForCenteredText(g2, purchaseString);
+            int y = ap.screenHeight - ap.screenHeight / 4;
+
+            // Calculate the size of the rectangle based on the text and font size
+            int padding = 10; // padding around the text
+            int textWidth = fm.stringWidth(purchaseString);
+            int textHeight = fm.getAscent() - fm.getDescent(); // Approximate height based on font size
+
+            // Save the current composite
+            Composite originalComposite = g2.getComposite();
+
+            // Set the composite for semi-transparent drawing
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f)); // 0.5f means 50% transparency
+
+            // Set the color to black for the rectangle
+            g2.setColor(Color.BLACK);
+
+            // Draw the rectangle behind the text
+            g2.fillRect(x - padding, y - 2 * textHeight, textWidth + 2 * padding, textHeight + 2 * padding);
+
+            // Restore the original composite
+            g2.setComposite(originalComposite);
+
+            // Draw the text
+            g2.setColor(Color.WHITE);
+            g2.drawString(purchaseString, x, y);
+        }
+    }
+
 
 }

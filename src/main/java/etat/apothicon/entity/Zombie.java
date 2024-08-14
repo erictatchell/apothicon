@@ -14,12 +14,13 @@ import etat.apothicon.main.Apothicon;
 import etat.apothicon.round.RoundManager;
 
 public class Zombie extends Entity {
-    Apothicon ap;
-    public final int screenX;
-    public final int screenY;
-    Random random = new Random();
+    private Apothicon ap;
+    private final int screenX;
+    private final int screenY;
+    private Random random = new Random();
     private Timer hitDelay;
-    public boolean hitting;
+
+    private boolean hitting;
     public Zombie(Apothicon ap) {
         super(ap);
         direction = "down";
@@ -72,19 +73,20 @@ public class Zombie extends Entity {
         hitDelay.schedule(new TimerTask() {
             @Override
             public void run() {
+                Loadout loadout = e.getLoadout();
                 ap.gameManager.cc.checkPlayer(e);
-                if (collisionOn && !e.inLastStand) {
-                    e.loadout.health -= 50;
-                    e.loadout.healing = false;
-                    if (e.loadout.loadoutTimer != null) {
-                        e.loadout.loadoutTimer.cancel();
+                if (collisionOn && !e.isInLastStand()) {
+                    loadout.health -= 50;
+                    loadout.healing = false;
+                    if (loadout.loadoutTimer != null) {
+                        loadout.loadoutTimer.cancel();
                     }
                 }
 
                 hitting = false;
 
             }
-        }, 300);
+        }, 100);
     }
 
     public static void increaseDefaultHealth(int round) {
@@ -93,6 +95,14 @@ public class Zombie extends Entity {
         }
         else defaultHealth *= 1.1f;
 
+    }
+
+    public boolean isHitting() {
+        return hitting;
+    }
+
+    public void setHitting(boolean hitting) {
+        this.hitting = hitting;
     }
 
     public void setAction() {

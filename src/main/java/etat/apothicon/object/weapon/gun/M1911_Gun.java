@@ -16,20 +16,19 @@ public class M1911_Gun extends Gun {
                 8,
                 32,
                 1.0f,
+                1,
+                1.0f,
+                "src/main/resources/guns/m1911.png",
                 FireType.SEMI_AUTO,
                 GunSound.M1911_FIRE,
                 GunSound.M1911_RELOAD,
-                1,
-                1.0f,
-                "src/main/resources/guns/m1911.png");
-        setImage2();
+                "Abel & Aubrey",
+                "src/main/resources/guns/m1911-pap.png",
+                400,
+                50,
+                6,
+                GunSound.M1911_UPGRADED_FIRE
+                );
     }
 
-    public void setImage2() {
-        try {
-            this.image2 = ImageIO.read(new File("src/main/resources/guns/m1911-2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

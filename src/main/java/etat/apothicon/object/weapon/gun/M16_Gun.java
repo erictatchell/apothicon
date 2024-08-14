@@ -16,20 +16,18 @@ public class M16_Gun extends Gun {
                 30,
                 180,
                 1.0f,
+                1,
+                1.0f,
+                "src/main/resources/guns/m16.png",
                 FireType.BURST,
                 GunSound.M16_FIRE,
                 GunSound.M16_RELOAD,
-                1,
-                1.0f,
-                "src/main/resources/guns/m16.png");
-        setImage2();
-    }
-
-    public void setImage2() {
-        try {
-            this.image2 = ImageIO.read(new File("src/main/resources/guns/m16-2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                "Emancipator 16000",
+                "src/main/resources/guns/m16-pap.png",
+                100,
+                360,
+                40,
+                GunSound.M16_UPGRADED_FIRE
+                );
     }
 }

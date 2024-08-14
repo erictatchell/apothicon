@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 
 public class JuggernogMachine extends PerkMachine {
     public JuggernogMachine() {
-        this.name = "Juggernog";
+        this.name = "juggernog";
         this.price = 2500;
         try {
             image = ImageIO.read(new File("src/main/resources/perks/juggernog-machine.png"));

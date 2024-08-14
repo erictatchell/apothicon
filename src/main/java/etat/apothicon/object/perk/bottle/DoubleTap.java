@@ -1,5 +1,6 @@
 package etat.apothicon.object.perk.bottle;
 
+import etat.apothicon.entity.Loadout;
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
 import java.io.File;
@@ -9,7 +10,7 @@ import javax.imageio.ImageIO;
 public class DoubleTap extends Perk implements Drinkable {
     public DoubleTap(Player player, Apothicon ap) {
 
-        super("Double Tap 2.0", player, ap);
+        super("double_tap", player, ap);
         render();
     }
 
@@ -23,10 +24,11 @@ public class DoubleTap extends Perk implements Drinkable {
 
     @Override
     public void activateFor(Player customer) {
+        Loadout customerLoadout = customer.getLoadout();
 
-        customer.loadout.setFireRateMultiplier(1.5f);
-        customer.loadout.addPerk(this);
-        customer.loadout.spendPoints(2000);
-        customer.loadout.hasDoubleTap = true;
+        customerLoadout.setFireRateMultiplier(1.5f);
+        customerLoadout.addPerk(this);
+        customerLoadout.spendPoints(2000);
+        customerLoadout.hasDoubleTap = true;
     }
 }

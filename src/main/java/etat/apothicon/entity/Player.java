@@ -2,6 +2,7 @@ package etat.apothicon.entity;
 
 import etat.apothicon.main.*;
 import etat.apothicon.object.Drop;
+import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.object.weapon.gun.Gun;
 import etat.apothicon.round.Zone;
 import etat.apothicon.object.SuperObject;
@@ -25,24 +26,19 @@ import javax.swing.SwingUtilities;
 
 public class Player extends Entity {
 
-    KeyInput keyIn;
-    MouseInput mouseIn;
-    public final Apothicon ap;
-
-    public Loadout loadout;
-
+    private KeyInput keyIn;
+    private MouseInput mouseIn;
+    private Loadout loadout;
     private String purchaseString = null;
-
-    public Statistics statistics;
+    private Statistics statistics;
+    private int perkOffset = 16;
+    private int slotX = 16;
+    private boolean dead = false;
+    private boolean inLastStand = false;
 
     public final int screenX;
     public final int screenY;
-    // for player perks. gross
-    private int perkOffset = 16;
-    private int slotX = 16;
-    public boolean dead = false;
-    protected boolean inLastStand = false;
-
+    public final Apothicon ap;
 
     public Player(Apothicon ap, KeyInput keyIn, MouseInput mouseIn) {
         super(ap);
@@ -217,7 +213,7 @@ public class Player extends Entity {
                     }
                 }
             }
-//            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
+            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
             spriteCounter++;
             if (spriteCounter > 12) { // 12 frames
                 if (spriteNum == 1) {
@@ -276,6 +272,19 @@ public class Player extends Entity {
                     Drop drop = (Drop) obj;
                     drop.objIndex = index;
                     drop.activate();
+                }
+                case "pap" -> {
+                    InfernalMachine machine = (InfernalMachine) obj;
+                    int price = machine.getPrice(loadout.getCurrentWeapon());
+                    if (loadout.getCurrentWeapon().upgradeTier != 3) {
+                        drawPurchaseText("Upgrade Tier " + machine.getNextTier(loadout.getCurrentWeapon()),
+                                machine.getPrice(loadout.getCurrentWeapon()));
+                    }
+                    if (keyIn.fPressed && loadout.canAfford(price)) {
+                        ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
+                        loadout.purchaseUpgrade(machine, price);
+                        keyIn.fPressed = false;
+                    }
                 }
                 case "perk" -> {
                     PerkMachine perkMachine = (PerkMachine) obj;
@@ -350,6 +359,7 @@ public class Player extends Entity {
             angle -= 180;
         }
 
+
         // decide which player side to display the weapon (left if left, right if right)
         int offset;
         if (mouseOnRightSide) {
@@ -361,14 +371,8 @@ public class Player extends Entity {
 
                 ap.tileSize, ap.tileSize, null);
 
-        if (this.purchaseString != null) {
-            g2.setColor(Color.white);
-            Font font = new Font("Arial", Font.BOLD, 16);
-            g2.setFont(font);
-
-            g2.drawString(purchaseString, ap.screenWidth / 2, ap.screenHeight / 2);
-
-        }
+        MediaManager.antialias(g2);
+        ap.gameManager.hud.drawPurchaseText(g2, this.purchaseString);
 
     }
 
@@ -384,7 +388,7 @@ public class Player extends Entity {
         if (mousePosition.x > ap.screenWidth / 2) {
             return loadout.getCurrentWeapon().image;
         }
-        return loadout.getCurrentWeapon().image2;
+        return MediaManager.horizontalFlip(loadout.getCurrentWeapon().image);
     }
 
 
@@ -408,5 +412,33 @@ public class Player extends Entity {
 
     public void setPerkOffset(int perkOffset) {
         this.perkOffset = perkOffset;
+    }
+
+    public Loadout getLoadout() {
+        return loadout;
+    }
+
+    public int getPerkOffset() {
+        return perkOffset;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public boolean isInLastStand() {
+        return inLastStand;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    public void setInLastStand(boolean inLastStand) {
+        this.inLastStand = inLastStand;
+    }
+
+    public Statistics getStatistics() {
+        return statistics;
     }
 }

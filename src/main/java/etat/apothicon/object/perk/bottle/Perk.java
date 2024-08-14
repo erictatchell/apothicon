@@ -19,7 +19,7 @@ public class Perk {
         this.player = player;
         this.ap = ap;
         this.name = name;
-        this.perkID = player.loadout.getPerks().size();
+        this.perkID = player.getLoadout().getPerks().size();
         this.player.incrementPerkOffset();
     }
 
@@ -34,14 +34,14 @@ public class Perk {
     public void setIcon(BufferedImage icon) {
         this.icon = icon;
     }
+    public void setUses(int uses) {
+        this.uses = uses;
+    }
 
     public int getUses() {
         return uses;
     }
 
-    public void setUses(int uses) {
-        this.uses = uses;
-    }
 
     public String getName() {
         return this.name;

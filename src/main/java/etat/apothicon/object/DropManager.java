@@ -35,11 +35,6 @@ public class DropManager {
         drops.add(drop);
         drop.spawned = true;
 
-
-
-        // drops despawn after 30 sec
-        drop.expireTimer = new Timer();
-
         drop.expireTimer.schedule(new TimerTask() {
             @Override
             public void run() {

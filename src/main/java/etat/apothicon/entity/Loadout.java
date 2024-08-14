@@ -1,6 +1,7 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.bottle.DoubleTap;
 import etat.apothicon.object.perk.bottle.Juggernog;
@@ -86,7 +87,7 @@ public class Loadout {
         this.fireRateMultiplier = 1.0f;
         this.defaultHealth = 150;
         this.health = 150;
-        this.points = 500;
+        this.points = 50000;
         this.maxGunNum = 2;
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
@@ -139,7 +140,9 @@ public class Loadout {
         }
         return false;
     }
-
+    public boolean canAfford(int price) {
+        return points >= price;
+    }
     public boolean canAffordPerk(PerkMachine perk) {
         return points >= perk.price;
     }
@@ -157,7 +160,7 @@ public class Loadout {
                 total+= 50;
             }
         }
-        player.statistics.addPoints(total);
+        player.getStatistics().addPoints(total);
     }
 
     public void fireWeapon() {
@@ -218,7 +221,7 @@ public class Loadout {
     }
 
     public void spendPoints(int p) {
-        player.statistics.addSpentPoints(p);
+        player.getStatistics().addSpentPoints(p);
         this.points -= p;
     }
 
@@ -285,30 +288,30 @@ public class Loadout {
      */
     public void purchasePerk(SuperObject object) {
         switch (object.name) {
-            case "Juggernog":
+            case "juggernog":
                 Juggernog jug = new Juggernog(player, ap);
                 jug.activateFor(player);
-                player.drawPurchaseText(object.name, 2000);
+                player.drawPurchaseText(object.name, 2500);
                 break;
-            case "Double Tap 2.0":
+            case "double_tap":
                 DoubleTap dt = new DoubleTap(player, ap);
                 dt.activateFor(player);
                 player.drawPurchaseText(object.name, 2000);
                 break;
-            case "Speed Cola":
+            case "speed_cola":
                 SpeedCola sc = new SpeedCola(player, ap);
                 sc.activateFor(player);
-                player.drawPurchaseText(object.name, 2000);
+                player.drawPurchaseText(object.name, 3000);
                 break;
-            case "Quick Revive":
+            case "quick_revive":
                 QuickRevive qr = new QuickRevive(player, ap);
                 qr.activateFor(player);
-                player.drawPurchaseText(object.name, 2000);
+                player.drawPurchaseText(object.name, 500);
                 break;
-            case "Mule Kick":
+            case "mule_kick":
                 MuleKick mk = new MuleKick(player, ap);
                 mk.activateFor(player);
-                player.drawPurchaseText(object.name, 2000);
+                player.drawPurchaseText(object.name, 4000);
                 break;
         }
     }
@@ -384,5 +387,10 @@ public class Loadout {
                 }
             }
         }, 4000, 50);
+    }
+
+    public void purchaseUpgrade(InfernalMachine machine, int price) {
+        spendPoints(price);
+        machine.upgrade(getCurrentWeapon());
     }
 }
