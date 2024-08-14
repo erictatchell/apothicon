@@ -1,7 +1,9 @@
 package etat.apothicon.object.perk.bottle;
 
+import etat.apothicon.entity.Loadout;
 import etat.apothicon.entity.Player;
 import etat.apothicon.main.Apothicon;
+
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -23,11 +25,11 @@ public class MuleKick extends Perk implements Drinkable {
 
     @Override
     public void activateFor(Player customer) {
-
-        customer.loadout.setMaxGunNum(3);
-        customer.loadout.addPerk(this);
-        customer.loadout.spendPoints(4000);
-        customer.loadout.hasMuleKick = true;
+        Loadout customerLoadout = customer.getLoadout();
+        customerLoadout.setMaxGunNum(3);
+        customerLoadout.addPerk(this);
+        customerLoadout.spendPoints(4000);
+        customerLoadout.hasMuleKick = true;
     }
 }
 

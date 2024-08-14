@@ -71,9 +71,9 @@ public class GameManager {
     public void update() {
         switch (gameState) {
             case PLAYING -> {
-                if (!player.dead) {
+                if (!player.isDead()) {
                     player.update();
-                    hud.updateHUD(player.loadout.getCurrentWeapon(), player.loadout.getPoints(), player.loadout.getPerks());
+                    hud.updateHUD(player.getLoadout().getCurrentWeapon(), player.getLoadout().getPoints(), player.getLoadout().getPerks());
 
                     roundManager.update(zoneManager.currentZone);
                     for (int i = 0; i < bullets.size(); i++) {
@@ -111,8 +111,8 @@ public class GameManager {
 
     public void resetGame() {
         dead = false;
-        player.dead = false;
-        player.loadout.reset();
+        player.setDead(false);
+        player.getLoadout().reset();
         player.reset();
         roundManager.reset();
         // reset doors, map progression etc
@@ -135,7 +135,7 @@ public class GameManager {
                 for (Zone zone : zoneManager.zones) {
                     if (ap.keyIn.debugPressed) {
                         zone.drawZoneBounds(g2, ap);
-                        infernalMachine.upgrade(player.loadout.getCurrentWeapon());
+                        infernalMachine.upgrade(player.getLoadout().getCurrentWeapon());
                     }
 
                     zone.draw(g2, ap);

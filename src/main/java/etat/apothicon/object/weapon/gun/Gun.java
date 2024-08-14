@@ -134,7 +134,7 @@ public class Gun {
         if (ammoToBeReloaded > 0 && !reloading && reserve > 0) {
             this.reloading = true;
             this.reloadTimer = new Timer();
-            this.delay = (int) (1000 * this.owner.loadout.getReloadRate() * this.reloadRate);
+            this.delay = (int) (1000 * this.owner.getLoadout().getReloadRate() * this.reloadRate);
 
             owner.ap.playSE(reloadSound.ordinal(), SoundType.GUN);
             reloadTimer.schedule(
@@ -166,9 +166,9 @@ public class Gun {
         bullet1.set(owner.worldX + 24, owner.worldY + this.owner.ap.tileSize / 2, dir, true, owner);
 
         owner.ap.gameManager.bullets.add(bullet1);
-        owner.statistics.addShotFired();
+        owner.getStatistics().addShotFired();
 
-        if (this.owner.loadout.hasDoubleTap) {
+        if (this.owner.getLoadout().hasDoubleTap) {
 
             Bullet bullet2 = new Bullet(owner.ap, this);
             bullet2.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner);

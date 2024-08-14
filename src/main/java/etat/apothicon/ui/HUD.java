@@ -31,9 +31,9 @@ public class HUD {
     }
 
     private void setup() {
-        this.currentWeaponMagazine = Integer.toString(ap.gameManager.player.loadout.getCurrentWeapon().getMagazine());
-        this.currentWeaponReserve = Integer.toString(ap.gameManager.player.loadout.getCurrentWeapon().getReserve());
-        this.perks = ap.gameManager.player.loadout.getPerks();
+        this.currentWeaponMagazine = Integer.toString(ap.gameManager.player.getLoadout().getCurrentWeapon().getMagazine());
+        this.currentWeaponReserve = Integer.toString(ap.gameManager.player.getLoadout().getCurrentWeapon().getReserve());
+        this.perks = ap.gameManager.player.getLoadout().getPerks();
         try {
             gunSplosh = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
             pointSplosh = ImageIO.read(new File("src/main/resources/blood/pointSplosh.png"));
@@ -102,7 +102,7 @@ public class HUD {
                 ap.screenHeight - 14);
 
         g2.drawString(ap.gameManager.zoneManager.currentZone.getName(), 10, 30);
-        g2.drawString(Integer.toString(ap.gameManager.player.loadout.getHealth()), 10, 100);
+        g2.drawString(Integer.toString(ap.gameManager.player.getLoadout().getHealth()), 10, 100);
 
 
         int pointTextWidth = (g2.getFontMetrics().stringWidth(points));

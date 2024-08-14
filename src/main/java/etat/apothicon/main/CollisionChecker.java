@@ -64,7 +64,7 @@ public class CollisionChecker {
         if (e.solidArea.intersects(ap.gameManager.player.solidArea)) {
             if (e instanceof Zombie) {
                 Zombie zombie = (Zombie) e;
-                if (!zombie.hitting) {
+                if (!zombie.isHitting()) {
 
                     zombie.dealDamage(ap.gameManager.player);
                 }

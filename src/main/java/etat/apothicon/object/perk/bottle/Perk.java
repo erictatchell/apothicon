@@ -19,7 +19,7 @@ public class Perk {
         this.player = player;
         this.ap = ap;
         this.name = name;
-        this.perkID = player.loadout.getPerks().size();
+        this.perkID = player.getLoadout().getPerks().size();
         this.player.incrementPerkOffset();
     }
 

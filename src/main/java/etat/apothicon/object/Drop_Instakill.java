@@ -21,8 +21,8 @@ public class Drop_Instakill extends Drop {
     @Override
     public void activate() {
         if (!ap.gameManager.dropManager.instaKillActive) {
-            defaultDamageMultiplier = ap.gameManager.player.loadout.getDamageMultiplier();
-            ap.gameManager.player.loadout.setDamageMultiplier(-1.0f);
+            defaultDamageMultiplier = ap.gameManager.player.getLoadout().getDamageMultiplier();
+            ap.gameManager.player.getLoadout().setDamageMultiplier(-1.0f);
             ap.gameManager.dropManager.instaKillActive = true;
         }
         super.activate();
@@ -31,7 +31,7 @@ public class Drop_Instakill extends Drop {
     @Override
     public void deactivate() {
         super.deactivate();
-        ap.gameManager.player.loadout.setDamageMultiplier(defaultDamageMultiplier);
+        ap.gameManager.player.getLoadout().setDamageMultiplier(defaultDamageMultiplier);
         ap.gameManager.dropManager.instaKillActive = false;
     }
 }

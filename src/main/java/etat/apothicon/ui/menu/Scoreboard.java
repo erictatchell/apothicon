@@ -23,7 +23,7 @@ public class Scoreboard {
     public void init(ArrayList<Player> players) {
         for (Player player : players) {
             if (player != null) {
-                playerStats.add(player.statistics);
+                playerStats.add(player.getStatistics());
             }
         }
     }

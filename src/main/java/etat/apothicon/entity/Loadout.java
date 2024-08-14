@@ -160,7 +160,7 @@ public class Loadout {
                 total+= 50;
             }
         }
-        player.statistics.addPoints(total);
+        player.getStatistics().addPoints(total);
     }
 
     public void fireWeapon() {
@@ -221,7 +221,7 @@ public class Loadout {
     }
 
     public void spendPoints(int p) {
-        player.statistics.addSpentPoints(p);
+        player.getStatistics().addSpentPoints(p);
         this.points -= p;
     }
 

@@ -26,24 +26,19 @@ import javax.swing.SwingUtilities;
 
 public class Player extends Entity {
 
-    KeyInput keyIn;
-    MouseInput mouseIn;
-    public final Apothicon ap;
-
-    public Loadout loadout;
-
+    private KeyInput keyIn;
+    private MouseInput mouseIn;
+    private Loadout loadout;
     private String purchaseString = null;
-
-    public Statistics statistics;
+    private Statistics statistics;
+    private int perkOffset = 16;
+    private int slotX = 16;
+    private boolean dead = false;
+    private boolean inLastStand = false;
 
     public final int screenX;
     public final int screenY;
-    // for player perks. gross
-    private int perkOffset = 16;
-    private int slotX = 16;
-    public boolean dead = false;
-    protected boolean inLastStand = false;
-
+    public final Apothicon ap;
 
     public Player(Apothicon ap, KeyInput keyIn, MouseInput mouseIn) {
         super(ap);
@@ -417,5 +412,33 @@ public class Player extends Entity {
 
     public void setPerkOffset(int perkOffset) {
         this.perkOffset = perkOffset;
+    }
+
+    public Loadout getLoadout() {
+        return loadout;
+    }
+
+    public int getPerkOffset() {
+        return perkOffset;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public boolean isInLastStand() {
+        return inLastStand;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    public void setInLastStand(boolean inLastStand) {
+        this.inLastStand = inLastStand;
+    }
+
+    public Statistics getStatistics() {
+        return statistics;
     }
 }
