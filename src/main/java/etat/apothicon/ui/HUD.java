@@ -1,5 +1,6 @@
 package etat.apothicon.ui;
 
+import etat.apothicon.object.Drop;
 import etat.apothicon.utility.MediaManager;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.object.perk.bottle.Perk;
@@ -49,6 +50,10 @@ public class HUD {
         this.points = Integer.toString(points);
         this.perks = perks;
     }
+    public int getXForCenteredText(Graphics2D g2, String text) {
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return ap.screenWidth / 2 - length / 2;
+    }
 
     public void draw(Graphics2D _g2) {
         for (Perk perk : perks) {
@@ -56,6 +61,12 @@ public class HUD {
                 perk.draw(_g2);
             }
         }
+        for (Drop drop : ap.gameManager.dropManager.drops) {
+            if (drop.active) {
+                _g2.drawImage(drop.dropIcon, drop.slotX + 60, ap.screenHeight - 50, ap.tileSize - 16, ap.tileSize - 16, null);
+            }
+        }
+
 
         Graphics2D g2 = MediaManager.antialias(_g2);
         g2.drawImage(pointSplosh,

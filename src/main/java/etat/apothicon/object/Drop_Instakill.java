@@ -13,6 +13,7 @@ public class Drop_Instakill extends Drop {
         super(objIndex, worldX, worldY, ap, type);
         try {
             image = ImageIO.read(new File("src/main/resources/drops/instakill.png"));
+            dropIcon = ImageIO.read(new File("src/main/resources/drops/instakillicon.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,8 +25,9 @@ public class Drop_Instakill extends Drop {
             defaultDamageMultiplier = ap.gameManager.player.loadout.getDamageMultiplier();
             ap.gameManager.player.loadout.setDamageMultiplier(-1.0f);
             ap.gameManager.dropManager.instaKillActive = true;
+
+            super.activate();
         }
-        super.activate();
     }
 
     @Override

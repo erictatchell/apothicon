@@ -9,11 +9,19 @@ import java.util.TimerTask;
 
 public class DropManager {
     Apothicon ap;
-    boolean instaKillActive;
+    public boolean instaKillActive;
     public ArrayList<Drop> drops;
     public DropManager(Apothicon ap) {
         this.ap = ap;
         this.drops = new ArrayList<>();
+    }
+
+    public int getSlotX() {
+        int temp = 0;
+        for (int i = 0; i < drops.size(); i++) {
+            temp += ap.tileSize;
+        }
+        return temp;
     }
 
     public void draw(Graphics2D g2) {

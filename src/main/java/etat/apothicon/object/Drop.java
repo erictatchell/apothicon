@@ -21,8 +21,10 @@ public class Drop extends SuperObject {
     private int angle;
     public int flashRate;
     private int flashCounter;
+    public int slotX;
 
     public BufferedImage auraImage;
+    public BufferedImage dropIcon;
 
     /**
      * Spawned also means drawable
@@ -33,7 +35,8 @@ public class Drop extends SuperObject {
     public boolean active = false;
 
     public Drop(int objIndex, int worldX, int worldY, Apothicon ap, DropType dropType) {
-        this.objIndex = objIndex;
+        this.objIndex = objIndex ;
+        this.slotX = ap.gameManager.dropManager.getSlotX();
         this.auraCounter = 0;
         this.flashCounter = 0;
         visible = true;
