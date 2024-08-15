@@ -127,10 +127,6 @@ public class HUD {
 
         g2.dispose();
     }
-    public int getXForCenteredText(Graphics2D g2, String text) {
-        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        return ap.screenWidth / 2 - length / 2;
-    }
 
     // chatgpt helped with translucent black rectangle
     public void drawPurchaseText(Graphics2D g2, String purchaseString) {
