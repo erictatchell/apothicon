@@ -23,7 +23,6 @@ public class DropManager {
         }
         return temp;
     }
-
     public void draw(Graphics2D g2) {
         for (Drop drop : drops) {
             if (drop.spawned) {

@@ -50,10 +50,7 @@ public class HUD {
         this.points = Integer.toString(points);
         this.perks = perks;
     }
-    public int getXForCenteredText(Graphics2D g2, String text) {
-        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        return ap.screenWidth / 2 - length / 2;
-    }
+
 
     public void draw(Graphics2D _g2) {
         for (Perk perk : perks) {
