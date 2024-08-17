@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class Drop_Instakill extends Drop {
     private float defaultDamageMultiplier;
+
     public Drop_Instakill(int objIndex, int worldX, int worldY, Apothicon ap, DropType type) {
         super(objIndex, worldX, worldY, ap, type);
         try {
@@ -21,13 +22,11 @@ public class Drop_Instakill extends Drop {
 
     @Override
     public void activate() {
-        if (!ap.gameManager.dropManager.instaKillActive) {
-            defaultDamageMultiplier = ap.gameManager.player.getLoadout().getDamageMultiplier();
-            ap.gameManager.player.getLoadout().setDamageMultiplier(-1.0f);
-            ap.gameManager.dropManager.instaKillActive = true;
+        defaultDamageMultiplier = ap.gameManager.player.getLoadout().getDamageMultiplier();
+        ap.gameManager.player.getLoadout().setDamageMultiplier(-1.0f);
+        ap.gameManager.dropManager.instaKillActive = true;
 
-            super.activate();
-        }
+        super.activate();
     }
 
     @Override

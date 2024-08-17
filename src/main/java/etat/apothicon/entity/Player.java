@@ -213,7 +213,7 @@ public class Player extends Entity {
                     }
                 }
             }
-            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
+//            System.out.println("X: " + this.worldX / ap.tileSize + ", Y: " + this.worldY / ap.tileSize);
             spriteCounter++;
             if (spriteCounter > 12) { // 12 frames
                 if (spriteNum == 1) {
@@ -271,7 +271,7 @@ public class Player extends Entity {
                 case "drop" -> {
                     Drop drop = (Drop) obj;
                     drop.objIndex = index;
-                    drop.activate();
+                    ap.gameManager.dropManager.handleActivate(drop);
                 }
                 case "pap" -> {
                     InfernalMachine machine = (InfernalMachine) obj;

@@ -58,8 +58,8 @@ public class HUD {
                 perk.draw(_g2);
             }
         }
-        for (Drop drop : ap.gameManager.dropManager.drops) {
-            if (drop.active) {
+        for (Drop drop : ap.gameManager.dropManager.spawnedDrops) {
+            if (drop != null && drop.active) {
                 _g2.drawImage(drop.dropIcon, drop.slotX + 60, ap.screenHeight - 50, ap.tileSize - 16, ap.tileSize - 16, null);
             }
         }
@@ -126,6 +126,10 @@ public class HUD {
         g2.drawString(Integer.toString(ap.gameManager.roundManager.getCurrentRound()), 10, ap.screenHeight - 10);
 
         g2.dispose();
+    }
+    public int getXForCenteredText(Graphics2D g2, String text) {
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return ap.screenWidth / 2 - length / 2;
     }
 
     // chatgpt helped with translucent black rectangle

@@ -12,9 +12,26 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+// credit: https://stackoverflow.com/questions/8498691/pass-parameters-to-timer-task-java
+class DeactivateDrop extends TimerTask {
+    public Drop drop;
+    private DropManager dm;
+
+    public DeactivateDrop(DropManager dm, Drop drop) {
+        this.drop = drop;
+        this.dm = dm;
+    }
+    @Override
+    public void run() {
+        dm.handleDeactivate(drop);
+    }
+}
+
 public class Drop extends SuperObject {
     public DropType dropType;
     public int objIndex;
+    public int spawnedIndex;
+    public int activeIndex;
     public Apothicon ap;
     public Timer expireTimer;
     private int auraCounter;
@@ -36,10 +53,9 @@ public class Drop extends SuperObject {
 
     public Drop(int objIndex, int worldX, int worldY, Apothicon ap, DropType dropType) {
         this.objIndex = objIndex ;
-        this.slotX = ap.gameManager.dropManager.getSlotX();
         this.auraCounter = 0;
         this.flashCounter = 0;
-        visible = true;
+        this.visible = true;
         this.angle = 0;
         this.expireTimer = new Timer();
         this.ap = ap;
@@ -60,23 +76,18 @@ public class Drop extends SuperObject {
         }
     }
 
-
     public void activate() {
         spawned = false;
         active = true;
-        Timer activeTimer = new Timer();
-        activeTimer.schedule(new TimerTask() {
+        DropManager dm = ap.gameManager.dropManager;
 
-            @Override
-            public void run() {
-                deactivate();
-            }
-        }, 30000);
+        this.slotX = dm.getSlotX();
+        Timer activeTimer = new Timer();
+        activeTimer.schedule(new DeactivateDrop(dm, dm.activeDrops.get(dm.activeDrops.size() - 1)), 30000);
     }
 
     public void deactivate() {
         active = false;
-        System.out.println("effects gone");
         // play sound for drop expiration
     }
 
@@ -96,7 +107,6 @@ public class Drop extends SuperObject {
                 angle = 0;
             }
             auraCounter = 0;
-
         }
         return angle;
     }
