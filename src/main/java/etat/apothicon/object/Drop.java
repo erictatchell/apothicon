@@ -27,6 +27,9 @@ class DeactivateDrop extends TimerTask {
     }
 }
 
+/**
+ * Represents a powerup and its corresponding HUD icon
+ */
 public class Drop extends SuperObject {
     public DropType dropType;
     public int objIndex;
@@ -34,7 +37,7 @@ public class Drop extends SuperObject {
     public int activeIndex;
     public Apothicon ap;
     public Timer dropExpireTimer;
-    public Timer activeExpireTimer;
+    public Timer activeTimer;
     private int auraCounter;
     private int auraAngle;
     public int dropFlashRate;
@@ -47,20 +50,20 @@ public class Drop extends SuperObject {
     public BufferedImage dropIcon;
 
     public boolean spawned = true;
-    public boolean dropVisible = false;
+    public boolean dropVisible = true;
     public boolean dropFlashing = false;
 
     public boolean active = false;
-    public boolean iconVisible = false;
+    public boolean iconVisible = true;
     public boolean iconFlashing = false;
 
     public Drop(int objIndex, int worldX, int worldY, Apothicon ap, DropType dropType) {
         this.objIndex = objIndex;
         this.auraCounter = 0;
         this.dropFlashCounter = 0;
-        this.dropVisible = true;
         this.auraAngle = 0;
         this.dropExpireTimer = new Timer();
+        this.activeTimer = new Timer();
         this.ap = ap;
         this.type = "drop";
         this.dropType = dropType;
@@ -110,27 +113,26 @@ public class Drop extends SuperObject {
         DropManager dm = ap.gameManager.dropManager;
         dm.setEffects(this.dropType);
 
-        Timer activeTimer = new Timer();
-        activeTimer.schedule(new DeactivateDrop(dm, this), 30000);
-        this.activeExpireTimer = new Timer();
-
         this.spawned = false;
         this.active = true;
         this.slotX = dm.getSlotX();
 
-        activeExpireTimer.schedule(new TimerTask() {
+        activeTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 iconFlashing = true;
-                activeFlashRate = 30;
+                activeFlashRate = 21;
             }
-        }, 22000);
-        activeExpireTimer.schedule(new TimerTask() {
+        }, 20000);
+        activeTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                activeFlashRate = 15;
+                activeFlashRate = 7;
             }
-        }, 27000);
+        }, 25000);
+        activeTimer.schedule(new DeactivateDrop(dm, this), 30000);
+
+
     }
 
     public void deactivate() {
@@ -140,6 +142,14 @@ public class Drop extends SuperObject {
         // play sound for drop expiration
     }
 
+
+    public void flashIcon() {
+        activeFlashCounter++;
+        if (activeFlashCounter > activeFlashRate) {
+            iconVisible = !iconVisible;
+            activeFlashCounter = 0;
+        }
+    }
 
     public void flashDrop() {
         dropFlashCounter++;
@@ -161,10 +171,6 @@ public class Drop extends SuperObject {
         return auraAngle;
     }
 
-    public void drawIcon(Graphics2D g2) {
-        g2.drawImage(dropIcon, slotX + 10, ap.screenHeight - 50, ap.tileSize - 16, ap.tileSize - 16, null);
-    }
-
     @Override
     public void draw(Graphics2D g2, Apothicon ap) {
         int screenX = worldX - ap.gameManager.player.worldX + ap.gameManager.player.screenX;
@@ -175,18 +181,20 @@ public class Drop extends SuperObject {
                 worldY + ap.tileSize > ap.gameManager.player.worldY - ap.gameManager.player.screenY &&
                 worldY - ap.tileSize < ap.gameManager.player.worldY + ap.gameManager.player.screenY &&
                 spawned) {
-            if (iconFlashing) {
-//                flashIcon();
-            }
-            if (iconVisible) {
-
-            }
             if (dropFlashing) {
                 flashDrop();
             }
             if (dropVisible) {
                 g2.drawImage(MediaManager.rotateImageByDegrees(this.auraImage, calculateAuraAngle()), screenX, screenY, ap.tileSize, ap.tileSize, null);
                 g2.drawImage(this.image, screenX, screenY, ap.tileSize, ap.tileSize, null);
+            }
+
+        } else if (active) {
+            if (iconFlashing) {
+                flashIcon();
+            }
+            if (iconVisible) {
+                g2.drawImage(dropIcon, slotX + 10, ap.screenHeight - 50, ap.tileSize - 16, ap.tileSize - 16, null);
             }
 
         }

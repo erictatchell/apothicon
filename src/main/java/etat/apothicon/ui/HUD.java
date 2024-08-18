@@ -58,11 +58,11 @@ public class HUD {
                 perk.draw(_g2);
             }
         }
-        for (Drop drop : ap.gameManager.dropManager.spawnedDrops) {
-            if (drop != null && drop.active) {
-                _g2.drawImage(drop.dropIcon, drop.slotX + 60, ap.screenHeight - 50, ap.tileSize - 16, ap.tileSize - 16, null);
-            }
-        }
+//        for (Drop drop : ap.gameManager.dropManager.spawnedDrops) {
+//            if (drop != null && drop.active) {
+//                drop.drawIcon(_g2);
+//            }
+//        }
 
 
         Graphics2D g2 = MediaManager.antialias(_g2);
