@@ -3,7 +3,6 @@ package etat.apothicon.main;
 import etat.apothicon.entity.Zombie;
 import etat.apothicon.object.Drop;
 import etat.apothicon.object.DropType;
-import etat.apothicon.object.Drop_Instakill;
 import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.object.perk.machine.DoubleTapMachine;
 import etat.apothicon.object.perk.machine.JuggernogMachine;
@@ -77,7 +76,8 @@ public class AssetSetter {
     }
 
     public void spawnDrop(int worldX, int worldY) {
-        Drop drop = new Drop_Instakill(i, worldX, worldY, ap, DropType.INSTA_KILL);
+//        Drop drop = new Drop(i, worldX, worldY, ap, DropType.randomDrop());
+        Drop drop = new Drop(i, worldX, worldY, ap, DropType.INSTA_KILL);
         ap.gameManager.dropManager.spawn(drop);
         ap.gameManager.obj[i++] = drop;
     }

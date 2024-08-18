@@ -6,7 +6,6 @@ import etat.apothicon.utility.MediaManager;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImagingOpException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
@@ -21,6 +20,7 @@ class DeactivateDrop extends TimerTask {
         this.drop = drop;
         this.dm = dm;
     }
+
     @Override
     public void run() {
         dm.handleDeactivate(drop);
@@ -33,31 +33,34 @@ public class Drop extends SuperObject {
     public int spawnedIndex;
     public int activeIndex;
     public Apothicon ap;
-    public Timer expireTimer;
+    public Timer dropExpireTimer;
+    public Timer activeExpireTimer;
     private int auraCounter;
-    private int angle;
-    public int flashRate;
-    private int flashCounter;
+    private int auraAngle;
+    public int dropFlashRate;
+    private int dropFlashCounter;
+    public int activeFlashRate;
+    private int activeFlashCounter;
     public int slotX;
 
     public BufferedImage auraImage;
     public BufferedImage dropIcon;
 
-    /**
-     * Spawned also means drawable
-     */
     public boolean spawned = true;
-    public boolean visible = false;
-    public boolean flashing = false;
+    public boolean dropVisible = false;
+    public boolean dropFlashing = false;
+
     public boolean active = false;
+    public boolean iconVisible = false;
+    public boolean iconFlashing = false;
 
     public Drop(int objIndex, int worldX, int worldY, Apothicon ap, DropType dropType) {
-        this.objIndex = objIndex ;
+        this.objIndex = objIndex;
         this.auraCounter = 0;
-        this.flashCounter = 0;
-        this.visible = true;
-        this.angle = 0;
-        this.expireTimer = new Timer();
+        this.dropFlashCounter = 0;
+        this.dropVisible = true;
+        this.auraAngle = 0;
+        this.dropExpireTimer = new Timer();
         this.ap = ap;
         this.type = "drop";
         this.dropType = dropType;
@@ -68,47 +71,98 @@ public class Drop extends SuperObject {
         solidArea.width = 30;
         solidArea.height = 30;
 
+        setImage();
+
+    }
+
+    public void setImage() {
         try {
             auraImage = ImageIO.read(new File("src/main/resources/drops/aura.png"));
+            switch (this.dropType) {
+                case INSTA_KILL -> {
+                    dropIcon = ImageIO.read(new File("src/main/resources/drops/instakillicon.png"));
+                    image = ImageIO.read(new File("src/main/resources/drops/instakill.png"));
+                }
+                case DOUBLE_POINTS -> {
+                    dropIcon = ImageIO.read(new File("src/main/resources/drops/doublepointsicon.png"));
+                    image = ImageIO.read(new File("src/main/resources/drops/doublepoints.png"));
+                }
+                case MAX_AMMO -> {
+                    dropIcon = ImageIO.read(new File("src/main/resources/drops/maxammoicon.png"));
+                    image = ImageIO.read(new File("src/main/resources/drops/nmaxammo.png"));
+                }
+                case FIRE_SALE -> {
+                    dropIcon = ImageIO.read(new File("src/main/resources/drops/firesaleicon.png"));
+                    image = ImageIO.read(new File("src/main/resources/drops/firesale.png"));
+                }
+                case INFINITE_AMMO -> {
+                    dropIcon = ImageIO.read(new File("src/main/resources/drops/infiniteammoicon.png"));
+                    image = ImageIO.read(new File("src/main/resources/drops/infiniteammo.png"));
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
-
         }
     }
 
-    public void activate() {
-        spawned = false;
-        active = true;
-        DropManager dm = ap.gameManager.dropManager;
 
-        this.slotX = dm.getSlotX();
+    public void activate() {
+        DropManager dm = ap.gameManager.dropManager;
+        dm.setEffects(this.dropType);
+
         Timer activeTimer = new Timer();
-        activeTimer.schedule(new DeactivateDrop(dm, dm.activeDrops.get(dm.activeDrops.size() - 1)), 30000);
+        activeTimer.schedule(new DeactivateDrop(dm, this), 30000);
+        this.activeExpireTimer = new Timer();
+
+        this.spawned = false;
+        this.active = true;
+        this.slotX = dm.getSlotX();
+
+        activeExpireTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                iconFlashing = true;
+                activeFlashRate = 30;
+            }
+        }, 22000);
+        activeExpireTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                activeFlashRate = 15;
+            }
+        }, 27000);
     }
 
     public void deactivate() {
+        DropManager dm = ap.gameManager.dropManager;
+        dm.removeEffects(this.dropType);
         active = false;
         // play sound for drop expiration
     }
 
-    public void flash() {
-        flashCounter++;
-        if (flashCounter > flashRate) {
-            visible = !visible;
-            flashCounter = 0;
+
+    public void flashDrop() {
+        dropFlashCounter++;
+        if (dropFlashCounter > dropFlashRate) {
+            dropVisible = !dropVisible;
+            dropFlashCounter = 0;
         }
     }
 
     public int calculateAuraAngle() {
         auraCounter++;
         if (auraCounter > 3) {
-            angle += 2;
-            if (angle >= 360) {
-                angle = 0;
+            auraAngle += 2;
+            if (auraAngle >= 360) {
+                auraAngle = 0;
             }
             auraCounter = 0;
         }
-        return angle;
+        return auraAngle;
+    }
+
+    public void drawIcon(Graphics2D g2) {
+        g2.drawImage(dropIcon, slotX + 10, ap.screenHeight - 50, ap.tileSize - 16, ap.tileSize - 16, null);
     }
 
     @Override
@@ -121,10 +175,16 @@ public class Drop extends SuperObject {
                 worldY + ap.tileSize > ap.gameManager.player.worldY - ap.gameManager.player.screenY &&
                 worldY - ap.tileSize < ap.gameManager.player.worldY + ap.gameManager.player.screenY &&
                 spawned) {
-            if (flashing) {
-                flash();
+            if (iconFlashing) {
+//                flashIcon();
             }
-            if (visible) {
+            if (iconVisible) {
+
+            }
+            if (dropFlashing) {
+                flashDrop();
+            }
+            if (dropVisible) {
                 g2.drawImage(MediaManager.rotateImageByDegrees(this.auraImage, calculateAuraAngle()), screenX, screenY, ap.tileSize, ap.tileSize, null);
                 g2.drawImage(this.image, screenX, screenY, ap.tileSize, ap.tileSize, null);
             }

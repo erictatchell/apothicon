@@ -4,7 +4,6 @@ import etat.apothicon.main.Apothicon;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.TimerTask;
 
 public class DropManager {
@@ -14,22 +13,24 @@ public class DropManager {
     public boolean fireSaleActive = false;
     public boolean infiniteAmmoActive = false;
     public ArrayList<Drop> spawnedDrops;
-    public ArrayList<Drop> activeDrops;
+    public int activeDrops;
+
+    private float defaultDamageMultiplier;
 
     public DropManager(Apothicon ap) {
         this.ap = ap;
         this.spawnedDrops = new ArrayList<>();
-        this.activeDrops = new ArrayList<>();
     }
+
 
     // todo: move to utility class, make static
     public int getSlotX() {
         int temp = 0;
-        for (int i = 0; i < activeDrops.size(); i++) {
+        for (int i = 0; i < activeDrops; i++) {
             temp += ap.tileSize;
         }
 
-        System.out.println("Active Drops: " + activeDrops.size() + "\nReturned X: " + temp);
+        System.out.println("Active Drops: " + activeDrops + "\nReturned X: " + temp);
         return temp;
     }
 
@@ -66,16 +67,52 @@ public class DropManager {
     public void handleActivate(Drop drop) {
         // todo: extra processing? maybe a sound?
         if (!isDropActive(drop.dropType)) {
-
-            activeDrops.add(drop);
+            activeDrops++;
             drop.activate();
         }
     }
 
     public void handleDeactivate(Drop drop) {
         // todo: extra processing? maybe a sound?
-        activeDrops.remove(drop);
-        drop.deactivate();
+        if (isDropActive(drop.dropType)) {
+            activeDrops--;
+            drop.deactivate();
+        }
+    }
+
+    public void removeEffects(DropType type) {
+        switch (type) {
+            case INSTA_KILL -> {
+                ap.gameManager.player.getLoadout().setDamageMultiplier(defaultDamageMultiplier);
+                ap.gameManager.dropManager.instaKillActive = false;
+            }
+            case FIRE_SALE -> {
+                // boxPrice goes to defaultPrice
+                ap.gameManager.dropManager.fireSaleActive = false;
+            }
+            case INFINITE_AMMO -> {
+                ap.gameManager.dropManager.infiniteAmmoActive = false;
+            }
+        }
+    }
+
+    public void setEffects(DropType type) {
+        switch (type) {
+            case INSTA_KILL -> {
+                defaultDamageMultiplier = ap.gameManager.player.getLoadout().getDamageMultiplier();
+                ap.gameManager.player.getLoadout().setDamageMultiplier(-1.0f);
+                instaKillActive = true;
+            }
+            case DOUBLE_POINTS -> {
+                doublePointsActive = true;
+            }
+            case FIRE_SALE -> {
+                fireSaleActive = true;
+            }
+            case INFINITE_AMMO -> {
+                infiniteAmmoActive = true;
+            }
+        }
     }
 
     public void draw(Graphics2D g2) {
@@ -90,20 +127,20 @@ public class DropManager {
         spawnedDrops.add(drop);
         drop.spawned = true;
 
-        drop.expireTimer.schedule(new TimerTask() {
+        drop.dropExpireTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                drop.flashRate = 30;
-                drop.flashing = true;
+                drop.dropFlashRate = 30;
+                drop.dropFlashing = true;
             }
         }, 22000);
-        drop.expireTimer.schedule(new TimerTask() {
+        drop.dropExpireTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                drop.flashRate = 15;
+                drop.dropFlashRate = 15;
             }
         }, 27000);
-        drop.expireTimer.schedule(new TimerTask() {
+        drop.dropExpireTimer.schedule(new TimerTask() {
             public void run() {
                 deleteDrop(drop);
             }
