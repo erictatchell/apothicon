@@ -202,7 +202,7 @@ public class Entity {
         ap.playSE(sound, SoundType.IMPACT);
 
         int chance = r.nextInt(100) + 1;
-        if (chance <= 10) {
+        if (chance <= 40) {
             ap.gameManager.aSetter.spawnDrop(worldX, worldY);
         }
 

@@ -91,8 +91,7 @@ public class Drop extends SuperObject {
                     image = ImageIO.read(new File("src/main/resources/drops/doublepoints.png"));
                 }
                 case MAX_AMMO -> {
-                    dropIcon = ImageIO.read(new File("src/main/resources/drops/maxammoicon.png"));
-                    image = ImageIO.read(new File("src/main/resources/drops/nmaxammo.png"));
+                    image = ImageIO.read(new File("src/main/resources/drops/maxammo.png"));
                 }
                 case FIRE_SALE -> {
                     dropIcon = ImageIO.read(new File("src/main/resources/drops/firesaleicon.png"));
@@ -112,8 +111,14 @@ public class Drop extends SuperObject {
     public void activate() {
         DropManager dm = ap.gameManager.dropManager;
         dm.setEffects(this.dropType);
-
         this.spawned = false;
+
+        // no expiration for max ammo, instant effects then cancel
+        if (dropType == DropType.MAX_AMMO) {
+            dm.spawnedDrops.remove(this);
+            dm.deleteDrop(this);
+            return;
+        }
         this.active = true;
         this.slotX = dm.getSlotX();
 
@@ -123,7 +128,7 @@ public class Drop extends SuperObject {
                 iconFlashing = true;
                 activeFlashRate = 21;
             }
-        }, 20000);
+        }, 22000);
         activeTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -134,6 +139,7 @@ public class Drop extends SuperObject {
 
 
     }
+
 
     public void deactivate() {
         DropManager dm = ap.gameManager.dropManager;
@@ -190,6 +196,7 @@ public class Drop extends SuperObject {
             }
 
         } else if (active) {
+
             if (iconFlashing) {
                 flashIcon();
             }

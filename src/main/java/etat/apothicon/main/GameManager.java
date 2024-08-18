@@ -115,6 +115,7 @@ public class GameManager {
         player.getLoadout().reset();
         player.reset();
         roundManager.reset();
+        dropManager.reset();
         // reset doors, map progression etc
 
     }

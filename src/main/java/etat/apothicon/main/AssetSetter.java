@@ -63,11 +63,6 @@ public class AssetSetter {
         ap.gameManager.obj[index] = null;
     }
 
-//    public void setZombie() {
-//        ap.gameManager.roundManager.getZombies()[0] = new Zombie(ap);
-//        ap.gameManager.roundManager.getZombies()[0].worldX = 32 * ap.tileSize;
-//        ap.gameManager.roundManager.getZombies()[0].worldY = 43 * ap.tileSize;
-//    }
 
     public void setZombie(int worldX, int worldY, int zombieIndex) {
         ap.gameManager.roundManager.getZombies()[zombieIndex] = new Zombie(ap);
@@ -76,8 +71,7 @@ public class AssetSetter {
     }
 
     public void spawnDrop(int worldX, int worldY) {
-//        Drop drop = new Drop(i, worldX, worldY, ap, DropType.randomDrop());
-        Drop drop = new Drop(i, worldX, worldY, ap, DropType.INSTA_KILL);
+        Drop drop = new Drop(i, worldX, worldY, ap, DropType.randomDrop());
         ap.gameManager.dropManager.spawn(drop);
         ap.gameManager.obj[i++] = drop;
     }

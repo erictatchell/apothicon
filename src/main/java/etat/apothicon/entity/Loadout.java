@@ -45,6 +45,7 @@ public class Loadout {
     private float reloadRateMultiplier;
     private float damageMultiplier;
     private float fireRateMultiplier;
+    private float pointsMultiplier;
     protected int defaultHealth;
     protected int health;
 
@@ -61,6 +62,7 @@ public class Loadout {
         this.reloadRateMultiplier = 1.0f;
         this.damageMultiplier = 1.0f;
         this.fireRateMultiplier = 1.0f;
+        this.pointsMultiplier = 1.0f;
         this.defaultHealth = 150000;
         this.health = 150000;
         this.points = 50000;
@@ -85,6 +87,7 @@ public class Loadout {
         this.reloadRateMultiplier = 1.0f;
         this.damageMultiplier = 1.0f;
         this.fireRateMultiplier = 1.0f;
+        this.pointsMultiplier = 1.0f;
         this.defaultHealth = 150;
         this.health = 150;
         this.points = 50000;
@@ -145,6 +148,13 @@ public class Loadout {
     }
     public boolean canAffordPerk(PerkMachine perk) {
         return points >= perk.price;
+    }
+
+    public void refillAmmo() {
+        for (Gun gun : this.guns) {
+            gun.magazine = gun.defaultAmmoPerMagazine;
+            gun.reserve = gun.defaultReserve;
+        }
     }
 
 
@@ -279,6 +289,10 @@ public class Loadout {
 
     public void setDamageMultiplier(float dmg) {
         this.damageMultiplier = dmg;
+    }
+
+    public void setPointsMultiplier(float m) {
+        this.pointsMultiplier = m;
     }
 
     /**

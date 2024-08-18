@@ -13,7 +13,7 @@ public class DropManager {
     public boolean fireSaleActive = false;
     public boolean infiniteAmmoActive = false;
     public ArrayList<Drop> spawnedDrops;
-    public int activeDrops;
+    public ArrayList<Drop> activeDrops;
 
     private float defaultDamageMultiplier;
 
@@ -22,15 +22,22 @@ public class DropManager {
         this.spawnedDrops = new ArrayList<>();
     }
 
+    public void reset() {
+        spawnedDrops = new ArrayList<>();
+        activeDrops = new ArrayList<>();
+        instaKillActive = false;
+        doublePointsActive = false;
+        fireSaleActive = false;
+        infiniteAmmoActive = false;
+    }
 
     // todo: move to utility class, make static
     public int getSlotX() {
         int temp = 0;
-        for (int i = 0; i < activeDrops; i++) {
+        for (int i = 0; i < activeDrops.size(); i++) {
             temp += ap.tileSize;
         }
 
-        System.out.println("Active Drops: " + activeDrops + "\nReturned X: " + temp);
         return temp;
     }
 
@@ -66,8 +73,12 @@ public class DropManager {
 
     public void handleActivate(Drop drop) {
         // todo: extra processing? maybe a sound?
+        if (drop.dropType == DropType.MAX_AMMO) {
+            drop.activate();
+            return;
+        }
         if (!isDropActive(drop.dropType)) {
-            activeDrops++;
+            activeDrops.add(drop);
             drop.activate();
         }
     }
@@ -75,7 +86,7 @@ public class DropManager {
     public void handleDeactivate(Drop drop) {
         // todo: extra processing? maybe a sound?
         if (isDropActive(drop.dropType)) {
-            activeDrops--;
+            activeDrops.remove(drop);
             drop.deactivate();
         }
     }
@@ -84,14 +95,18 @@ public class DropManager {
         switch (type) {
             case INSTA_KILL -> {
                 ap.gameManager.player.getLoadout().setDamageMultiplier(defaultDamageMultiplier);
-                ap.gameManager.dropManager.instaKillActive = false;
+                instaKillActive = false;
             }
             case FIRE_SALE -> {
                 // boxPrice goes to defaultPrice
-                ap.gameManager.dropManager.fireSaleActive = false;
+                fireSaleActive = false;
+            }
+            case DOUBLE_POINTS -> {
+                ap.gameManager.player.getLoadout().setPointsMultiplier(1.0f);
+                doublePointsActive = false;
             }
             case INFINITE_AMMO -> {
-                ap.gameManager.dropManager.infiniteAmmoActive = false;
+                infiniteAmmoActive = false;
             }
         }
     }
@@ -104,7 +119,11 @@ public class DropManager {
                 instaKillActive = true;
             }
             case DOUBLE_POINTS -> {
+                ap.gameManager.player.getLoadout().setPointsMultiplier(2.0f);
                 doublePointsActive = true;
+            }
+            case MAX_AMMO -> {
+                ap.gameManager.player.getLoadout().refillAmmo();
             }
             case FIRE_SALE -> {
                 fireSaleActive = true;
@@ -117,10 +136,12 @@ public class DropManager {
 
     public void draw(Graphics2D g2) {
         for (Drop drop : spawnedDrops) {
+
             if (drop != null && drop.spawned) {
                 drop.draw(g2, ap);
             }
         }
+        if (!activeDrops.isEmpty()) revalidateSlotX();
     }
 
     public void spawn(Drop drop) {
@@ -142,9 +163,18 @@ public class DropManager {
         }, 27000);
         drop.dropExpireTimer.schedule(new TimerTask() {
             public void run() {
-                deleteDrop(drop);
+                if (!drop.active) {
+                    deleteDrop(drop);
+                }
             }
         }, 30000);
+    }
+    public void revalidateSlotX() {
+        int i = 1;
+        for (Drop drop : activeDrops) {
+            drop.slotX = i * ap.tileSize;
+            i++;
+        }
     }
 
     public void deleteDrop(Drop drop) {
