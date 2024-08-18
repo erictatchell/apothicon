@@ -106,6 +106,7 @@ public class DropManager {
                 doublePointsActive = false;
             }
             case INFINITE_AMMO -> {
+                ap.gameManager.player.getLoadout().setBottomlessClip(false);
                 infiniteAmmoActive = false;
             }
         }
@@ -129,6 +130,7 @@ public class DropManager {
                 fireSaleActive = true;
             }
             case INFINITE_AMMO -> {
+                ap.gameManager.player.getLoadout().setBottomlessClip(true);
                 infiniteAmmoActive = true;
             }
         }
@@ -136,7 +138,6 @@ public class DropManager {
 
     public void draw(Graphics2D g2) {
         for (Drop drop : spawnedDrops) {
-
             if (drop != null && drop.spawned) {
                 drop.draw(g2, ap);
             }

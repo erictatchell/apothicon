@@ -141,7 +141,9 @@ public class Gun {
                     new java.util.TimerTask() {
                         @Override
                         public void run() {
-                            reload(ammoToBeReloaded);
+                            if (magazine != defaultAmmoPerMagazine) {
+                                reload(ammoToBeReloaded);
+                            }
                         }
                     },
                     this.delay);
@@ -184,7 +186,9 @@ public class Gun {
             owner.ap.playSE(this.fireSound.ordinal(), SoundType.GUN);
             sendBullet();
 
-            this.magazine -= 1;
+            if (!owner.getLoadout().isBottomlessClip()) {
+                this.magazine -= 1;
+            }
 
         }
         if (magazine == 0) {

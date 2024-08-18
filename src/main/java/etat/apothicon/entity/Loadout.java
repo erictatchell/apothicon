@@ -33,6 +33,7 @@ public class Loadout {
     public boolean hasJuggernog;
     public boolean hasQuickRevive;
     public boolean hasMuleKick;
+    private boolean bottomlessClip;
 
     private ArrayList<Gun> guns;
     private ArrayList<Perk> perks;
@@ -78,6 +79,7 @@ public class Loadout {
         hasMuleKick = false;
         hasSpeedCola = false;
         hasQuickRevive = false;
+        bottomlessClip = true;
 
     }
 
@@ -103,6 +105,7 @@ public class Loadout {
         hasMuleKick = false;
         hasSpeedCola = false;
         hasQuickRevive = false;
+        bottomlessClip = false;
     }
 
     public void reset() {
@@ -160,14 +163,14 @@ public class Loadout {
 
     public void addPoints(boolean kill, boolean headshot) {
         int total = 0;
-        this.points += 10;
-        total+= 10;
+        this.points += (int) (10 * pointsMultiplier);
+        total+= (int) (10 * pointsMultiplier);
         if (kill) {
-            this.points += 50;
-            total+=50;
+            this.points += (int) (50 * pointsMultiplier);
+            total+= (int) (50 * pointsMultiplier);
             if (headshot) {
-                this.points += 50;
-                total+= 50;
+                this.points += (int) (50 * pointsMultiplier);
+                total+= (int) (50 * pointsMultiplier);
             }
         }
         player.getStatistics().addPoints(total);
@@ -406,5 +409,13 @@ public class Loadout {
     public void purchaseUpgrade(InfernalMachine machine, int price) {
         spendPoints(price);
         machine.upgrade(getCurrentWeapon());
+    }
+
+    public boolean isBottomlessClip() {
+        return bottomlessClip;
+    }
+
+    public void setBottomlessClip(boolean bottomlessClip) {
+        this.bottomlessClip = bottomlessClip;
     }
 }
