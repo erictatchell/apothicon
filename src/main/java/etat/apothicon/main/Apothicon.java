@@ -24,12 +24,10 @@ public class Apothicon extends JPanel implements Runnable {
 
     public GameManager gameManager;
 
-    // TODO: oop-ify these variables
     int FPS = 60;
-    String drawFPS = "FPS: " + FPS;
     Thread thread;
     Thread soundThread;
-    SoundHandler sound = new SoundHandler();
+    SoundHandler sound;
 
     public KeyInput keyIn = new KeyInput();
     public MouseInput mouseIn = new MouseInput();
@@ -62,6 +60,7 @@ public class Apothicon extends JPanel implements Runnable {
 
     public void start() {
         thread = new Thread(this);
+        sound = new SoundHandler();
         soundThread = new Thread(sound);
         soundThread.start();
         thread.start();

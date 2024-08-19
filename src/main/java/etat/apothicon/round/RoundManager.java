@@ -79,7 +79,7 @@ public class RoundManager {
 
     private void startNewRound() {
         ap.playSE(RoundChangeMusic.JULY_30_CUSTOM.ordinal(), SoundType.ROUND_CHANGE);
-        ap.gameManager.aSetter.cleanUpObjects();
+//        ap.gameManager.aSetter.cleanUpObjects();
         roundDelay = new Timer();
         roundDelay.schedule(new TimerTask() {
             public void run() {
