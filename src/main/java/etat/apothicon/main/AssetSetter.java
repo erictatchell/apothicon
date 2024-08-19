@@ -4,6 +4,7 @@ import etat.apothicon.entity.Zombie;
 import etat.apothicon.object.Drop;
 import etat.apothicon.object.DropType;
 import etat.apothicon.object.InfernalMachine;
+import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.machine.DoubleTapMachine;
 import etat.apothicon.object.perk.machine.JuggernogMachine;
 import etat.apothicon.object.perk.machine.MuleKickMachine;
@@ -56,11 +57,26 @@ public class AssetSetter {
         ap.gameManager.obj[i] = new InfernalMachine();
         ap.gameManager.obj[i].worldX = 7 * ap.tileSize;
         ap.gameManager.obj[i++].worldY = 2 * ap.tileSize;
-
     }
 
     public void removeDrop(int index) {
         ap.gameManager.obj[index] = null;
+    }
+
+    public void cleanUpObjects() {
+        SuperObject[] temp = new SuperObject[GameManager.MAX_OBJECTS];
+        int j = 0;
+        for (int i = 0; i < ap.gameManager.obj.length; i++) {
+            if (ap.gameManager.obj[i] != null) {
+                temp[j] = ap.gameManager.obj[i];
+                if (temp[j] instanceof Drop) {
+                    ((Drop) temp[j]).objIndex = j; // disgusting but ok
+                }
+                j++;
+            }
+        }
+        ap.gameManager.obj = temp;
+        System.gc();
     }
 
 

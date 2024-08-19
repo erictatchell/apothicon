@@ -22,6 +22,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GameManager {
+    public static int MAX_OBJECTS = 128;
+
     public GameState gameState;
     public boolean dead = false;
     final Object spawnLock = new Object();
@@ -54,7 +56,7 @@ public class GameManager {
         dropManager = new DropManager(ap);
         player = new Player(ap, ap.keyIn, ap.mouseIn);
         bullets = new ArrayList<>();
-        obj = new SuperObject[100];
+        obj = new SuperObject[MAX_OBJECTS];
         infernalMachine = new InfernalMachine();
         zoneManager = new ZoneManager(ap);
         roundManager = new RoundManager(ap);

@@ -91,6 +91,10 @@ public class DropManager {
         }
     }
 
+    public void cleanUpDrops() {
+
+    }
+
     public void removeEffects(DropType type) {
         switch (type) {
             case INSTA_KILL -> {
