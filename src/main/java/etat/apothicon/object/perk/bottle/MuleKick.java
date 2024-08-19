@@ -29,7 +29,6 @@ public class MuleKick extends Perk implements Drinkable {
         customerLoadout.setMaxGunNum(3);
         customerLoadout.addPerk(this);
         customerLoadout.spendPoints(4000);
-        customerLoadout.hasMuleKick = true;
     }
 }
 

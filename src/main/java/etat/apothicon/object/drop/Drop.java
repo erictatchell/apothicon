@@ -1,6 +1,7 @@
-package etat.apothicon.object;
+package etat.apothicon.object.drop;
 
 import etat.apothicon.main.Apothicon;
+import etat.apothicon.object.SuperObject;
 import etat.apothicon.utility.MediaManager;
 
 import javax.imageio.ImageIO;

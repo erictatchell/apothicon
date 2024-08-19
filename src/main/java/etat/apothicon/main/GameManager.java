@@ -3,8 +3,8 @@ package etat.apothicon.main;
 import etat.apothicon.ai.PathFinder;
 import etat.apothicon.entity.Entity;
 import etat.apothicon.entity.Player;
-import etat.apothicon.object.Drop;
-import etat.apothicon.object.DropManager;
+import etat.apothicon.object.drop.Drop;
+import etat.apothicon.object.drop.DropManager;
 import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.ui.FontManager;
 import etat.apothicon.ui.HUD;
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public class GameManager {
     public static int MAX_OBJECTS = 128;
+    public static int CLEANUP_TARGET = 10;
 
     public GameState gameState;
     public boolean dead = false;

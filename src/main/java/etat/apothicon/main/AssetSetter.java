@@ -1,8 +1,8 @@
 package etat.apothicon.main;
 
 import etat.apothicon.entity.Zombie;
-import etat.apothicon.object.Drop;
-import etat.apothicon.object.DropType;
+import etat.apothicon.object.drop.Drop;
+import etat.apothicon.object.drop.DropType;
 import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.machine.DoubleTapMachine;
@@ -18,6 +18,7 @@ import etat.apothicon.object.weapon.wallbuy.Stakeout_WallBuy;
 public class AssetSetter {
     Apothicon ap;
     int i;
+    static int counter = 0;
 
     public AssetSetter(Apothicon ap) {
         this.ap = ap;
@@ -90,5 +91,9 @@ public class AssetSetter {
         Drop drop = new Drop(i, worldX, worldY, ap, DropType.randomDrop());
         ap.gameManager.dropManager.spawn(drop);
         ap.gameManager.obj[i++] = drop;
+        counter++;
+        if (counter == GameManager.CLEANUP_TARGET) {
+            ap.gameManager.aSetter.cleanUpObjects();
+        }
     }
 }

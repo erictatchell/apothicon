@@ -28,6 +28,5 @@ public class Juggernog extends Perk implements Drinkable {
         customerLoadout.setDefaultHealth(250);
         customerLoadout.addPerk(this);
         customerLoadout.spendPoints(2500);
-        customerLoadout.hasJuggernog = true;
     }
 }

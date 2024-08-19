@@ -27,6 +27,5 @@ public class QuickRevive extends Perk implements Drinkable {
         customerLoadout.setRevives(1);
         customerLoadout.addPerk(this);
         customerLoadout.spendPoints(500);
-        customerLoadout.hasQuickRevive = true;
     }
 }

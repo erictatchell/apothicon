@@ -24,31 +24,36 @@ import java.util.TimerTask;
 
 public class Loadout {
 
-    private Player player;
+    private final Player player;
     private final Apothicon ap;
-    protected Timer loadoutTimer;
-    protected boolean healing;
-    public boolean hasDoubleTap;
-    public boolean hasSpeedCola;
-    public boolean hasJuggernog;
-    public boolean hasQuickRevive;
-    public boolean hasMuleKick;
-    private boolean bottomlessClip;
-
     private ArrayList<Gun> guns;
     private ArrayList<Perk> perks;
-    private float fireDelay;
+    private boolean bottomlessClip;
     private int currentWeaponIdx;
     private int maxGunNum;
     private int perkLimit;
     private int revives;
     private int points;
+
     private float reloadRateMultiplier;
     private float damageMultiplier;
     private float fireRateMultiplier;
     private float pointsMultiplier;
+    private float fireDelay;
+
+    protected Timer loadoutTimer;
     protected int defaultHealth;
     protected int health;
+    protected boolean healing;
+
+    private boolean doubleTap;
+    private boolean speedCola;
+    private boolean juggernog;
+    private boolean quickRevive;
+    private boolean muleKick;
+
+
+
 
     public Loadout(Player player, Apothicon ap) {
         this.player = player;
@@ -74,11 +79,6 @@ public class Loadout {
         this.guns.add(mp40);
         this.currentWeaponIdx = 0;
 
-        hasDoubleTap = false;
-        hasJuggernog = false;
-        hasMuleKick = false;
-        hasSpeedCola = false;
-        hasQuickRevive = false;
         bottomlessClip = true;
 
     }
@@ -100,11 +100,6 @@ public class Loadout {
         this.guns.add(m1911);
         this.currentWeaponIdx = 0;
 
-        hasDoubleTap = false;
-        hasJuggernog = false;
-        hasMuleKick = false;
-        hasSpeedCola = false;
-        hasQuickRevive = false;
         bottomlessClip = false;
     }
 
@@ -339,11 +334,6 @@ public class Loadout {
         player.setSlotX(16);
         player.setPerkOffset(16);
         perks = new ArrayList<>();
-        hasJuggernog = false;
-        hasDoubleTap = false;
-        hasMuleKick = false;
-        hasQuickRevive = false;
-        hasSpeedCola = false;
         maxGunNum = 2;
 
         // remove mule kick gun
@@ -417,5 +407,21 @@ public class Loadout {
 
     public void setBottomlessClip(boolean bottomlessClip) {
         this.bottomlessClip = bottomlessClip;
+    }
+    public boolean hasPerk(String name) {
+        for (Perk perk : perks) {
+            if (perk.name.equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean hasPerk(Perk queriedPerk) {
+        for (Perk perk : perks) {
+            if (perk.name.equals(queriedPerk.name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,8 +1,6 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.main.Apothicon;
-import etat.apothicon.object.Drop;
-import etat.apothicon.object.DropType;
 //import etat.apothicon.object.Drop_Instakill;
 import etat.apothicon.utility.sound.ImpactSound;
 import etat.apothicon.utility.sound.SoundType;
