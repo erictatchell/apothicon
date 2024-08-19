@@ -172,7 +172,7 @@ public class Gun {
         owner.ap.gameManager.bullets.add(bullet1);
         owner.getStatistics().addShotFired();
 
-        if (this.owner.getLoadout().hasDoubleTap) {
+        if (this.owner.getLoadout().hasPerk("double_tap")) {
 
             Bullet bullet2 = new Bullet(owner.ap, this);
             bullet2.set(owner.worldX + 24, owner.worldY + 24, dir, true, owner);

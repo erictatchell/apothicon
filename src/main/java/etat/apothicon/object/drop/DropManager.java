@@ -1,4 +1,4 @@
-package etat.apothicon.object;
+package etat.apothicon.object.drop;
 
 import etat.apothicon.main.Apothicon;
 
@@ -73,13 +73,16 @@ public class DropManager {
 
     public void handleActivate(Drop drop) {
         // todo: extra processing? maybe a sound?
-        if (!isDropActive(drop.dropType) && drop.dropType != DropType.MAX_AMMO) {
-            activeDrops.add(drop);
-        } else {
-            drop.startActiveTimer(this);
-            return;
+        if (drop.dropType == DropType.MAX_AMMO) {
+            drop.activate();
         }
-        drop.activate();
+        else if (!isDropActive(drop.dropType)) {
+            activeDrops.add(drop);
+            drop.activate();
+        }
+        else {
+            clearDrop(drop);
+        }
     }
 
     public void handleDeactivate(Drop drop) {
@@ -88,6 +91,11 @@ public class DropManager {
             activeDrops.remove(drop);
             drop.deactivate();
         }
+    }
+
+    public void clearDrop(Drop drop) {
+        spawnedDrops.remove(drop);
+        ap.gameManager.aSetter.removeDrop(drop.objIndex);
     }
 
     public void removeEffects(DropType type) {

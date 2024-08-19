@@ -1,6 +1,5 @@
 package etat.apothicon.ui;
 
-import etat.apothicon.object.Drop;
 import etat.apothicon.utility.MediaManager;
 import etat.apothicon.main.Apothicon;
 import etat.apothicon.object.perk.bottle.Perk;

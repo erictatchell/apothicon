@@ -1,14 +1,13 @@
 package etat.apothicon.entity;
 
 import etat.apothicon.main.*;
-import etat.apothicon.object.Drop;
+import etat.apothicon.object.drop.Drop;
 import etat.apothicon.object.InfernalMachine;
 import etat.apothicon.object.weapon.gun.Gun;
 import etat.apothicon.round.Zone;
 import etat.apothicon.object.SuperObject;
 import etat.apothicon.object.perk.bottle.Perk;
 import etat.apothicon.object.perk.machine.PerkMachine;
-import etat.apothicon.object.weapon.gun.Bullet;
 import etat.apothicon.object.weapon.gun.FireType;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
 import etat.apothicon.utility.sound.InteractSound;
@@ -16,10 +15,7 @@ import etat.apothicon.utility.sound.SoundType;
 import etat.apothicon.utility.MediaManager;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.SwingUtilities;
@@ -103,7 +99,7 @@ public class Player extends Entity {
 
     public void update() {
         // last stand if player has quick revive
-        if (!inLastStand && loadout.health <= 0 && loadout.hasQuickRevive) {
+        if (!inLastStand && loadout.health <= 0 && loadout.hasPerk("quick_revive")) {
             enterLastStand();
         }
         else if (!inLastStand && loadout.health <= 0) {
