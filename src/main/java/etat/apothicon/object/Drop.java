@@ -122,22 +122,7 @@ public class Drop extends SuperObject {
         this.active = true;
         this.slotX = dm.getSlotX();
 
-        activeTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                iconFlashing = true;
-                activeFlashRate = 21;
-            }
-        }, 22000);
-        activeTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                activeFlashRate = 7;
-            }
-        }, 25000);
-        activeTimer.schedule(new DeactivateDrop(dm, this), 30000);
-
-
+        startActiveTimer(dm);
     }
 
 
@@ -175,6 +160,23 @@ public class Drop extends SuperObject {
             auraCounter = 0;
         }
         return auraAngle;
+    }
+
+    public void startActiveTimer(DropManager dm) {
+        activeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                iconFlashing = true;
+                activeFlashRate = 21;
+            }
+        }, 22000);
+        activeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                activeFlashRate = 7;
+            }
+        }, 25000);
+        activeTimer.schedule(new DeactivateDrop(dm, this), 30000);
     }
 
     @Override

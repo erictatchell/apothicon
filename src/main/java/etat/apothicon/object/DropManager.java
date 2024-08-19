@@ -73,14 +73,13 @@ public class DropManager {
 
     public void handleActivate(Drop drop) {
         // todo: extra processing? maybe a sound?
-        if (drop.dropType == DropType.MAX_AMMO) {
-            drop.activate();
+        if (!isDropActive(drop.dropType) && drop.dropType != DropType.MAX_AMMO) {
+            activeDrops.add(drop);
+        } else {
+            drop.startActiveTimer(this);
             return;
         }
-        if (!isDropActive(drop.dropType)) {
-            activeDrops.add(drop);
-            drop.activate();
-        }
+        drop.activate();
     }
 
     public void handleDeactivate(Drop drop) {

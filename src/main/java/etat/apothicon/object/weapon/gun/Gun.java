@@ -141,9 +141,7 @@ public class Gun {
                     new java.util.TimerTask() {
                         @Override
                         public void run() {
-                            if (magazine != defaultAmmoPerMagazine) {
-                                reload(ammoToBeReloaded);
-                            }
+                            reload(ammoToBeReloaded);
                         }
                     },
                     this.delay);
@@ -151,6 +149,10 @@ public class Gun {
     }
 
     public void reload(int ammoToBeReloaded) {
+        if (this.magazine == this.defaultAmmoPerMagazine) {
+            this.reloading = false;
+            return;
+        }
         if (this.reserve > ammoToBeReloaded) {
             this.reserve -= ammoToBeReloaded;
             this.magazine += ammoToBeReloaded;
