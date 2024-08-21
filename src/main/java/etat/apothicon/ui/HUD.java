@@ -96,7 +96,6 @@ public class HUD {
                 xCurrentWeaponName,
                 ap.screenHeight - 28);
 
-        g2.setFont(FontManager.fty16);
         int ammoTextWidth = (g2.getFontMetrics().stringWidth(ammo));
         int xCurrentWeaponAmmo = ap.screenWidth - ammoTextWidth - 24;
 
@@ -110,7 +109,7 @@ public class HUD {
 
         g2.drawString(ap.gameManager.zoneManager.currentZone.getName(), 10, 30);
         g2.drawString(Integer.toString(ap.gameManager.player.getLoadout().getHealth()), 10, 100);
-
+        g2.setFont(FontManager.fty24);
 
         int pointTextWidth = (g2.getFontMetrics().stringWidth(points));
         int xPoints = ap.screenWidth - pointTextWidth - 24;

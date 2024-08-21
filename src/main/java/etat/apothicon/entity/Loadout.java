@@ -51,8 +51,6 @@ public class Loadout {
     private boolean muleKick;
 
 
-
-
     public Loadout(Player player, Apothicon ap) {
         this.player = player;
         this.ap = ap;
@@ -121,9 +119,11 @@ public class Loadout {
         }
         return false;
     }
+
     public boolean canAfford(int price) {
         return points >= price;
     }
+
     public boolean canAffordPerk(PerkMachine perk) {
         return points >= perk.price;
     }
@@ -139,13 +139,13 @@ public class Loadout {
     public void addPoints(boolean kill, boolean headshot) {
         int total = 0;
         this.points += (int) (10 * pointsMultiplier);
-        total+= (int) (10 * pointsMultiplier);
+        total += (int) (10 * pointsMultiplier);
         if (kill) {
             this.points += (int) (50 * pointsMultiplier);
-            total+= (int) (50 * pointsMultiplier);
+            total += (int) (50 * pointsMultiplier);
             if (headshot) {
                 this.points += (int) (50 * pointsMultiplier);
-                total+= (int) (50 * pointsMultiplier);
+                total += (int) (50 * pointsMultiplier);
             }
         }
         player.getStatistics().addPoints(total);
@@ -335,26 +335,22 @@ public class Loadout {
     public void purchaseGun(SuperObject object) {
         switch (object.name) {
             case "MP40":
-                GunDirector.buildMP40(player, gunBuilder);
-                Gun mp40 = gunBuilder.build();
+                Gun mp40 = ap.gameManager.allGuns.get("MP40");
                 mp40.setWallBuy((WallBuy) object);
                 handleGunPurchase(mp40);
                 break;
             case "M14":
-                GunDirector.buildM14(player, gunBuilder);
-                Gun m14 = gunBuilder.build();
+                Gun m14 = ap.gameManager.allGuns.get("M14");
                 m14.setWallBuy((WallBuy) object);
                 handleGunPurchase(m14);
                 break;
             case "Olympia":
-                GunDirector.buildOlympia(player, gunBuilder);
-                Gun olympia = gunBuilder.build();
+                Gun olympia = ap.gameManager.allGuns.get("Olympia");
                 olympia.setWallBuy((WallBuy) object);
                 handleGunPurchase(olympia);
                 break;
             case "Stakeout":
-                GunDirector.buildStakeout(player, gunBuilder);
-                Gun stakeout = gunBuilder.build();
+                Gun stakeout = ap.gameManager.allGuns.get("Stakeout");
                 stakeout.setWallBuy((WallBuy) object);
                 handleGunPurchase(stakeout);
                 break;
@@ -392,6 +388,7 @@ public class Loadout {
     public void setBottomlessClip(boolean bottomlessClip) {
         this.bottomlessClip = bottomlessClip;
     }
+
     public boolean hasPerk(String name) {
         for (Perk perk : perks) {
             if (perk.name.equals(name)) {
@@ -400,6 +397,7 @@ public class Loadout {
         }
         return false;
     }
+
     public boolean hasPerk(Perk queriedPerk) {
         for (Perk perk : perks) {
             if (perk.name.equals(queriedPerk.name)) {

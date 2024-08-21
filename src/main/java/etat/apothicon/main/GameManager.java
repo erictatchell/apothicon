@@ -6,7 +6,9 @@ import etat.apothicon.entity.Player;
 import etat.apothicon.object.drop.Drop;
 import etat.apothicon.object.drop.DropManager;
 import etat.apothicon.object.InfernalMachine;
+import etat.apothicon.object.weapon.gun.Gun;
 import etat.apothicon.object.weapon.gun.GunBuilder;
+import etat.apothicon.object.weapon.gun.GunDirector;
 import etat.apothicon.ui.FontManager;
 import etat.apothicon.ui.HUD;
 import etat.apothicon.object.SuperObject;
@@ -20,7 +22,7 @@ import etat.apothicon.ui.menu.MainMenu;
 import etat.apothicon.utility.GameState;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class GameManager {
     public static int MAX_OBJECTS = 128;
@@ -38,6 +40,7 @@ public class GameManager {
     public MainMenu mainMenu;
     public DeathMenu deathMenu;
     public ArrayList<Drop> drops;
+    public Map<String, Gun> allGuns;
     public InfernalMachine infernalMachine;
     public ZoneManager zoneManager;
     public RoundManager roundManager;
@@ -71,6 +74,36 @@ public class GameManager {
         pFinder = new PathFinder(ap);
         aSetter.setObject();
         deathMenu = new DeathMenu(this, ap.mouseIn, ap.keyIn);
+        createGuns();
+    }
+
+    public void createGuns() {
+        allGuns = new HashMap<>();
+
+        GunDirector.buildM14(player, gunBuilder);
+        Gun M14 = gunBuilder.build();
+
+        GunDirector.buildM16(player, gunBuilder);
+        Gun M16 = gunBuilder.build();
+
+        GunDirector.buildMP40(player, gunBuilder);
+        Gun MP40 = gunBuilder.build();
+
+        GunDirector.buildM1911(player, gunBuilder);
+        Gun M1911 = gunBuilder.build();
+
+        GunDirector.buildOlympia(player, gunBuilder);
+        Gun Olympia = gunBuilder.build();
+
+        GunDirector.buildStakeout(player, gunBuilder);
+        Gun Stakeout = gunBuilder.build();
+
+        allGuns.put(M14.getName(), M14);
+        allGuns.put(M16.getName(), M16);
+        allGuns.put(MP40.getName(), MP40);
+        allGuns.put(M1911.getName(), M1911);
+        allGuns.put(Olympia.getName(), Olympia);
+        allGuns.put(Stakeout.getName(), Stakeout);
     }
 
 
