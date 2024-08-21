@@ -17,7 +17,7 @@ import etat.apothicon.object.weapon.wallbuy.Stakeout_WallBuy;
 
 public class AssetSetter {
     Apothicon ap;
-    int i;
+    int assetIndex;
     static int counter = 0;
 
     public AssetSetter(Apothicon ap) {
@@ -25,39 +25,39 @@ public class AssetSetter {
     }
 
     public void setObject() {
-        ap.gameManager.obj[i] = new QuickReviveMachine();
-        ap.gameManager.obj[i].worldY = 42 * ap.tileSize;
-        ap.gameManager.obj[i++].worldX = 35 * ap.tileSize;
-        ap.gameManager.obj[i] = new DoubleTapMachine();
-        ap.gameManager.obj[i].worldY = 21 * ap.tileSize;
-        ap.gameManager.obj[i++].worldX = 47 * ap.tileSize;
-        ap.gameManager.obj[i] = new SpeedColaMachine();
-        ap.gameManager.obj[i].worldY = 30 * ap.tileSize;
-        ap.gameManager.obj[i++].worldX = 24 * ap.tileSize;
-        ap.gameManager.obj[i] = new JuggernogMachine();
-        ap.gameManager.obj[i].worldY = 6 * ap.tileSize;
-        ap.gameManager.obj[i++].worldX = 24 * ap.tileSize;
-        ap.gameManager.obj[i] = new MuleKickMachine();
-        ap.gameManager.obj[i].worldY = 23 * ap.tileSize;
-        ap.gameManager.obj[i++].worldX = 2 * ap.tileSize;
-        ap.gameManager.obj[i] = new Stakeout_WallBuy();
-        ap.gameManager.obj[i].worldY = 29 * ap.tileSize;
-        ap.gameManager.obj[i++].worldX = 43 * ap.tileSize;
-        ap.gameManager.obj[i] = new MP40_WallBuy();
-        ap.gameManager.obj[i].worldY = 32 * ap.tileSize;
-        ap.gameManager.obj[i++].worldX = 16 * ap.tileSize;
-        ap.gameManager.obj[i] = new MP40_WallBuy();
-        ap.gameManager.obj[i].worldY = 20 * ap.tileSize;
-        ap.gameManager.obj[i++].worldX = 45 * ap.tileSize;
-        ap.gameManager.obj[i] = new M14_WallBuy();
-        ap.gameManager.obj[i].worldY = 46 * ap.tileSize;
-        ap.gameManager.obj[i++].worldX = 29 * ap.tileSize;
-        ap.gameManager.obj[i] = new Olympia_WallBuy();
-        ap.gameManager.obj[i].worldY = 41 * ap.tileSize;
-        ap.gameManager.obj[i++].worldX = 40 * ap.tileSize;
-        ap.gameManager.obj[i] = new InfernalMachine();
-        ap.gameManager.obj[i].worldX = 7 * ap.tileSize;
-        ap.gameManager.obj[i++].worldY = 2 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new QuickReviveMachine();
+        ap.gameManager.obj[assetIndex].worldY = 42 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldX = 35 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new DoubleTapMachine();
+        ap.gameManager.obj[assetIndex].worldY = 21 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldX = 47 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new SpeedColaMachine();
+        ap.gameManager.obj[assetIndex].worldY = 30 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldX = 24 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new JuggernogMachine();
+        ap.gameManager.obj[assetIndex].worldY = 6 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldX = 24 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new MuleKickMachine();
+        ap.gameManager.obj[assetIndex].worldY = 23 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldX = 2 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new Stakeout_WallBuy();
+        ap.gameManager.obj[assetIndex].worldY = 29 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldX = 43 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new MP40_WallBuy();
+        ap.gameManager.obj[assetIndex].worldY = 32 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldX = 16 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new MP40_WallBuy();
+        ap.gameManager.obj[assetIndex].worldY = 20 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldX = 45 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new M14_WallBuy();
+        ap.gameManager.obj[assetIndex].worldY = 46 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldX = 29 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new Olympia_WallBuy();
+        ap.gameManager.obj[assetIndex].worldY = 41 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldX = 40 * ap.tileSize;
+        ap.gameManager.obj[assetIndex] = new InfernalMachine();
+        ap.gameManager.obj[assetIndex].worldX = 7 * ap.tileSize;
+        ap.gameManager.obj[assetIndex++].worldY = 2 * ap.tileSize;
     }
 
     public void removeDrop(int index) {
@@ -73,6 +73,7 @@ public class AssetSetter {
                 if (temp[j] instanceof Drop) {
                     ((Drop) temp[j]).objIndex = j; // disgusting but ok
                 }
+                assetIndex = j;
                 j++;
             }
         }
@@ -88,9 +89,9 @@ public class AssetSetter {
     }
 
     public void spawnDrop(int worldX, int worldY) {
-        Drop drop = new Drop(i, worldX, worldY, ap, DropType.randomDrop());
+        Drop drop = new Drop(assetIndex, worldX, worldY, ap, DropType.randomDrop());
         ap.gameManager.dropManager.spawn(drop);
-        ap.gameManager.obj[i++] = drop;
+        ap.gameManager.obj[assetIndex++] = drop;
         counter++;
         if (counter == GameManager.CLEANUP_TARGET) {
             ap.gameManager.aSetter.cleanUpObjects();

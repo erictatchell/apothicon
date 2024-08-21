@@ -75,14 +75,15 @@ public class DropManager {
         // todo: extra processing? maybe a sound?
         if (drop.dropType == DropType.MAX_AMMO) {
             drop.activate();
+            return;
         }
-        else if (!isDropActive(drop.dropType)) {
+
+        if (!isDropActive(drop.dropType)) {
+            System.out.println("drop is not active");
             activeDrops.add(drop);
             drop.activate();
         }
-        else {
-            clearDrop(drop);
-        }
+        drop.spawned = false;
     }
 
     public void handleDeactivate(Drop drop) {
@@ -95,7 +96,6 @@ public class DropManager {
 
     public void clearDrop(Drop drop) {
         spawnedDrops.remove(drop);
-        ap.gameManager.aSetter.removeDrop(drop.objIndex);
     }
 
     public void removeEffects(DropType type) {
@@ -177,6 +177,7 @@ public class DropManager {
             }
         }, 30000);
     }
+
     public void revalidateSlotX() {
         int i = 1;
         for (Drop drop : activeDrops) {

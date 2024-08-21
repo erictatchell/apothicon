@@ -268,7 +268,9 @@ public class Player extends Entity {
                 case "drop" -> {
                     Drop drop = (Drop) obj;
                     drop.objIndex = index;
-                    ap.gameManager.dropManager.handleActivate(drop);
+                    if (drop.spawned) {
+                        ap.gameManager.dropManager.handleActivate(drop);
+                    }
                 }
                 case "pap" -> {
                     InfernalMachine machine = (InfernalMachine) obj;
