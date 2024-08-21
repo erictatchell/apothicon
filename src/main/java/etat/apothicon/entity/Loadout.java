@@ -11,11 +11,8 @@ import etat.apothicon.object.perk.bottle.QuickRevive;
 import etat.apothicon.object.perk.bottle.SpeedCola;
 import etat.apothicon.object.perk.machine.PerkMachine;
 import etat.apothicon.object.weapon.gun.Gun;
-import etat.apothicon.object.weapon.gun.M14_Gun;
-import etat.apothicon.object.weapon.gun.M1911_Gun;
-import etat.apothicon.object.weapon.gun.MP40_Gun;
-import etat.apothicon.object.weapon.gun.Olympia_Gun;
-import etat.apothicon.object.weapon.gun.Stakeout_Gun;
+import etat.apothicon.object.weapon.gun.GunBuilder;
+import etat.apothicon.object.weapon.gun.GunDirector;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
 
 import java.util.ArrayList;
@@ -25,6 +22,7 @@ import java.util.TimerTask;
 public class Loadout {
 
     private final Player player;
+    private final GunBuilder gunBuilder;
     private final Apothicon ap;
     private ArrayList<Gun> guns;
     private ArrayList<Perk> perks;
@@ -58,29 +56,10 @@ public class Loadout {
     public Loadout(Player player, Apothicon ap) {
         this.player = player;
         this.ap = ap;
+        this.gunBuilder = ap.gameManager.gunBuilder;
+        System.out.println("hi");
 
         init();
-    }
-
-    public void getDebugLoadout() {
-        this.perkLimit = 4;
-        this.revives = 0;
-        this.reloadRateMultiplier = 1.0f;
-        this.damageMultiplier = 1.0f;
-        this.fireRateMultiplier = 1.0f;
-        this.pointsMultiplier = 1.0f;
-        this.defaultHealth = 150000;
-        this.health = 150000;
-        this.points = 50000;
-        this.maxGunNum = 2;
-        this.guns = new ArrayList<>();
-        this.perks = new ArrayList<>();
-        MP40_Gun mp40 = new MP40_Gun(this.player);
-        this.guns.add(mp40);
-        this.currentWeaponIdx = 0;
-
-        bottomlessClip = true;
-
     }
 
     private void init() {
@@ -96,7 +75,8 @@ public class Loadout {
         this.maxGunNum = 2;
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
-        M1911_Gun m1911 = new M1911_Gun(this.player);
+        GunDirector.buildM1911(player, gunBuilder);
+        Gun m1911 = gunBuilder.build();
         this.guns.add(m1911);
         this.currentWeaponIdx = 0;
 
@@ -109,7 +89,7 @@ public class Loadout {
 
     public boolean isAmmoPurchasable(int price) {
         Gun current = this.guns.get(currentWeaponIdx);
-        return (this.points > price) && (current.reserve != current.defaultReserve);
+        return (this.points > price) && (current.getReserve() != current.getReserve());
     }
 
     public boolean isGunPurchasable(WallBuy gun) {
@@ -150,8 +130,8 @@ public class Loadout {
 
     public void refillAmmo() {
         for (Gun gun : this.guns) {
-            gun.magazine = gun.defaultAmmoPerMagazine;
-            gun.reserve = gun.defaultReserve;
+            gun.setMagazine(gun.getDefaultAmmoPerMagazine());
+            gun.setReserve(gun.getDefaultReserve());
         }
     }
 
@@ -181,8 +161,8 @@ public class Loadout {
         // change?
         if (current.getName() == object.name) {
 
-            current.reserve = current.defaultReserve;
-            current.magazine = current.defaultAmmoPerMagazine;
+            current.setReserve(current.getDefaultReserve());
+            current.setMagazine(current.getDefaultAmmoPerMagazine());
             spendPoints(price);
         }
     }
@@ -355,24 +335,28 @@ public class Loadout {
     public void purchaseGun(SuperObject object) {
         switch (object.name) {
             case "MP40":
-                MP40_Gun mp40 = new MP40_Gun(this.player);
+                GunDirector.buildMP40(player, gunBuilder);
+                Gun mp40 = gunBuilder.build();
                 mp40.setWallBuy((WallBuy) object);
                 handleGunPurchase(mp40);
                 break;
             case "M14":
-                M14_Gun m14 = new M14_Gun(this.player);
+                GunDirector.buildM14(player, gunBuilder);
+                Gun m14 = gunBuilder.build();
                 m14.setWallBuy((WallBuy) object);
                 handleGunPurchase(m14);
                 break;
             case "Olympia":
-                Olympia_Gun o = new Olympia_Gun(this.player);
-                o.setWallBuy((WallBuy) object);
-                handleGunPurchase(o);
+                GunDirector.buildOlympia(player, gunBuilder);
+                Gun olympia = gunBuilder.build();
+                olympia.setWallBuy((WallBuy) object);
+                handleGunPurchase(olympia);
                 break;
             case "Stakeout":
-                Stakeout_Gun st = new Stakeout_Gun(this.player);
-                st.setWallBuy((WallBuy) object);
-                handleGunPurchase(st);
+                GunDirector.buildStakeout(player, gunBuilder);
+                Gun stakeout = gunBuilder.build();
+                stakeout.setWallBuy((WallBuy) object);
+                handleGunPurchase(stakeout);
                 break;
         }
     }

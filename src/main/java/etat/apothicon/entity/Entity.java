@@ -212,7 +212,7 @@ public class Entity {
 
         // 12 frame delay between new pathfind
         pathfindingDelay++;
-        if (pathfindingDelay == 12) {
+        if (pathfindingDelay == 6) {
             setAction();
             pathfindingDelay = 0;
         }

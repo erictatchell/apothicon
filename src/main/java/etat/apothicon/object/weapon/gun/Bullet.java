@@ -32,7 +32,7 @@ public class Bullet extends Entity {
         super(ap);
         this.gun = gun;
         hitZombiesTable = new HashMap<>();
-        penetrations = gun.penetration;
+        penetrations = gun.getPenetration();
         eSolidArea = new Rectangle();
         targetSolidArea = new Rectangle();
         targetHeadSolidArea = new Rectangle();
@@ -135,7 +135,7 @@ public class Bullet extends Entity {
                 && worldY + ap.tileSize > ap.gameManager.player.worldY - ap.gameManager.player.screenY
                 && worldY - ap.tileSize < ap.gameManager.player.worldY + ap.gameManager.player.screenY) {
 
-            if (gun.upgradeTier > 0) {
+            if (gun.getUpgradeTier() > 0) {
                 int ran = r.nextInt(2) + 1;
                 switch (ran) {
                     case 1 -> g2.setColor(new Color(100, 0, 255));

@@ -113,23 +113,24 @@ public class Player extends Entity {
         Gun currentWeapon = loadout.getCurrentWeapon();
 
         // if we want to shoot, don't need to rechamber, and the delay is up
-        if (!currentWeapon.rechamberNeeded && mouseIn.leftMousePressed
-                && currentWeapon.fireDelayCounter >= currentWeapon.fireDelay) {
+        if (!currentWeapon.isRechamberNeeded() && mouseIn.leftMousePressed
+                && currentWeapon.getFireDelayCounter() >= currentWeapon.getFireDelay()) {
 
             loadout.fireWeapon();
-            if (currentWeapon.fireType == FireType.SEMI_AUTO) {
+            if (currentWeapon.getFireType() == FireType.SEMI_AUTO) {
                 // rechamber needed, prevent full auto on semi auto guns
-                currentWeapon.rechamberNeeded = true;
+                currentWeapon.setRechamberNeeded(true);
             }
-            currentWeapon.fireDelayCounter = 0;
+            currentWeapon.setFireDelayCounter(0);
         } // if semi auto, rechamber on trigger release
-        else if (currentWeapon.fireType == FireType.SEMI_AUTO && !mouseIn.leftMousePressed) {
-            currentWeapon.rechamberNeeded = false;
+        else if (currentWeapon.getFireType() == FireType.SEMI_AUTO && !mouseIn.leftMousePressed) {
+            currentWeapon.setRechamberNeeded(false);
         }
 
         // inc fire delay
-        if (currentWeapon.fireDelayCounter < currentWeapon.fireDelay) {
+        if (currentWeapon.getFireDelayCounter() < currentWeapon.getFireDelay()) {
 
+            // todo
             currentWeapon.fireDelayCounter += this.loadout.getFireRateMultiplier();
 
         }
@@ -272,7 +273,7 @@ public class Player extends Entity {
                 case "pap" -> {
                     InfernalMachine machine = (InfernalMachine) obj;
                     int price = machine.getPrice(loadout.getCurrentWeapon());
-                    if (loadout.getCurrentWeapon().upgradeTier != 3) {
+                    if (loadout.getCurrentWeapon().getUpgradeTier() != 3) {
                         drawPurchaseText("Upgrade Tier " + machine.getNextTier(loadout.getCurrentWeapon()),
                                 machine.getPrice(loadout.getCurrentWeapon()));
                     }
@@ -382,9 +383,9 @@ public class Player extends Entity {
      */
     public BufferedImage getImage(Point mousePosition) {
         if (mousePosition.x > ap.screenWidth / 2) {
-            return loadout.getCurrentWeapon().image;
+            return loadout.getCurrentWeapon().getImage();
         }
-        return MediaManager.horizontalFlip(loadout.getCurrentWeapon().image);
+        return MediaManager.horizontalFlip(loadout.getCurrentWeapon().getImage());
     }
 
 

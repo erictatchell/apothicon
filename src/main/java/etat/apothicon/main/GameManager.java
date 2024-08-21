@@ -6,6 +6,7 @@ import etat.apothicon.entity.Player;
 import etat.apothicon.object.drop.Drop;
 import etat.apothicon.object.drop.DropManager;
 import etat.apothicon.object.InfernalMachine;
+import etat.apothicon.object.weapon.gun.GunBuilder;
 import etat.apothicon.ui.FontManager;
 import etat.apothicon.ui.HUD;
 import etat.apothicon.object.SuperObject;
@@ -27,9 +28,10 @@ public class GameManager {
 
     public GameState gameState;
     public boolean dead = false;
-    final Object spawnLock = new Object();
+
     public Apothicon ap;
     public Player player;
+    public GunBuilder gunBuilder;
     public ArrayList<Bullet> bullets;
     public SuperObject[] obj;
     public HUD hud;
@@ -53,6 +55,7 @@ public class GameManager {
     public void setup() {
         gameState = GameState.MAIN_MENU;
         mainMenu = new MainMenu(this, ap.mouseIn, ap.keyIn);
+        gunBuilder = new GunBuilder();
         tileManager = new TileManager(ap);
         dropManager = new DropManager(ap);
         player = new Player(ap, ap.keyIn, ap.mouseIn);

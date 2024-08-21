@@ -24,21 +24,21 @@ public class InfernalMachine extends SuperObject {
 
     public void upgrade(Gun gun) {
         gun.upgrade();
-        gun.upgradeTier++;
+        gun.setUpgradeTier(gun.getUpgradeTier() + 1);
     }
 
     public int getPrice(Gun gun) {
-        if (gun.upgradeTier == 0) {
+        if (gun.getUpgradeTier() == 0) {
             return tier1_price;
-        } else if (gun.upgradeTier == 1) {
+        } else if (gun.getUpgradeTier() == 1) {
             return tier2_price;
         } else return tier3_price;
     }
 
     public int getNextTier(Gun gun) {
-        if (gun.upgradeTier == 0) {
+        if (gun.getUpgradeTier() == 0) {
             return 1;
-        } else if (gun.upgradeTier == 1) {
+        } else if (gun.getUpgradeTier() == 1) {
             return 2;
         } else return 3;
     }

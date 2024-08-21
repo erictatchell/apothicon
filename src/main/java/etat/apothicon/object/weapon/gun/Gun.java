@@ -14,38 +14,36 @@ import javax.imageio.ImageIO;
 
 // TODO:
 public class Gun {
-
-    String name;
-    String upgradedName;
-    public BufferedImage image;
-    public String upgradedImagePath;
-    Player owner;
-    public GunSound fireSound;
-    public GunSound upgradedFireSound;
-    public GunSound reloadSound;
-    public int upgradeTier;
-
-    int damage;
-    public int upgradedDamage;
-    boolean reloading = false;
-    int delay;
-    public int bullet;
-    public int defaultAmmoPerMagazine;
-    public int upgradedDefaultAmmoPerMagazine;
-    public int magazine;
-    public int upgradedDefaultReserve;
-    public int reserve;
-    public int defaultReserve;
-    public int penetration;
-    public WallBuy wallBuy;
-    public float fireRate;
-    public FireType fireType;
+    private String name;
+    private String upgradedName;
+    private BufferedImage image;
+    private String upgradedImagePath;
+    private Player owner;
+    private GunSound fireSound;
+    private GunSound upgradedFireSound;
+    private GunSound reloadSound;
+    private int upgradeTier;
+    private int damage;
+    private int upgradedDamage;
+    private int delay;
+    private int bullet;
+    private int defaultAmmoPerMagazine;
+    private int upgradedDefaultAmmoPerMagazine;
+    private int magazine;
+    private int upgradedDefaultReserve;
+    private int reserve;
+    private int defaultReserve;
+    private int penetration;
+    private WallBuy wallBuy;
+    private float fireRate;
+    private FireType fireType;
     public float fireDelayCounter;
-    public float reloadRate;
-    public Timer reloadTimer;
-    float range;
-    public boolean rechamberNeeded = false;
-    public float fireDelay;
+    private float reloadRate;
+    private Timer reloadTimer;
+    private float range;
+    private boolean rechamberNeeded = false;
+    private boolean reloading = false;
+    private float fireDelay;
 
     /**
      * gun structure
@@ -60,27 +58,24 @@ public class Gun {
      * @param reloadRate
      * @param imagePath
      */
-    public Gun(Player owner,
-               String name,
-               int damage,
-               int defaultAmmoPerMagazine,
-               int reserve,
-               float fireRate,
-               int range,
-               float reloadRate,
-
-               String imagePath,
-               FireType fireType,
-               GunSound fireSound,
-               GunSound reloadSound,
-
-               // when upgraded
-               String upgradedName,
-               String upgradedImagePath,
-               int upgradedDamage,
-               int upgradedDefaultReserve,
-               int upgradedDefaultAmmoPerMagazine,
-               GunSound upgradedFireSound
+    protected Gun(Player owner,
+        String name,
+        int damage,
+        int defaultAmmoPerMagazine,
+        int reserve,
+        float fireRate,
+        int range,
+        float reloadRate,
+        BufferedImage image,
+        FireType fireType,
+        GunSound fireSound,
+        GunSound reloadSound,
+        String upgradedName,
+        String upgradedImagePath,
+        int upgradedDamage,
+        int upgradedDefaultReserve,
+        int upgradedDefaultAmmoPerMagazine,
+        GunSound upgradedFireSound
     ) {
         this.owner = owner;
         this.name = name;
@@ -95,6 +90,7 @@ public class Gun {
         this.fireRate = fireRate;
         this.reloadRate = reloadRate;
         this.range = range;
+        this.image = image;
         this.penetration = 2;
         this.fireDelay = 10 * fireRate;
 
@@ -105,11 +101,6 @@ public class Gun {
         this.upgradedDefaultReserve = upgradedDefaultReserve;
         this.upgradedImagePath = upgradedImagePath;
 
-        try {
-            this.image = ImageIO.read(new File(imagePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void setWallBuy(WallBuy w) {
@@ -215,16 +206,231 @@ public class Gun {
         }
     }
 
-    public void rechamber() {
-        this.rechamberNeeded = false;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getPrice() {
-        return this.wallBuy.price;
+    public String getUpgradedName() {
+        return upgradedName;
+    }
+
+    public void setUpgradedName(String upgradedName) {
+        this.upgradedName = upgradedName;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public String getUpgradedImagePath() {
+        return upgradedImagePath;
+    }
+
+    public void setUpgradedImagePath(String upgradedImagePath) {
+        this.upgradedImagePath = upgradedImagePath;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+
+    public GunSound getFireSound() {
+        return fireSound;
+    }
+
+    public void setFireSound(GunSound fireSound) {
+        this.fireSound = fireSound;
+    }
+
+    public GunSound getUpgradedFireSound() {
+        return upgradedFireSound;
+    }
+
+    public void setUpgradedFireSound(GunSound upgradedFireSound) {
+        this.upgradedFireSound = upgradedFireSound;
+    }
+
+    public GunSound getReloadSound() {
+        return reloadSound;
+    }
+
+    public void setReloadSound(GunSound reloadSound) {
+        this.reloadSound = reloadSound;
+    }
+
+    public int getUpgradeTier() {
+        return upgradeTier;
+    }
+
+    public void setUpgradeTier(int upgradeTier) {
+        this.upgradeTier = upgradeTier;
     }
 
     public int getDamage() {
-        return this.damage;
+        return damage;
     }
 
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public int getUpgradedDamage() {
+        return upgradedDamage;
+    }
+
+    public void setUpgradedDamage(int upgradedDamage) {
+        this.upgradedDamage = upgradedDamage;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public int getBullet() {
+        return bullet;
+    }
+
+    public void setBullet(int bullet) {
+        this.bullet = bullet;
+    }
+
+    public int getDefaultAmmoPerMagazine() {
+        return defaultAmmoPerMagazine;
+    }
+
+    public void setDefaultAmmoPerMagazine(int defaultAmmoPerMagazine) {
+        this.defaultAmmoPerMagazine = defaultAmmoPerMagazine;
+    }
+
+    public int getUpgradedDefaultAmmoPerMagazine() {
+        return upgradedDefaultAmmoPerMagazine;
+    }
+
+    public void setUpgradedDefaultAmmoPerMagazine(int upgradedDefaultAmmoPerMagazine) {
+        this.upgradedDefaultAmmoPerMagazine = upgradedDefaultAmmoPerMagazine;
+    }
+
+    public void setMagazine(int magazine) {
+        this.magazine = magazine;
+    }
+
+    public int getUpgradedDefaultReserve() {
+        return upgradedDefaultReserve;
+    }
+
+    public void setUpgradedDefaultReserve(int upgradedDefaultReserve) {
+        this.upgradedDefaultReserve = upgradedDefaultReserve;
+    }
+
+    public void setReserve(int reserve) {
+        this.reserve = reserve;
+    }
+
+    public int getDefaultReserve() {
+        return defaultReserve;
+    }
+
+    public void setDefaultReserve(int defaultReserve) {
+        this.defaultReserve = defaultReserve;
+    }
+
+    public int getPenetration() {
+        return penetration;
+    }
+
+    public void setPenetration(int penetration) {
+        this.penetration = penetration;
+    }
+
+    public WallBuy getWallBuy() {
+        return wallBuy;
+    }
+
+    public float getFireRate() {
+        return fireRate;
+    }
+
+    public void setFireRate(float fireRate) {
+        this.fireRate = fireRate;
+    }
+
+    public FireType getFireType() {
+        return fireType;
+    }
+
+    public void setFireType(FireType fireType) {
+        this.fireType = fireType;
+    }
+
+    public float getFireDelayCounter() {
+        return fireDelayCounter;
+    }
+
+    public void setFireDelayCounter(float fireDelayCounter) {
+        this.fireDelayCounter = fireDelayCounter;
+    }
+
+    public float getReloadRate() {
+        return reloadRate;
+    }
+
+    public void setReloadRate(float reloadRate) {
+        this.reloadRate = reloadRate;
+    }
+
+    public Timer getReloadTimer() {
+        return reloadTimer;
+    }
+
+    public void setReloadTimer(Timer reloadTimer) {
+        this.reloadTimer = reloadTimer;
+    }
+
+    public float getRange() {
+        return range;
+    }
+
+    public void setRange(float range) {
+        this.range = range;
+    }
+
+    public boolean isRechamberNeeded() {
+        return rechamberNeeded;
+    }
+
+    public void setRechamberNeeded(boolean rechamberNeeded) {
+        this.rechamberNeeded = rechamberNeeded;
+    }
+
+    public boolean isReloading() {
+        return reloading;
+    }
+
+    public void setReloading(boolean reloading) {
+        this.reloading = reloading;
+    }
+
+    public float getFireDelay() {
+        return fireDelay;
+    }
+
+    public void setFireDelay(float fireDelay) {
+        this.fireDelay = fireDelay;
+    }
+
+    public int getPrice() {
+        return wallBuy.price;
+    }
 }
