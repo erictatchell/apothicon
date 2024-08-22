@@ -10,19 +10,24 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.imageio.ImageIO;
 
 public class HUD {
     private Apothicon ap;
     private BufferedImage gunSplosh;
     private BufferedImage pointSplosh;
+    private BufferedImage ammoSplash;
     private ArrayList<Perk> perks;
     private String points;
     private String currentWeaponName;
+    private BufferedImage roundBefore11;
+    private BufferedImage[] roundAfter11;
+    private LinkedList<Integer> digits;
+    private BufferedImage round;
 
     private String currentWeaponMagazine;
     private String currentWeaponReserve;
-
 
 
     public HUD(Apothicon ap) {
@@ -34,9 +39,14 @@ public class HUD {
         this.currentWeaponMagazine = Integer.toString(ap.gameManager.player.getLoadout().getCurrentWeapon().getMagazine());
         this.currentWeaponReserve = Integer.toString(ap.gameManager.player.getLoadout().getCurrentWeapon().getReserve());
         this.perks = ap.gameManager.player.getLoadout().getPerks();
+        this.digits = new LinkedList<>();
+        this.roundAfter11 = new BufferedImage[3];
+        int currentRound = ap.gameManager.roundManager.getCurrentRound();
         try {
             gunSplosh = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
             pointSplosh = ImageIO.read(new File("src/main/resources/blood/pointSplosh.png"));
+            ammoSplash = ImageIO.read(new File("src/main/resources/blood/ammo.png"));
+            round = ImageIO.read(new File("src/main/resources/rounds/" + currentRound + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,6 +58,28 @@ public class HUD {
         this.currentWeaponReserve = Integer.toString(gun.getReserve());
         this.points = Integer.toString(points);
         this.perks = perks;
+    }
+
+    public void updateCurrentRound() {
+        int round = ap.gameManager.roundManager.getCurrentRound();
+        try {
+            if (round <= 10) {
+                this.round = ImageIO.read(new File("src/main/resources/rounds/" + round + ".png"));
+            } else {
+                int number = round;
+                while (number > 0) {
+                    digits.push(number % 10);
+                    number = number / 10;
+                }
+                roundAfter11[0] = ImageIO.read(new File("src/main/resources/rounds/d" + digits.pop() + ".png"));
+                roundAfter11[1] = ImageIO.read(new File("src/main/resources/rounds/d" + digits.pop() + ".png"));
+                if (!digits.isEmpty()) {
+                    roundAfter11[2] = ImageIO.read(new File("src/main/resources/rounds/d" + digits.pop() + ".png"));
+                }
+            }
+        } catch (IOException e) {
+            this.round = null;
+        }
     }
 
 
@@ -72,7 +104,7 @@ public class HUD {
                 ap.tileSize,
                 null);
 
-        g2.drawImage(gunSplosh,
+        g2.drawImage(ammoSplash,
                 ap.screenWidth - (gunSplosh.getWidth() * 3),
                 ap.screenHeight - (gunSplosh.getHeight() * 3),
                 ap.tileSize * 3,
@@ -84,47 +116,60 @@ public class HUD {
 
         // Set color and font for drawing text
         g2.setColor(Color.white);
-        g2.setFont(FontManager.fty16);
-
+        g2.setFont(FontManager.fty20);
         // Calculate x-coordinate for right-aligning currentWeaponName
         String ammo = currentWeaponMagazine + " / " + currentWeaponReserve;
         int textWidth = g2.getFontMetrics().stringWidth(currentWeaponName);
-        int xCurrentWeaponName = ap.screenWidth - textWidth - 24; // Adjusted for padding
+        int xCurrentWeaponName = ap.screenWidth - textWidth - 12; // Adjusted for padding
 
         // Draw currentWeaponName
         g2.drawString(currentWeaponName,
                 xCurrentWeaponName,
                 ap.screenHeight - 28);
 
+        g2.setFont(FontManager.fty24);
         int ammoTextWidth = (g2.getFontMetrics().stringWidth(ammo));
-        int xCurrentWeaponAmmo = ap.screenWidth - ammoTextWidth - 24;
+        int xCurrentWeaponAmmo = ap.screenWidth - ammoTextWidth - 12;
 
         g2.drawString(currentWeaponMagazine,
                 xCurrentWeaponAmmo,
-                ap.screenHeight - 14);
+                ap.screenHeight - 8);
 
         g2.drawString(ammo,
                 xCurrentWeaponAmmo,
-                ap.screenHeight - 14);
+                ap.screenHeight - 8);
 
         g2.drawString(ap.gameManager.zoneManager.currentZone.getName(), 10, 30);
         g2.drawString(Integer.toString(ap.gameManager.player.getLoadout().getHealth()), 10, 100);
         g2.setFont(FontManager.fty24);
 
         int pointTextWidth = (g2.getFontMetrics().stringWidth(points));
-        int xPoints = ap.screenWidth - pointTextWidth - 24;
+        int xPoints = ap.screenWidth - pointTextWidth - 12;
 
         // Draw points text aligned to the left
         g2.drawString(points,
                 xPoints,
                 ap.screenHeight - 65);
 
-        g2.setFont(FontManager.fty64);
-        g2.setColor(new Color(150, 0, 0));
-        g2.drawString(Integer.toString(ap.gameManager.roundManager.getCurrentRound()), 10, ap.screenHeight - 10);
+//        g2.setFont(FontManager.fty64);
+//        g2.setColor(new Color(150, 0, 0));
+//        g2.drawString(Integer.toString(ap.gameManager.roundManager.getCurrentRound()), 10, ap.screenHeight - 10);
+        if (ap.gameManager.roundManager.getCurrentRound() >= 11) {
+            int totalWidth = 10; // 10 for a padded start
+            for (BufferedImage digit : roundAfter11) {
+                if (digit != null) {
+                    int width = digit.getWidth();
+                    g2.drawImage(digit, totalWidth + width, ap.screenHeight - ap.tileSize - 10, ap.tileSize, ap.tileSize, null);
+                    totalWidth += width;
+                }
+            }
+        } else {
+            g2.drawImage(this.round, 10, ap.screenHeight - ap.tileSize - 10, ap.tileSize * 2, ap.tileSize , null);
+        }
 
         g2.dispose();
     }
+
     public int getXForCenteredText(Graphics2D g2, String text) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return ap.screenWidth / 2 - length / 2;
