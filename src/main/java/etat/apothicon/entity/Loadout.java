@@ -11,11 +11,8 @@ import etat.apothicon.object.perk.bottle.QuickRevive;
 import etat.apothicon.object.perk.bottle.SpeedCola;
 import etat.apothicon.object.perk.machine.PerkMachine;
 import etat.apothicon.object.weapon.gun.Gun;
-import etat.apothicon.object.weapon.gun.M14_Gun;
-import etat.apothicon.object.weapon.gun.M1911_Gun;
-import etat.apothicon.object.weapon.gun.MP40_Gun;
-import etat.apothicon.object.weapon.gun.Olympia_Gun;
-import etat.apothicon.object.weapon.gun.Stakeout_Gun;
+import etat.apothicon.object.weapon.gun.GunBuilder;
+import etat.apothicon.object.weapon.gun.GunDirector;
 import etat.apothicon.object.weapon.wallbuy.WallBuy;
 
 import java.util.ArrayList;
@@ -25,6 +22,7 @@ import java.util.TimerTask;
 public class Loadout {
 
     private final Player player;
+    private final GunBuilder gunBuilder;
     private final Apothicon ap;
     private ArrayList<Gun> guns;
     private ArrayList<Perk> perks;
@@ -53,34 +51,12 @@ public class Loadout {
     private boolean muleKick;
 
 
-
-
     public Loadout(Player player, Apothicon ap) {
         this.player = player;
         this.ap = ap;
+        this.gunBuilder = ap.gameManager.gunBuilder;
 
         init();
-    }
-
-    public void getDebugLoadout() {
-        this.perkLimit = 4;
-        this.revives = 0;
-        this.reloadRateMultiplier = 1.0f;
-        this.damageMultiplier = 1.0f;
-        this.fireRateMultiplier = 1.0f;
-        this.pointsMultiplier = 1.0f;
-        this.defaultHealth = 150000;
-        this.health = 150000;
-        this.points = 50000;
-        this.maxGunNum = 2;
-        this.guns = new ArrayList<>();
-        this.perks = new ArrayList<>();
-        MP40_Gun mp40 = new MP40_Gun(this.player);
-        this.guns.add(mp40);
-        this.currentWeaponIdx = 0;
-
-        bottomlessClip = true;
-
     }
 
     private void init() {
@@ -96,7 +72,8 @@ public class Loadout {
         this.maxGunNum = 2;
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
-        M1911_Gun m1911 = new M1911_Gun(this.player);
+        GunDirector.buildM1911(player, gunBuilder);
+        Gun m1911 = gunBuilder.build();
         this.guns.add(m1911);
         this.currentWeaponIdx = 0;
 
@@ -109,7 +86,7 @@ public class Loadout {
 
     public boolean isAmmoPurchasable(int price) {
         Gun current = this.guns.get(currentWeaponIdx);
-        return (this.points > price) && (current.reserve != current.defaultReserve);
+        return (this.points > price) && (current.getReserve() != current.getDefaultReserve());
     }
 
     public boolean isGunPurchasable(WallBuy gun) {
@@ -142,17 +119,19 @@ public class Loadout {
         }
         return false;
     }
+
     public boolean canAfford(int price) {
         return points >= price;
     }
+
     public boolean canAffordPerk(PerkMachine perk) {
         return points >= perk.price;
     }
 
     public void refillAmmo() {
         for (Gun gun : this.guns) {
-            gun.magazine = gun.defaultAmmoPerMagazine;
-            gun.reserve = gun.defaultReserve;
+            gun.setMagazine(gun.getDefaultAmmoPerMagazine());
+            gun.setReserve(gun.getDefaultReserve());
         }
     }
 
@@ -161,14 +140,14 @@ public class Loadout {
         int total = 0;
         int hitPoints = (int) (10 * pointsMultiplier);
         this.points += hitPoints;
-        total+= hitPoints;
+        total += hitPoints;
         if (kill) {
             int killPoints = (int) (50 * pointsMultiplier);
             this.points += killPoints;
-            total+= killPoints;
+            total += killPoints;
             if (headshot) {
                 this.points += killPoints;
-                total+= killPoints;
+                total += killPoints;
             }
         }
         player.getStatistics().addPoints(total);
@@ -181,8 +160,8 @@ public class Loadout {
     public void purchaseAmmo(SuperObject object, int price) {
         for (Gun gun : this.guns) {
             if (gun.getName().equals(object.name)) {
-                gun.reserve = gun.defaultReserve;
-                gun.magazine = gun.defaultAmmoPerMagazine;
+                gun.setReserve(gun.getDefaultReserve());
+                gun.setMagazine(gun.getDefaultAmmoPerMagazine());
                 spendPoints(price);
             }
         }
@@ -351,27 +330,28 @@ public class Loadout {
      *
      * @param object interactable object (wallbuy)
      */
+
     public void purchaseGun(SuperObject object) {
         switch (object.name) {
             case "MP40":
-                MP40_Gun mp40 = new MP40_Gun(this.player);
+                Gun mp40 = ap.gameManager.allGuns.get("MP40");
                 mp40.setWallBuy((WallBuy) object);
                 handleGunPurchase(mp40);
                 break;
             case "M14":
-                M14_Gun m14 = new M14_Gun(this.player);
+                Gun m14 = ap.gameManager.allGuns.get("M14");
                 m14.setWallBuy((WallBuy) object);
                 handleGunPurchase(m14);
                 break;
             case "Olympia":
-                Olympia_Gun o = new Olympia_Gun(this.player);
-                o.setWallBuy((WallBuy) object);
-                handleGunPurchase(o);
+                Gun olympia = ap.gameManager.allGuns.get("Olympia");
+                olympia.setWallBuy((WallBuy) object);
+                handleGunPurchase(olympia);
                 break;
             case "Stakeout":
-                Stakeout_Gun st = new Stakeout_Gun(this.player);
-                st.setWallBuy((WallBuy) object);
-                handleGunPurchase(st);
+                Gun stakeout = ap.gameManager.allGuns.get("Stakeout");
+                stakeout.setWallBuy((WallBuy) object);
+                handleGunPurchase(stakeout);
                 break;
         }
     }
@@ -407,6 +387,7 @@ public class Loadout {
     public void setBottomlessClip(boolean bottomlessClip) {
         this.bottomlessClip = bottomlessClip;
     }
+
     public boolean hasPerk(String name) {
         for (Perk perk : perks) {
             if (perk.name.equals(name)) {
@@ -415,6 +396,7 @@ public class Loadout {
         }
         return false;
     }
+
     public boolean hasPerk(Perk queriedPerk) {
         for (Perk perk : perks) {
             if (perk.name.equals(queriedPerk.name)) {

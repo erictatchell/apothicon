@@ -57,6 +57,7 @@ public class GameManager {
 
     public void setup() {
         gameState = GameState.MAIN_MENU;
+
         mainMenu = new MainMenu(this, ap.mouseIn, ap.keyIn);
         gunBuilder = new GunBuilder();
         tileManager = new TileManager(ap);
