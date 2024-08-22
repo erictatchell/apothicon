@@ -69,7 +69,7 @@ public class Loadout {
         this.pointsMultiplier = 1.0f;
         this.defaultHealth = 150;
         this.health = 150;
-        this.points = 50000;
+        this.points = 500000;
         this.maxGunNum = 2;
         this.guns = new ArrayList<>();
         this.perks = new ArrayList<>();
@@ -313,7 +313,7 @@ public class Loadout {
         revives = 0;
         player.setSlotX(16);
         player.setPerkOffset(16);
-        perks = new ArrayList<>();
+        perks.clear();
         maxGunNum = 2;
 
         // remove mule kick gun

@@ -37,13 +37,13 @@ public class RoundManager {
     }
 
     private void setup() {
-        currentRound = 1;
+        currentRound = 10;
         changingRound = false;
         totalZombiesOnMap = 0;
         totalZombiesKilled = 0;
         totalZombiesSpawnedForThisRound = 0;
         maxHorde = 24;
-        maxTotalZombiesForThisRound = 5;
+        maxTotalZombiesForThisRound = 5 * currentRound;
         Zombie.defaultHealth = 150.0f;
         zombies = new Entity[maxTotalZombiesForThisRound];
     }
@@ -89,6 +89,7 @@ public class RoundManager {
                 maxTotalZombiesForThisRound += 5;
                 Zombie.increaseDefaultHealth(currentRound);
                 zombies = new Entity[maxTotalZombiesForThisRound];
+                ap.gameManager.hud.updateCurrentRound();
                 changingRound = false;
             }
         }, 5000);
