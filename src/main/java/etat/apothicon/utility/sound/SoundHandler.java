@@ -1,72 +1,68 @@
 package etat.apothicon.utility.sound;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import javax.sound.sampled.*;
 
 public class SoundHandler implements Runnable {
-    public static Vector<Clip> vector = new Vector<>();
-    static final int MAX_VECTOR_SIZE = 5;
     static URL[] gunSounds = new URL[30];
     static URL[] impactSounds = new URL[30];
     static URL[] interactSounds = new URL[30];
     static URL[] roundChangeMusic = new URL[10];
 
+    static final Map<SoundType, Map<Integer, Clip>> preloadedClips = new HashMap<>();
+
     public SoundHandler() {
-        Thread clipMonitor = new Thread(() -> {
-            while (true) {
-                try {
-                    Thread.sleep(1000);
-                    consolidate();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        clipMonitor.setDaemon(true);
-        clipMonitor.start();
+        populateArrays();
+        preloadAllSounds();
     }
 
-    // Typically called before calling play()
-    public static synchronized void consolidate() {
-        for (int i = 0; i < vector.size(); i++) {
-            Clip myClip = vector.get(i);
-            if (!myClip.isRunning()) {
-                myClip.close();
-                vector.remove(i);
-                i--; // Adjust the index after removal
-            }
-        }
-        if (MAX_VECTOR_SIZE * 2 < vector.size())
-            System.out.println("Warning: audio consolidation lagging");
-    }
-
-    public static void play(int i, SoundType t) {
-        try {
-            AudioInputStream stream = switch (t) {
-                case IMPACT -> AudioSystem.getAudioInputStream(impactSounds[i]);
-                case GUN -> AudioSystem.getAudioInputStream(gunSounds[i]);
-                case INTERACT -> AudioSystem.getAudioInputStream(interactSounds[i]);
-                case ROUND_CHANGE -> AudioSystem.getAudioInputStream(roundChangeMusic[i]);
+    // asked grok to come up with this
+    private void preloadAllSounds() {
+        for (SoundType type : SoundType.values()) {
+            Map<Integer, Clip> typeClips = new HashMap<>();
+            URL[] sounds = switch (type) {
+                case IMPACT -> impactSounds;
+                case GUN -> gunSounds;
+                case INTERACT -> interactSounds;
+                case ROUND_CHANGE -> roundChangeMusic;
                 default -> null;
             };
-            final Clip myClip = AudioSystem.getClip();
-            vector.add(myClip);
-            myClip.open(stream);
+            if (sounds != null) {
+                for (int i = 0; i < sounds.length; i++) {
+                    try {
+                        AudioInputStream stream = AudioSystem.getAudioInputStream(sounds[i]);
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(stream);
+                        typeClips.put(i, clip);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            preloadedClips.put(type, typeClips);
+        }
+    }
+
+    // grok tweaked this, came paired with preloadAllSounds()
+    public static void play(int i, SoundType t) {
+        Clip myClip = preloadedClips.get(t).get(i);
+        if (myClip != null) {
+            myClip.setFramePosition(0); // Reset to start
             myClip.start();
             myClip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
-                    myClip.close();
-                    vector.remove(myClip);
+                    myClip.setFramePosition(0); // Reset for next play
                 }
             });
-        } catch (Exception myException) {
-            myException.printStackTrace();
+        } else {
+            System.out.println("Clip not found for " + t + " at index " + i);
         }
     }
 
-    @Override
-    public void run() {
+    private void populateArrays() {
         gunSounds[0] = getClass().getClassLoader().getResource("sound/m1911-fire.wav");
         gunSounds[1] = getClass().getClassLoader().getResource("sound/m1911-pap-fire.wav");
         gunSounds[2] = getClass().getClassLoader().getResource("sound/m1911-reload.wav");
@@ -99,5 +95,10 @@ public class SoundHandler implements Runnable {
 
         roundChangeMusic[0] = getClass().getClassLoader().getResource("sound/round-change-1.wav");
         roundChangeMusic[1] = getClass().getClassLoader().getResource("sound/round-change-3.wav");
+    }
+
+    @Override
+    public void run() {
+
     }
 }
