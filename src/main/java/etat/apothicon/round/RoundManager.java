@@ -37,7 +37,7 @@ public class RoundManager {
     }
 
     private void setup() {
-        currentRound = 10;
+        currentRound = 1;
         changingRound = false;
         totalZombiesOnMap = 0;
         totalZombiesKilled = 0;

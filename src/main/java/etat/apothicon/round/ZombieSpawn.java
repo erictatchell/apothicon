@@ -41,8 +41,13 @@ public class ZombieSpawn {
         }, (random.nextInt(3000) + getMinimumSpawnDelay(rm)));
     }
 
+
+    public Timer getSpawnDelay() {
+        return spawnDelay;
+    }
+
     public int getMinimumSpawnDelay(RoundManager rm) {
-        return 500 - (rm.getCurrentRound() * 10);
+        return Math.max((500 - (rm.getCurrentRound() * 10)), 0);
     }
 
     public void draw(Graphics2D g2, Apothicon ap) {
@@ -57,6 +62,7 @@ public class ZombieSpawn {
 
         }
     }
+
     public int getWorldX() {
         return worldX;
     }

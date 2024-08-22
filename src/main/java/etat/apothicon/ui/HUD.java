@@ -46,7 +46,7 @@ public class HUD {
             gunSplosh = ImageIO.read(new File("src/main/resources/rounds/splosh.png"));
             pointSplosh = ImageIO.read(new File("src/main/resources/blood/pointSplosh.png"));
             ammoSplash = ImageIO.read(new File("src/main/resources/blood/ammo.png"));
-            round = ImageIO.read(new File("src/main/resources/rounds/" + currentRound + ".png"));
+            updateCurrentRound();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,7 +95,19 @@ public class HUD {
 //            }
 //        }
 
-
+        if (ap.gameManager.roundManager.getCurrentRound() >= 11) {
+            int totalWidth = 10; // 10 for a padded start
+            for (BufferedImage digit : roundAfter11) {
+                if (digit != null) {
+                    int width = digit.getWidth();
+                    System.out.println("Width of digit: " + width);
+                    _g2.drawImage(digit, totalWidth, ap.screenHeight - ap.tileSize - 10, width * 3, ap.tileSize, null);
+                    totalWidth += width * 3;
+                }
+            }
+        } else {
+            _g2.drawImage(this.round, 10, ap.screenHeight - ap.tileSize - 10, ap.tileSize * 2, ap.tileSize, null);
+        }
         Graphics2D g2 = MediaManager.antialias(_g2);
         g2.drawImage(pointSplosh,
                 ap.screenWidth - (pointSplosh.getWidth() * 3),
@@ -154,18 +166,7 @@ public class HUD {
 //        g2.setFont(FontManager.fty64);
 //        g2.setColor(new Color(150, 0, 0));
 //        g2.drawString(Integer.toString(ap.gameManager.roundManager.getCurrentRound()), 10, ap.screenHeight - 10);
-        if (ap.gameManager.roundManager.getCurrentRound() >= 11) {
-            int totalWidth = 10; // 10 for a padded start
-            for (BufferedImage digit : roundAfter11) {
-                if (digit != null) {
-                    int width = digit.getWidth();
-                    g2.drawImage(digit, totalWidth + width, ap.screenHeight - ap.tileSize - 10, ap.tileSize, ap.tileSize, null);
-                    totalWidth += width;
-                }
-            }
-        } else {
-            g2.drawImage(this.round, 10, ap.screenHeight - ap.tileSize - 10, ap.tileSize * 2, ap.tileSize , null);
-        }
+
 
         g2.dispose();
     }
