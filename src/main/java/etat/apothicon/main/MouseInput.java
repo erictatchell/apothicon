@@ -34,7 +34,6 @@ public class MouseInput implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        System.out.println("hello");
     }
 
     @Override

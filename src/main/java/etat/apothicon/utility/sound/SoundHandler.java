@@ -3,11 +3,10 @@ package etat.apothicon.utility.sound;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 import javax.sound.sampled.*;
 
 public class SoundHandler implements Runnable {
-    static URL[] gunSounds = new URL[30];
+    static URL[] gunSounds = new URL[120];
     static URL[] impactSounds = new URL[30];
     static URL[] interactSounds = new URL[30];
     static URL[] roundChangeMusic = new URL[10];
@@ -30,6 +29,7 @@ public class SoundHandler implements Runnable {
                 case ROUND_CHANGE -> roundChangeMusic;
                 default -> null;
             };
+
             if (sounds != null) {
                 for (int i = 0; i < sounds.length; i++) {
                     try {
@@ -62,22 +62,24 @@ public class SoundHandler implements Runnable {
         }
     }
 
+    private URL[] fillGunSounds(String[] guns) {
+        int i = 0;
+        URL[] sounds = new URL[128];
+        for (String gun : guns) {
+            for (int m = 0; m < 1; m++, i++) {
+                sounds[i] = getClass().getClassLoader().getResource("sound/" + gun + "-fire.wav");
+            }
+            for (int k = 0; k < 1; k++, i++) {
+                sounds[i] = getClass().getClassLoader().getResource("sound/" + gun + "-pap-fire.wav");
+            }
+            sounds[i] = getClass().getClassLoader().getResource("sound/" + gun + "-reload.wav");
+        }
+        return sounds;
+    }
+
     private void populateArrays() {
-        gunSounds[0] = getClass().getClassLoader().getResource("sound/m1911-fire.wav");
-        gunSounds[1] = getClass().getClassLoader().getResource("sound/m1911-pap-fire.wav");
-        gunSounds[2] = getClass().getClassLoader().getResource("sound/m1911-reload.wav");
-        gunSounds[3] = getClass().getClassLoader().getResource("sound/olympia-fire.wav");
-        gunSounds[4] = getClass().getClassLoader().getResource("sound/olympia-pap-fire.wav");
-        gunSounds[5] = getClass().getClassLoader().getResource("sound/olympia-reload.wav");
-        gunSounds[6] = getClass().getClassLoader().getResource("sound/m14-fire.wav");
-        gunSounds[7] = getClass().getClassLoader().getResource("sound/m14-pap-fire.wav");
-        gunSounds[8] = getClass().getClassLoader().getResource("sound/m14-reload.wav");
-        gunSounds[9] = getClass().getClassLoader().getResource("sound/mp40-fire.wav");
-        gunSounds[10] = getClass().getClassLoader().getResource("sound/mp40-pap-fire.wav");
-        gunSounds[11] = getClass().getClassLoader().getResource("sound/mp40-reload.wav");
-        gunSounds[12] = getClass().getClassLoader().getResource("sound/stakeout-fire.wav");
-        gunSounds[13] = getClass().getClassLoader().getResource("sound/stakeout-pap-fire.wav");
-        gunSounds[14] = getClass().getClassLoader().getResource("sound/stakeout-reload.wav");
+        String[] guns = new String[]{"m1911", "olympia", "m14", "mp40", "stakeout"};
+        gunSounds = fillGunSounds(guns);
 
         impactSounds[0] = getClass().getClassLoader().getResource("sound/collision.wav");
         impactSounds[1] = getClass().getClassLoader().getResource("sound/kill1.wav");
@@ -102,3 +104,4 @@ public class SoundHandler implements Runnable {
 
     }
 }
+

@@ -45,6 +45,8 @@ public class Gun {
     private boolean reloading = false;
     private float fireDelay;
 
+    private int fireSoundIdx;
+
     /**
      * gun structure
      *
@@ -86,6 +88,7 @@ public class Gun {
         this.defaultReserve = reserve;
         this.fireType = fireType;
         this.fireSound = fireSound;
+        this.fireSoundIdx = fireSound.ordinal();
         this.reloadSound = reloadSound;
         this.fireRate = fireRate;
         this.reloadRate = reloadRate;
@@ -172,11 +175,24 @@ public class Gun {
         }
     }
 
+    // kms
+    private int getNextFireSound() {
+        // if we've reached the final fire sound for the gun
+        int temp = fireSoundIdx;
+        if (fireSound.ordinal() + 5 == fireSoundIdx) {
+            fireSoundIdx = fireSound.ordinal();
+            return temp;
+        }
+        fireSoundIdx++;
+        return temp;
+    }
+
     public void fire() {
 
         if (!this.reloading && this.magazine >= 1) {
 
-            owner.ap.playSE(this.fireSound.ordinal(), SoundType.GUN);
+            int sound = getNextFireSound();
+            owner.ap.playSE(sound, SoundType.GUN);
             sendBullet();
 
             if (!owner.getLoadout().isBottomlessClip()) {

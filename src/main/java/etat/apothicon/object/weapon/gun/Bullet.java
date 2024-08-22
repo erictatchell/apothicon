@@ -111,7 +111,6 @@ public class Bullet extends Entity {
             worldY += (int) (speed * Math.sin(Math.toRadians(directionAngle)));
             ap.gameManager.cc.bullet_checkTile(this);
             if (this.collisionIsWall) {
-                System.out.println("hello");
                 ap.playSE(ImpactSound.WALL_COLLISION.ordinal(), SoundType.IMPACT);
                 ap.gameManager.bullets.remove(this);
                 System.gc();

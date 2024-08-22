@@ -42,8 +42,8 @@ public class Apothicon extends JPanel implements Runnable {
 
     }
 
-    public void setup() {
 
+    public void setup() {
         gameManager = new GameManager(this);
         gameManager.setup();
         FontManager.loadFonts();

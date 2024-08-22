@@ -3,11 +3,6 @@ package etat.apothicon.object.weapon.gun;
 import etat.apothicon.entity.Player;
 import etat.apothicon.utility.sound.GunSound;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 public class GunDirector {
 
     public static void buildM14(Player player, GunBuilder builder) {
@@ -56,12 +51,12 @@ public class GunDirector {
                 .image("src/main/resources/guns/m1911.png")
                 .upgradedImagePath("src/main/resources/guns/m1911-pap.png")
                 .owner(player)
-                .fireSound(GunSound.M1911_FIRE)
-                .upgradedFireSound(GunSound.M1911_UPGRADED_FIRE)
+                .fireSound(GunSound.M1911_FIRE_1)
+                .upgradedFireSound(GunSound.M1911_UPGRADED_FIRE_1)
                 .reloadSound(GunSound.M1911_RELOAD)
                 .damage(35)
                 .upgradedDamage(400)
-                .defaultAmmoPerMagazine(8)
+                .defaultAmmoPerMagazine(80)
                 .upgradedDefaultAmmoPerMagazine(6)
                 .reserve(32)
                 .upgradedDefaultReserve(50)
