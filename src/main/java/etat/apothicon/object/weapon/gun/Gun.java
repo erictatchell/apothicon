@@ -191,8 +191,8 @@ public class Gun {
 
         if (!this.reloading && this.magazine >= 1) {
 
-            int sound = getNextFireSound();
-            owner.ap.playSE(sound, SoundType.GUN);
+//            int sound = getNextFireSound();
+            owner.ap.playSE(this.fireSound.ordinal(), SoundType.GUN);
             sendBullet();
 
             if (!owner.getLoadout().isBottomlessClip()) {

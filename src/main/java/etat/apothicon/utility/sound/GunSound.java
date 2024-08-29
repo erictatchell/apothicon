@@ -6,6 +6,7 @@ public enum GunSound {
     M1911_UPGRADED_FIRE_1,
     M1911_RELOAD,
 
+    MP40_FIRE,
     OLYMPIA_FIRE,
     OLYMPIA_UPGRADED_FIRE,
     OLYMPIA_RELOAD,
@@ -14,7 +15,6 @@ public enum GunSound {
     M14_UPGRADED_FIRE,
     M14_RELOAD,
 
-    MP40_FIRE,
     MP40_UPGRADED_FIRE,
     MP40_RELOAD,
 

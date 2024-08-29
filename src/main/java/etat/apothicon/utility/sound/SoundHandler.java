@@ -69,10 +69,15 @@ public class SoundHandler implements Runnable {
             for (int m = 0; m < 1; m++, i++) {
                 sounds[i] = getClass().getClassLoader().getResource("sound/" + gun + "-fire.wav");
             }
-            for (int k = 0; k < 1; k++, i++) {
-                sounds[i] = getClass().getClassLoader().getResource("sound/" + gun + "-pap-fire.wav");
+            if (gun == "mp40") {
+                for (int k = 0; k < 1; k++, i++) {
+                    sounds[i] = getClass().getClassLoader().getResource("sound/" + gun + "-pap-fire.wav");
+                }
             }
             sounds[i] = getClass().getClassLoader().getResource("sound/" + gun + "-reload.wav");
+        }
+        for (URL url : sounds) {
+            System.out.println(url);
         }
         return sounds;
     }

@@ -38,7 +38,7 @@ public class ZombieSpawn {
             public void run() {
                 spawning = false;
             }
-        }, (random.nextInt(3000) + getMinimumSpawnDelay(rm)));
+        }, 0);// (random.nextInt(3000) + getMinimumSpawnDelay(rm)));
     }
 
 

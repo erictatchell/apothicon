@@ -79,10 +79,10 @@ public class DropManager {
         }
 
         if (!isDropActive(drop.dropType)) {
-            System.out.println("drop is not active");
             activeDrops.add(drop);
             drop.activate();
         }
+//        deleteDrop(drop);
         drop.spawned = false;
     }
 

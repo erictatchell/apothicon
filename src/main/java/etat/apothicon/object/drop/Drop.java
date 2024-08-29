@@ -203,7 +203,7 @@ public class Drop extends SuperObject {
                 flashIcon();
             }
             if (iconVisible) {
-                g2.drawImage(dropIcon, ap.screenWidth / 2, ap.screenHeight - 50, ap.tileSize - 16, ap.tileSize - 16, null);
+                g2.drawImage(dropIcon, slotX + 10, ap.screenHeight - 50, ap.tileSize - 16, ap.tileSize - 16, null);
             }
         }
     }

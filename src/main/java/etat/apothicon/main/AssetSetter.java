@@ -68,10 +68,10 @@ public class AssetSetter {
         SuperObject[] temp = new SuperObject[GameManager.MAX_OBJECTS];
         int j = 0;
         for (int i = 0; i < ap.gameManager.obj.length; i++) {
+            temp[j] = ap.gameManager.obj[i];
             if (ap.gameManager.obj[i] != null) {
-                temp[j] = ap.gameManager.obj[i];
-                if (temp[j] instanceof Drop) {
-                    ((Drop) temp[j]).objIndex = j; // disgusting but ok
+                if (temp[j] instanceof Drop drop) {
+                    drop.objIndex = j;
                 }
                 assetIndex = j;
                 j++;
@@ -81,7 +81,6 @@ public class AssetSetter {
         System.gc();
     }
 
-
     public void setZombie(int worldX, int worldY, int zombieIndex) {
         ap.gameManager.roundManager.getZombies()[zombieIndex] = new Zombie(ap);
         ap.gameManager.roundManager.getZombies()[zombieIndex].worldX = worldX;
@@ -90,11 +89,17 @@ public class AssetSetter {
 
     public void spawnDrop(int worldX, int worldY) {
         Drop drop = new Drop(assetIndex, worldX, worldY, ap, DropType.randomDrop());
-        ap.gameManager.dropManager.spawn(drop);
-        ap.gameManager.obj[assetIndex++] = drop;
+        try {
+            ap.gameManager.dropManager.spawn(drop);
+            ap.gameManager.obj[assetIndex++] = drop;
+        } catch (ArrayIndexOutOfBoundsException outOfBounds) {
+            System.err.println("Out out of object space, replacing obj[" + (GameManager.MAX_OBJECTS - 1) + "] with new drop");
+            ap.gameManager.obj[GameManager.MAX_OBJECTS - 1] = drop;
+        }
         counter++;
         if (counter == GameManager.CLEANUP_TARGET) {
             ap.gameManager.aSetter.cleanUpObjects();
+            counter = 0;
         }
     }
 }

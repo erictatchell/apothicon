@@ -21,12 +21,14 @@ public class Zombie extends Entity {
     private Timer hitDelay;
 
     private boolean hitting;
+
     public Zombie(Apothicon ap) {
         super(ap);
         direction = "down";
-        speed = calculateZombieSpeed(ap.gameManager.roundManager.getCurrentRound(),
-                ap.gameManager.roundManager.getTotalZombiesOnMap(),
-                ap.gameManager.roundManager.getTotalZombiesSpawnedForThisRound());
+//        speed = calculateZombieSpeed(ap.gameManager.roundManager.getCurrentRound(),
+//                ap.gameManager.roundManager.getTotalZombiesOnMap(),
+//                ap.gameManager.roundManager.getTotalZombiesSpawnedForThisRound());
+        speed = 3;
         this.ap = ap;
         this.health = defaultHealth;
         solidArea = new Rectangle();
@@ -58,11 +60,9 @@ public class Zombie extends Entity {
         if (round <= 4) {
             return 1;
 
-        }
-        else if (round <= 8) {
+        } else if (round <= 8) {
             return random.nextInt(2) + 1;
-        }
-        else {
+        } else {
             return random.nextInt(3) + 1;
         }
     }
@@ -91,9 +91,8 @@ public class Zombie extends Entity {
 
     public static void increaseDefaultHealth(int round) {
         if (round < 10) {
-            defaultHealth+= 100;
-        }
-        else defaultHealth *= 1.1f;
+            defaultHealth += 100;
+        } else defaultHealth *= 1.1f;
 
     }
 
