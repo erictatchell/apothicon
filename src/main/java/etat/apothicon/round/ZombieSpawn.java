@@ -30,15 +30,17 @@ public class ZombieSpawn {
         }
     }
 
-    public void addZombieToMap(RoundManager rm, Apothicon ap) {
+
+    public void spawnZombie(RoundManager rm, Apothicon ap) {
         spawning = true;
+        // top 5 worst lines of code in this whole project
         ap.gameManager.aSetter.setZombie(worldX, worldY, rm.getTotalZombiesSpawnedForThisRound());
         spawnDelay = new Timer();
         spawnDelay.schedule(new TimerTask() {
             public void run() {
                 spawning = false;
             }
-        }, 0);// (random.nextInt(3000) + getMinimumSpawnDelay(rm)));
+        }, (random.nextInt(3000) + getMinimumSpawnDelay(rm)));
     }
 
 

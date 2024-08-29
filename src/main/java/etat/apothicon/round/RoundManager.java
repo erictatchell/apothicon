@@ -61,7 +61,9 @@ public class RoundManager {
         if (allowedToSpawn) {
             ZombieSpawn spawn = currentZone.spawns.get(r);
             if (!spawn.isSpawning()) {
-                spawnZombie(spawn);
+                spawn.spawnZombie(this, ap);
+                totalZombiesSpawnedForThisRound++;
+                totalZombiesOnMap++;
             }
 
         } else if (roundOver && !changingRound) {
@@ -69,13 +71,6 @@ public class RoundManager {
             changingRound = true;
         }
     }
-
-    private void spawnZombie(ZombieSpawn spawn) {
-        spawn.addZombieToMap(this, ap);
-        totalZombiesSpawnedForThisRound++;
-        totalZombiesOnMap++;
-    }
-
 
     private void startNewRound() {
         ap.playSE(RoundChangeMusic.JULY_30_CUSTOM.ordinal(), SoundType.ROUND_CHANGE);
