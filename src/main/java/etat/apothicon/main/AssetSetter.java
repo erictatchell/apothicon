@@ -64,21 +64,73 @@ public class AssetSetter {
         ap.gameManager.obj[index] = null;
     }
 
+    /* potential o(1) space:
+        goal: to shift non-null elements left such that all nulls in the array are to the right
+
+        // before shift
+        obj = {item, item, null, null, item, item}
+
+        // after shift
+        obj = {item, item, item, item, null. null}
+
+        for i, j to obj length
+            if obj[i] is null
+                while obj[j] is null
+                    j++
+                if obj[j] is not nnll
+                    obj[i] = obj[j]
+                    obj[j] = null
+
+     */
     public void cleanUpObjects() {
-        SuperObject[] temp = new SuperObject[GameManager.MAX_OBJECTS];
-        int j = 0;
-        for (int i = 0; i < ap.gameManager.obj.length; i++) {
-            temp[j] = ap.gameManager.obj[i];
-            if (ap.gameManager.obj[i] != null) {
-                if (temp[j] instanceof Drop drop) {
-                    drop.objIndex = j;
+        System.out.println("Asset index before: " + assetIndex);
+        int i = 0;
+        int j = i + 1;
+        while (i < ap.gameManager.obj.length && j < ap.gameManager.obj.length) {
+            if (ap.gameManager.obj[i] == null) {
+                if (ap.gameManager.obj[j] == null) {
+                    j++;
+                } else {
+                    ap.gameManager.obj[i] = ap.gameManager.obj[j];
+                    ap.gameManager.obj[j] = null;
+                    assetIndex = i;
+                    i++;
                 }
-                assetIndex = j;
-                j++;
+            } else {
+                i++;
+                j = i + 1;
             }
         }
-        ap.gameManager.obj = temp;
-        System.gc();
+
+//        for (int i = 0, j = 0; i < ap.gameManager.obj.length; i++, j++) {
+//            if (ap.gameManager.obj[i] != null) {
+//                while (ap.gameManager.obj[j] == null) {
+//                    j++;
+//                }
+//                if (ap.gameManager.obj[j] != null) {
+//                    ap.gameManager.obj[i] = ap.gameManager.obj[j];
+//                    ap.gameManager.obj[j] = null;
+//                    assetIndex = i;
+//                }
+//            }
+//        }
+
+        System.out.println("Asset index after: " + assetIndex);
+
+//        SuperObject[] temp = new SuperObject[GameManager.MAX_OBJECTS];
+//        int j = 0;
+//        for (int i = 0; i < ap.gameManager.obj.length; i++) {
+//            temp[j] = ap.gameManager.obj[i];
+//            if (ap.gameManager.obj[i] != null) {
+//                if (temp[j] instanceof Drop drop) {
+//                    drop.objIndex = j;
+//                }
+//                assetIndex = j;
+//                j++;
+//            }
+//        }
+//        ap.gameManager.obj = temp;
+//        System.gc();
     }
 
     public void setZombie(int worldX, int worldY, int zombieIndex) {

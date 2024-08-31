@@ -67,6 +67,7 @@ public class PathFinder {
                 node[col][row].solid = true;
             }
             // check interactive tiles
+            // use for buyable doors?
             // for (int i = 0; i < ap.iTile[i].length; i++) {
             // if (ap.iTile[gp.currentMap][i] != null &&
             // ap.iTile[ap.currentMap][i].destructible) {
