@@ -280,7 +280,7 @@ public class Player extends Entity {
                                 machine.getPrice(loadout.getCurrentWeapon()));
                     }
                     if (keyIn.fPressed && loadout.canAfford(price)) {
-                        ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
+                        ap.playSoundEffect(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
                         loadout.purchaseUpgrade(machine, price);
                         keyIn.fPressed = false;
                     }
@@ -296,7 +296,7 @@ public class Player extends Entity {
                     drawPurchaseText(perkMachine.name, perkMachine.price);
 
                     if (canAffordPerk && keyIn.fPressed) {
-                        ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
+                        ap.playSoundEffect(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
                         loadout.purchasePerk(perkMachine);
                     }
                 }
@@ -307,7 +307,7 @@ public class Player extends Entity {
                     if (!buyingAmmo) {
                         if (keyIn.fPressed && loadout.isGunPurchasable(wallBuy)) {
 
-                            ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
+                            ap.playSoundEffect(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
                             loadout.purchaseGun(wallBuy);
                         }
 
@@ -315,7 +315,7 @@ public class Player extends Entity {
                     } else {
                         int ammoCost = wallBuy.price / 2;
                         if (keyIn.fPressed && loadout.isAmmoPurchasable(ammoCost)) {
-                            ap.playSE(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
+                            ap.playSoundEffect(InteractSound.PURCHASE.ordinal(), SoundType.INTERACT);
                             loadout.purchaseAmmo(wallBuy, ammoCost);
                         }
                         drawPurchaseText("ammo", ammoCost);

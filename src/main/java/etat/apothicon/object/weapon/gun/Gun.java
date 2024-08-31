@@ -130,7 +130,7 @@ public class Gun {
             this.reloadTimer = new Timer();
             this.delay = (int) (1000 * this.owner.getLoadout().getReloadRate() * this.reloadRate);
 
-            owner.ap.playSE(reloadSound.ordinal(), SoundType.GUN);
+            owner.ap.playSoundEffect(reloadSound.ordinal(), SoundType.GUN);
             reloadTimer.schedule(
                     new java.util.TimerTask() {
                         @Override
@@ -192,7 +192,7 @@ public class Gun {
         if (!this.reloading && this.magazine >= 1) {
 
 //            int sound = getNextFireSound();
-            owner.ap.playSE(this.fireSound.ordinal(), SoundType.GUN);
+            owner.ap.playSoundEffect(this.fireSound.ordinal(), SoundType.GUN);
             sendBullet();
 
             if (!owner.getLoadout().isBottomlessClip()) {

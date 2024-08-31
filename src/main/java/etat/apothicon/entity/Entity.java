@@ -23,6 +23,7 @@ public class Entity {
     public int speed = 20;
     public float health = 150.0f;
     public static float defaultHealth = 150.0f;
+    private Random random;
 
     public BufferedImage up1, up2, left1, left2, right1, right2, down1, down2;
     public String direction;
@@ -49,6 +50,7 @@ public class Entity {
     public Entity(Apothicon ap) {
 
         this.ap = ap;
+        this.random = new Random();
         solidArea.x = 8;
         solidArea.y = 16;
         solidArea.width = 30;
@@ -81,36 +83,7 @@ public class Entity {
 
     public BufferedImage drawDirection() {
         BufferedImage image = null;
-        switch (this.direction) {
-            case "up":
-                if (spriteNum == 1) {
-                    image = up1;
-                    break;
-                }
-                image = up2;
-                break;
-            case "down":
-                if (spriteNum == 1) {
-                    image = down1;
-                    break;
-                }
-                image = down2;
-                break;
-            case "left":
-                if (spriteNum == 1) {
-                    image = left1;
-                    break;
-                }
-                image = left2;
-                break;
-            case "right":
-                if (spriteNum == 1) {
-                    image = right1;
-                    break;
-                }
-                image = right2;
-                break;
-        }
+        image = getSpriteImage(image);
         return image;
     }
 
@@ -185,8 +158,7 @@ public class Entity {
 
     public void die(boolean headshot, int index) {
         ap.gameManager.roundManager.getZombies()[index] = null;
-        Random r = new Random();
-        int soundIndex = r.nextInt(3) + 1;
+        int soundIndex = random.nextInt(3) + 1;
         int sound = ImpactSound.KILL1.ordinal();
         if (!headshot) {
             switch (soundIndex) {
@@ -197,10 +169,11 @@ public class Entity {
             sound = ImpactSound.HEADSHOT1.ordinal();
         }
 
-        ap.playSE(sound, SoundType.IMPACT);
+        ap.playSoundEffect(sound, SoundType.IMPACT);
 
-        int chance = r.nextInt(100) + 1;
-        if (chance <= 40) {
+        // adjust based on power vacuum?
+        int chance = random.nextInt(100) + 1;
+        if (chance <= 10) {
             ap.gameManager.aSetter.spawnDrop(worldX, worldY);
         }
 
@@ -274,38 +247,43 @@ public class Entity {
                 g2.fillRect(screenX + this.headSolidArea.x, screenY + this.headSolidArea.y, this.headSolidArea.width, this.headSolidArea.height);
             }
 
-            switch (this.direction) {
-                case "up":
-                    if (spriteNum == 1) {
-                        image = up1;
-                        break;
-                    }
-                    image = up2;
-                    break;
-                case "down":
-                    if (spriteNum == 1) {
-                        image = down1;
-                        break;
-                    }
-                    image = down2;
-                    break;
-                case "left":
-                    if (spriteNum == 1) {
-                        image = left1;
-                        break;
-                    }
-                    image = left2;
-                    break;
-                case "right":
-                    if (spriteNum == 1) {
-                        image = right1;
-                        break;
-                    }
-                    image = right2;
-                    break;
-            }
+            image = getSpriteImage(image);
             g2.drawImage(image, screenX, screenY, ap.tileSize, ap.tileSize, null);
         }
+    }
+
+    private BufferedImage getSpriteImage(BufferedImage image) {
+        switch (this.direction) {
+            case "up":
+                if (spriteNum == 1) {
+                    image = up1;
+                    break;
+                }
+                image = up2;
+                break;
+            case "down":
+                if (spriteNum == 1) {
+                    image = down1;
+                    break;
+                }
+                image = down2;
+                break;
+            case "left":
+                if (spriteNum == 1) {
+                    image = left1;
+                    break;
+                }
+                image = left2;
+                break;
+            case "right":
+                if (spriteNum == 1) {
+                    image = right1;
+                    break;
+                }
+                image = right2;
+                break;
+        }
+        return image;
     }
 
 }

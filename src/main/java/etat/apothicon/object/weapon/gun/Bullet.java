@@ -101,7 +101,7 @@ public class Bullet extends Entity {
                     hitZombiesTable.put(zombieIndex, 1);
                 }
 
-                ap.playSE(generateDeathSound(), SoundType.IMPACT);
+                ap.playSoundEffect(generateDeathSound(), SoundType.IMPACT);
 
             }
         }
@@ -111,7 +111,7 @@ public class Bullet extends Entity {
             worldY += (int) (speed * Math.sin(Math.toRadians(directionAngle)));
             ap.gameManager.cc.bullet_checkTile(this);
             if (this.collisionIsWall) {
-                ap.playSE(ImpactSound.WALL_COLLISION.ordinal(), SoundType.IMPACT);
+                ap.playSoundEffect(ImpactSound.WALL_COLLISION.ordinal(), SoundType.IMPACT);
                 ap.gameManager.bullets.remove(this);
                 System.gc();
             }

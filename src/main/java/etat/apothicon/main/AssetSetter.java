@@ -141,6 +141,8 @@ public class AssetSetter {
 
     public void spawnDrop(int worldX, int worldY) {
         Drop drop = new Drop(assetIndex, worldX, worldY, ap, DropType.randomDrop());
+
+        // the catch likely won't happen due to cleanUpObjects()
         try {
             ap.gameManager.dropManager.spawn(drop);
             ap.gameManager.obj[assetIndex++] = drop;
