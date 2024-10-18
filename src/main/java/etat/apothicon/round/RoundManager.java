@@ -38,6 +38,9 @@ public class RoundManager {
 
     private void setup() {
         currentRound = 1;
+        if (ap.gameManager.hud != null) {
+            ap.gameManager.hud.updateCurrentRound();
+        }
         changingRound = false;
         totalZombiesOnMap = 0;
         totalZombiesKilled = 0;

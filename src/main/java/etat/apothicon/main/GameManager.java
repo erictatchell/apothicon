@@ -68,8 +68,8 @@ public class GameManager {
         infernalMachine = new InfernalMachine();
         zoneManager = new ZoneManager(ap);
         roundManager = new RoundManager(ap);
-        drops = new ArrayList<>();
         hud = new HUD(ap);
+        drops = new ArrayList<>();
         cc = new CollisionChecker(ap);
         aSetter = new AssetSetter(ap);
         pFinder = new PathFinder(ap);
